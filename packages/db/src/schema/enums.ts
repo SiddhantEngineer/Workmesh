@@ -36,6 +36,13 @@ export const bugStatusEnum = pgEnum("bug_status", [
   "CLOSED",
 ]);
 
+export const entityTypeEnum = pgEnum("entity_type", [
+  "PROJECT",
+  "EPIC",
+  "FEATURE",
+  "BUG",
+]);
+
 // ==========================================
 // 2. TYPES
 // ==========================================
@@ -44,6 +51,7 @@ export type Priority = (typeof priorityEnum.enumValues)[number];
 export type EpicStatus = (typeof epicStatusEnum.enumValues)[number];
 export type FeatureStatus = (typeof featureStatusEnum.enumValues)[number];
 export type BugStatus = (typeof bugStatusEnum.enumValues)[number];
+export type EntityType = (typeof entityTypeEnum.enumValues)[number];
 
 export type AcceptanceCriterion = {
   text: string;

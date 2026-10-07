@@ -3,6 +3,7 @@ import { projects } from "./projects";
 import { epics } from "./epics";
 import { features } from "./features";
 import { bugs } from "./bugs";
+import { activityLogs } from "./activity_logs";
 
 // ==========================================
 // DRIZZLE RELATIONS (Centralized graph)
@@ -12,6 +13,7 @@ export const projectsRelations = relations(projects, ({ many }) => ({
   epics: many(epics),
   features: many(features),
   bugs: many(bugs),
+  activityLogs: many(activityLogs),
 }));
 
 export const epicsRelations = relations(epics, ({ one, many }) => ({
@@ -47,5 +49,12 @@ export const bugsRelations = relations(bugs, ({ one }) => ({
   feature: one(features, {
     fields: [bugs.featureId],
     references: [features.id],
+  }),
+}));
+
+export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
+  project: one(projects, {
+    fields: [activityLogs.projectId],
+    references: [projects.id],
   }),
 }));
