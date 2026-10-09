@@ -1,9 +1,10 @@
 # Workmesh Agent Task Tracker
 
-**Document Version:** 1.0.0  
+**Document Version:** 1.1.0  
 **Status Model:** Simplified 3-State (`TODO` | `IN_PROGRESS` | `DONE`)  
 **Scope Reference:** [docs/mvp-scope-spec.md](file:///d:/Projects/Workmesh/docs/mvp-scope-spec.md)  
 **UI Spec Reference:** [docs/ui-design-spec.md](file:///d:/Projects/Workmesh/docs/ui-design-spec.md)  
+**Frontend Architecture:** [docs/frontend-architecture-spec.md](file:///d:/Projects/Workmesh/docs/frontend-architecture-spec.md)  
 
 ---
 
@@ -15,7 +16,7 @@
 | Property | Value |
 | :--- | :--- |
 | **Current Task ID** | `FEAT-01-02` |
-| **Feature Title** | MCP Server Initialization & `get_project_context` Tool |
+| **Feature Title** | Project Hub & Details Route (`/projects/[key]`) |
 | **Epic** | [Epic 01: Project Foundation & MCP Context](file:///d:/Projects/Workmesh/docs/epics/epic-01-project-and-mcp-context.md) |
 | **Status** | `TODO` |
 | **Active Session / Agent ID** | Ready to be claimed |
@@ -30,8 +31,9 @@
 
 | Feature ID | Feature Name | Priority | Status | Verified Via |
 | :--- | :--- | :--- | :--- | :--- |
-| `FEAT-01-01` | Project Management & Workspace Switcher | `HIGH` | `DONE` | UI UAT (Project switcher & creation verified) |
-| `FEAT-01-02` | MCP Server Init & `get_project_context` Tool | `CRITICAL` | `TODO` | MCP Inspector / Stdio + UI context match |
+| `FEAT-01-01` | Projects Directory & Workspace Creation (`/`) | `HIGH` | `DONE` | UI UAT (Project switcher & creation modal verified) |
+| `FEAT-01-02` | Project Hub & Details Route (`/projects/[key]`) | `CRITICAL` | `TODO` | UI UAT (Click card $\rightarrow$ redirect to `/projects/WM`, breadcrumbs) |
+| `FEAT-01-03` | MCP Server Init & `get_project_context` Tool | `CRITICAL` | `TODO` | MCP Inspector / Stdio + UI context match |
 
 ---
 
@@ -53,7 +55,7 @@
 | :--- | :--- | :--- | :--- | :--- |
 | `FEAT-03-01` | Actionable Task Discovery Flow | `CRITICAL` | `TODO` | MCP `list_actionable_tasks` matching Approved column |
 | `FEAT-03-02` | Task Claiming Flow | `CRITICAL` | `TODO` | MCP `claim_task` shifting card to In Progress column |
-| `FEAT-03-03` | Centered Ticket Detail Modal & Criteria Management | `HIGH` | `TODO` | UI 640px modal dialog & criteria checklist toggles |
+| `FEAT-03-03` | Dedicated Feature Detail Page (`/projects/[key]/features/[featureKey]`) | `HIGH` | `TODO` | UI UAT (Dedicated 2-column view, criteria checklist toggles) |
 
 ---
 
@@ -63,8 +65,8 @@
 | Feature ID | Feature Name | Priority | Status | Verified Via |
 | :--- | :--- | :--- | :--- | :--- |
 | `FEAT-04-01` | Agent Submission & Ready for Test Flow | `CRITICAL` | `TODO` | MCP `submit_for_review` shifting card to Ready for Test |
-| `FEAT-04-02` | Human QA Verification & Closure Flow | `CRITICAL` | `TODO` | UI [Verify & Close] button shifting card to Closed |
-| `FEAT-04-03` | Rejection & Rework Loop | `HIGH` | `TODO` | UI [Request Changes] returning card to In Progress |
+| `FEAT-04-02` | Human QA Verification & Closure Flow | `CRITICAL` | `TODO` | UI Action Rail [Verify & Close] button shifting card to Closed |
+| `FEAT-04-03` | Rejection & Rework Loop | `HIGH` | `TODO` | UI Action Rail [Request Changes] returning card to In Progress |
 
 ---
 
@@ -73,8 +75,8 @@
 
 | Feature ID | Feature Name | Priority | Status | Verified Via |
 | :--- | :--- | :--- | :--- | :--- |
-| `FEAT-05-01` | Bidirectional Bug Reporting Flow | `CRITICAL` | `TODO` | UI "+ File Bug" modal & MCP `report_bug` |
-| `FEAT-05-02` | Bug Claiming & Resolution Flow | `HIGH` | `TODO` | MCP `resolve_bug` + UI [Close Bug] verification |
+| `FEAT-05-01` | Bidirectional Bug Reporting & Linked Bugs Flow | `CRITICAL` | `TODO` | UI "+ File Bug" modal & feature card linked bugs list |
+| `FEAT-05-02` | Dedicated Bug Detail Page (`/projects/[key]/bugs/[bugKey]`) | `HIGH` | `TODO` | UI UAT (Repro steps view, MCP `resolve_bug` + [Close Bug]) |
 | `FEAT-05-03` | Feature Closure Blocker Check | `MEDIUM` | `TODO` | UI [Verify & Close] disabled when open bugs exist |
 
 ---
@@ -85,7 +87,7 @@
 | Feature ID | Feature Name | Priority | Status | Verified Via |
 | :--- | :--- | :--- | :--- | :--- |
 | `FEAT-06-01` | SSE Streaming Pipeline & Silent Transitions | `CRITICAL` | `TODO` | Live multi-window test: instant silent column shift |
-| `FEAT-06-02` | Chronological Activity Audit Timeline | `HIGH` | `TODO` | UI modal activity timeline showing Human vs Agent |
+| `FEAT-06-02` | Chronological Activity Audit Timeline | `HIGH` | `TODO` | UI action rail activity timeline showing Human vs Agent |
 | `FEAT-06-03` | Connection Health & Auto-Reconnection | `MEDIUM` | `TODO` | Server restart test: auto-reconnect without page reload |
 
 ---
@@ -107,7 +109,7 @@ Whenever a new chat session starts or an autonomous agent takes over:
    - Read the Feature's User Story, Scope, Acceptance Criteria, and UAT steps.
 4. **Step 4: Implement Vertical Slice**
    - Implement across the required layers (DB schema/migration, shared Zod types, Hono API routes, MCP tool, Next.js UI).
-   - Ensure you follow the Minimal Design System tokens and rules.
+   - Ensure you follow the Minimal Design System tokens and route hierarchy.
 5. **Step 5: Perform UAT Verification**
    - Follow the feature's **Manual Verification via UI (UAT)** steps.
    - Confirm everything renders and behaves cleanly without regressions.
@@ -125,10 +127,10 @@ Whenever a new chat session starts or an autonomous agent takes over:
 
 ### Session 00: Project Baseline Setup
 - **Date / Timestamp:** 2026-10-10 Baseline
-- **Completed:** `FEAT-01-01` (Project Management & Workspace Switcher)
+- **Completed:** `FEAT-01-01` (Projects Directory & Workspace Creation `/`)
 - **Summary:**
   - Database schema for `projects`, `epics`, `features`, `bugs`, `activity_logs`, and relations created.
   - Hono API endpoints for project creation and retrieval implemented.
-  - Web UI Next.js app created with Top-Nav, Minimal Design System theme tokens, and Project Creation modal.
+  - Web UI Next.js app created with Directory Dashboard (`/`), Top-Nav, Minimal Design System theme tokens, and Project Creation modal.
 - **Handoff for Next Agent:**
-  - Next task is `FEAT-01-02` in [Epic 01](file:///d:/Projects/Workmesh/docs/epics/epic-01-project-and-mcp-context.md): Setup the MCP server in `packages/mcp-server` and implement `get_project_context`.
+  - Next task is `FEAT-01-02` in [Epic 01](file:///d:/Projects/Workmesh/docs/epics/epic-01-project-and-mcp-context.md): Build the Project Hub & Details Route (`/projects/[key]`), displaying project metadata, roadmap skeleton, and features/kanban board view.

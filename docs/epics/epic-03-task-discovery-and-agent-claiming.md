@@ -62,26 +62,30 @@ This epic enables the autonomous hand-off from human approval to agent execution
 
 ---
 
-### FEAT-03-03: Centered Ticket Detail Modal & Criteria Management
+### FEAT-03-03: Dedicated Feature Detail Page & Criteria Management
 - **ID:** `FEAT-03-03`
 - **Priority:** `HIGH`
 - **Status:** `TODO`
 - **User Story:**  
-  *As a human user or reviewer, I want to click any Kanban card to open a focused 640px modal dialog, so that I can view ticket details, toggle acceptance criteria, and inspect active progress.*
+  *As a human user or reviewer, I want to click any Kanban card or feature link to navigate to `/projects/[key]/features/[featureKey]`, so that I have a dedicated, bookmarkable workspace to inspect details, toggle acceptance criteria, view linked bugs, and track progress.*
 - **Scope & Description:**
-  - Centered Modal Dialog (max-width 640px with backdrop dim, adhering to Minimal Design System).
-  - Displays ticket key in `Inconsolata` monospace, priority pip, and status badge.
-  - Interactive Acceptance Criteria checklist allowing humans or agents to toggle checklist state.
-  - API endpoint: `PATCH /api/features/:id/criteria` to persist criteria progress.
+  - Route: `/projects/[key]/features/[featureKey]`.
+  - Breadcrumbs: `Projects / [Project Name] / Features / [Feature Key]`.
+  - Two-column layout adhering to Minimal Design System:
+    - **Main Column**: Feature title, ticket key in `Inconsolata` monospace, status badge, priority pip, markdown description, interactive acceptance criteria checklist, and linked bugs summary.
+    - **Right Action Rail**: Context-aware transition buttons ([Approve]/[Claim]/[Submit]/[Verify & Close]), assignee info, and activity audit timeline.
+  - API endpoint: `PATCH /api/features/:id/criteria` to persist criteria toggle state.
 - **Acceptance Criteria Checklist:**
-  - [ ] Clicking any card on the Kanban board opens the centered modal with backdrop blur/dim.
-  - [ ] Modal header includes ticket key (`WM-X`), status, and priority dot.
-  - [ ] Acceptance criteria items render with clean checkbox inputs.
-  - [ ] Checking/unchecking an item persists immediately and updates card counter (e.g., `✓ 1/3`).
-  - [ ] Modal dismissible via backdrop click, Escape key, or close button.
+  - [ ] Clicking any card on the Kanban board navigates to `/projects/[key]/features/[featureKey]`.
+  - [ ] Page renders full feature details, description, and status cleanly with responsive breadcrumbs.
+  - [ ] Acceptance criteria items render with interactive checkboxes.
+  - [ ] Checking/unchecking an item persists immediately and updates criteria count.
+  - [ ] Direct URL navigation to `/projects/[key]/features/[featureKey]` loads correctly without requiring prior board visit.
 - **Manual Verification via UI (UAT):**
-  1. Click on any card in the **In Progress** column.
-  2. Confirm the centered 640px modal opens with dim backdrop.
-  3. Check one of the acceptance criteria items.
-  4. Close modal and check the card on the Kanban board: verify footer counter updates to `✓ 1/X criteria`.
-  5. Re-open modal and verify the checked item remains checked.
+  1. From the Project Kanban board (`/projects/WM`), click any card in the **In Progress** column.
+  2. Verify browser navigates to `/projects/WM/features/WM-1`.
+  3. Verify breadcrumbs display `Projects / Workmesh / Features / WM-1`.
+  4. Toggle one of the acceptance criteria checkboxes.
+  5. Refresh browser directly on `/projects/WM/features/WM-1` and confirm the checked state persists.
+  6. Click the breadcrumb "Workmesh" to return to `/projects/WM` and verify the card counter reflects `✓ 1/X criteria`.
+

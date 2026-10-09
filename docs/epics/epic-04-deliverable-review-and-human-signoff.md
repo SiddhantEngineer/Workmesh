@@ -49,19 +49,20 @@ This epic handles the completion and verification milestone of the lifecycle. Wh
   - Hono API endpoint: `PATCH /api/features/:id/close` (Human-only authority).
   - State machine transition: `READY_FOR_TEST` $\rightarrow$ `CLOSED`.
   - Audit trail record: `action: "CLOSED"`, `actor: "HUMAN"`.
-  - Web UI: Detail modal displays prominent green [Verify & Close] button when card is in `READY_FOR_TEST`.
+  - Web UI: Feature Detail page action rail displays prominent green [Verify & Close] button when feature is in `READY_FOR_TEST`.
   - Moves card into the **Closed** column upon confirmation.
 - **Acceptance Criteria Checklist:**
   - [ ] API enforces Human-Only authorization for `CLOSED` transition.
-  - [ ] Modal action bar dynamically shows [Verify & Close] button for `READY_FOR_TEST` tickets.
-  - [ ] Clicking [Verify & Close] executes transition, closes modal (or updates header), and moves card to **Closed** column.
-  - [ ] Card in **Closed** column displays green success pip.
+  - [ ] Feature Detail page action rail dynamically shows [Verify & Close] button for `READY_FOR_TEST` tickets.
+  - [ ] Clicking [Verify & Close] executes transition and updates page status to `CLOSED`.
+  - [ ] Returning to Project Hub reflects card in **Closed** column with green success pip.
 - **Manual Verification via UI (UAT):**
-  1. Click on a card in the **Ready for Test** column.
-  2. Verify modal action bar displays the green [Verify & Close] button.
+  1. Navigate to `/projects/WM/features/WM-1` for a feature in `READY_FOR_TEST`.
+  2. Verify the right action rail displays the green [Verify & Close] button.
   3. Click [Verify & Close].
-  4. Verify the modal reflects status "Closed" and the card is now in the **Closed** column.
-  5. Check timeline: confirm an audit entry "Closed by Human" is present.
+  4. Verify the page badge immediately reflects status "Closed".
+  5. Check activity timeline: confirm an audit entry "Closed by Human" is present.
+  6. Return to `/projects/WM` and verify the card is in the **Closed** column.
 
 ---
 
@@ -75,15 +76,16 @@ This epic handles the completion and verification milestone of the lifecycle. Wh
   - Hono API endpoint: `PATCH /api/features/:id/rework` taking rejection notes.
   - State machine transition: `READY_FOR_TEST` $\rightarrow$ `IN_PROGRESS`.
   - Audit trail record: `action: "REWORK_REQUESTED"`, `actor: "HUMAN"`, `details: { reason }`.
-  - Web UI: Modal action bar displays [Request Changes] button when ticket is in `READY_FOR_TEST`.
+  - Web UI: Feature Detail action rail displays [Request Changes] button when ticket is in `READY_FOR_TEST`, opening a rejection note prompt.
 - **Acceptance Criteria Checklist:**
   - [ ] Transition reverts ticket status to `IN_PROGRESS`.
   - [ ] Reason prompt captures human tester's feedback.
-  - [ ] Card moves back from **Ready for Test** to **In Progress** column.
+  - [ ] Status updates to `IN_PROGRESS` and activity timeline appends rejection reason.
   - [ ] Audit log appends reason so agents reading context can see what needs fixing.
 - **Manual Verification via UI (UAT):**
-  1. Open a card in **Ready for Test**.
-  2. Click [Request Changes].
+  1. Open a feature in `READY_FOR_TEST` at `/projects/WM/features/WM-1`.
+  2. Click [Request Changes] in the action rail.
   3. Enter note "Missing error state handling on form submit".
-  4. Submit: verify card moves back to **In Progress** column.
+  4. Submit: verify page status changes to `IN_PROGRESS` and the note appears in the timeline.
+  5. Return to board: verify card has shifted back to **In Progress** column.
   5. Check modal activity timeline to verify the feedback note is visible.

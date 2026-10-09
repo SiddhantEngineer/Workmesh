@@ -59,23 +59,55 @@ Adhering strictly to the **Minimal Design System** skill:
 - **Priority Pip:** 6px colored dot (`Low`, `Medium`, `High`, `Critical`).
 - **Title:** `Open Sans` 500 weight, high contrast, max 2 lines with clean ellipsis.
 - **Footer:** Criteria progress counter (`✓ 2/3 criteria`) or Bug link tag (`🐛 1 bug`).
-- **Interaction:** Clicking card opens the **Centered Modal Dialog**.
+### Compact Editorial Card
+- **Key Badge:** `Inconsolata` monospace tag (e.g. `WM-4`).
+- **Priority Pip:** 6px colored dot (`Low`, `Medium`, `High`, `Critical`).
+- **Title:** `Open Sans` 500 weight, high contrast, max 2 lines with clean ellipsis.
+- **Footer:** Criteria progress counter (`✓ 2/3 criteria`) or Bug link tag (`🐛 1 bug`).
+- **Interaction:** Clicking card navigates to `/projects/[key]/features/[featureKey]`.
 
 ---
 
-## 4. Ticket Detail & Review (Centered Modal Dialog)
+## 4. Route-Driven Detail Hierarchy & Scoped Modals
 
-Instead of a sliding drawer or permanent pane, Workmesh uses a **focus-heavy centered modal**:
-- **Dimensions:** Max-width 640px, centered with backdrop dim.
-- **Header:** Ticket Key (`WM-4`), Status Badge, Priority selector.
-- **Primary Action Bar:** Context-aware state transition button:
-  - When `PROPOSED`: [Approve] / [Reject] buttons.
-  - When `IN_PROGRESS`: [Submit for Review] button.
-  - When `READY_FOR_TEST`: [Verify & Close] / [File Bug] buttons.
-- **Body:** Description text area.
-- **Acceptance Criteria Checklist:** Interactive checkboxes.
-- **Linked Bugs:** Mini list of associated defects.
-- **Activity Timeline:** Compact chronological log of past events.
+To ensure bookmarkability, deep linking, full screen real estate, and zero "Russian doll" modal nesting, all detailed inspections use **dedicated route pages**, while modals are strictly reserved for **quick transactional creation**.
+
+### 4.1 Route Hierarchy
+- **`/` (Projects Directory):** Overview of all workspaces with `+ New Project` creation modal.
+- **`/projects/[key]` (Project Hub):** Epics roadmap, feature lists, and the 5-column Kanban board.
+- **`/projects/[key]/features/[featureKey]` (Feature Detail Page):** Full inspection view with two-column layout.
+- **`/projects/[key]/bugs/[bugKey]` (Bug Detail Page):** Defect inspection, reproduction steps, and resolution notes.
+
+### 4.2 Feature Detail View (`/projects/[key]/features/[featureKey]`)
+- **Breadcrumbs:** `Projects / [Project Name] / Features / WM-4`
+- **Main Content (Left / Center):**
+  - Ticket Key (`WM-4`), Status Badge, Priority selector.
+  - Full Description markdown view/editor.
+  - **Acceptance Criteria Checklist:** Interactive full-width checkboxes.
+  - **Linked Bugs Section:** Cards for each defect showing status (`OPEN` / `RESOLVED`), priority, and a `+ Report Bug` modal trigger. Clicking any bug navigates to its Bug Detail Page.
+- **Sidebar / Action Rail (Right):**
+  - **Context-Aware Action Bar:**
+    - When `PROPOSED`: [Approve] / [Reject] buttons.
+    - When `IN_PROGRESS`: [Submit for Review] button.
+    - When `READY_FOR_TEST`: [Verify & Close] / [Request Changes] buttons.
+  - Assignee / Actor info (`HUMAN` vs `AGENT`).
+  - **Activity Timeline:** Chronological log of past transitions and comments.
+
+### 4.3 Bug Detail View (`/projects/[key]/bugs/[bugKey]`)
+- **Breadcrumbs:** `Projects / [Project Name] / Bugs / WM-B1` (with parent feature link back to `WM-4`).
+- **Main Content:**
+  - Title, Priority Pip, Status Badge (`OPEN`, `IN_PROGRESS`, `RESOLVED`, `CLOSED`).
+  - Reproduction Steps & Environment details.
+  - Fix & Resolution Notes.
+  - Action Bar: [Claim Bug], [Resolve Bug], [Close Bug].
+  - Audit Trail of bug lifecycle.
+
+### 4.4 Scoped Modals (Creation Only)
+Modals are strictly used for ephemeral creation flows:
+- `+ New Project` modal
+- `+ Propose Feature` modal
+- `+ File Bug` modal
+- Rejection / Rework reason prompt dialog
 
 ---
 
@@ -83,4 +115,5 @@ Instead of a sliding drawer or permanent pane, Workmesh uses a **focus-heavy cen
 
 In accordance with our minimal, distraction-free aesthetic:
 - **No noisy indicators:** No blinking live dots, ticker banners, or notification toasts.
-- **Seamless State Updates:** When an agent claims a task or transitions status via MCP, the card silently and smoothly shifts into the corresponding column via CSS transition.
+- **Seamless State Updates:** When an agent claims a task or transitions status via MCP, cards on the board and status badges on detail pages silently update via TanStack Query invalidation driven by SSE.
+
