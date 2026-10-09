@@ -24,3 +24,14 @@ export const createProjectSchema = z.object({
 });
 
 export type CreateProjectInput = z.infer<typeof createProjectSchema>;
+
+export interface Project {
+  id: number;
+  name: string;
+  key: string;
+  description: string | null;
+  nextTicketNumber: number;
+  createdAt: string;
+  updatedAt?: string;
+  deletedAt?: string | null;
+}
