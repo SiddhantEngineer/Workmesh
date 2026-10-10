@@ -1,2 +1,5 @@
-// Barrel export for shared schemas and types
+// Barrel export for shared schemas, domain models, and enums
+export * from "./enums";
+export * from "./epics";
+export * from "./features";
 export * from "./projects";

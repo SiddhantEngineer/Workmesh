@@ -1,31 +1,45 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { FolderPlus, Layers } from "lucide-react";
 import { ThemeToggle } from "../ThemeToggle";
 
 interface TopNavProps {
   onNewProject?: () => void;
+  actions?: React.ReactNode;
 }
 
-export function TopNav({ onNewProject }: TopNavProps) {
+export function TopNav({ onNewProject, actions }: TopNavProps) {
   return (
     <header style={navStyle}>
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <div style={logoBadgeStyle}>
-          <Layers size={18} color="#3b82f6" />
-        </div>
-        <div>
-          <h1 style={{ fontSize: "1.1rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
-            Workmesh
-          </h1>
-          <p style={{ fontSize: "0.76rem", color: "var(--text-muted)" }}>
-            Agent-First Ticket Management
-          </p>
-        </div>
+      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+        <Link
+          href="/"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            textDecoration: "none",
+            color: "inherit",
+          }}
+        >
+          <div style={logoBadgeStyle}>
+            <Layers size={18} color="#3b82f6" />
+          </div>
+          <div>
+            <h1 style={{ fontSize: "1.05rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
+              Workmesh
+            </h1>
+            <p style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>
+              Agent-First Ticket Management
+            </p>
+          </div>
+        </Link>
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        {actions}
         <ThemeToggle />
         {onNewProject && (
           <button

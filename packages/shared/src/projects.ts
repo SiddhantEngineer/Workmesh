@@ -1,4 +1,6 @@
 import { z } from "zod";
+import type { EpicSummary } from "./epics";
+import type { FeatureSummary } from "./features";
 
 /**
  * Validation schema for creating a new Project.
@@ -31,7 +33,16 @@ export interface Project {
   key: string;
   description: string | null;
   nextTicketNumber: number;
-  createdAt: string;
-  updatedAt?: string;
-  deletedAt?: string | null;
+  createdAt: string | Date;
+  updatedAt?: string | Date;
+  deletedAt?: string | Date | null;
+}
+
+/**
+ * Project Detail for Project Hub / listing page:
+ * Contains lightweight summaries of epics and features instead of heavy full entities.
+ */
+export interface ProjectDetail extends Project {
+  epics: EpicSummary[];
+  features: FeatureSummary[];
 }

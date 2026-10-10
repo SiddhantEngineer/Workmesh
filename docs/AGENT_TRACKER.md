@@ -15,8 +15,8 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Current Task ID** | `FEAT-01-02` |
-| **Feature Title** | Project Hub & Details Route (`/projects/[key]`) |
+| **Current Task ID** | `FEAT-01-03` |
+| **Feature Title** | MCP Server Init & `get_project_context` Tool |
 | **Epic** | [Epic 01: Project Foundation & MCP Context](file:///d:/Projects/Workmesh/docs/epics/epic-01-project-and-mcp-context.md) |
 | **Status** | `TODO` |
 | **Active Session / Agent ID** | Ready to be claimed |
@@ -32,7 +32,7 @@
 | Feature ID | Feature Name | Priority | Status | Verified Via |
 | :--- | :--- | :--- | :--- | :--- |
 | `FEAT-01-01` | Projects Directory & Workspace Creation (`/`) | `HIGH` | `DONE` | UI UAT (Project switcher & creation modal verified) |
-| `FEAT-01-02` | Project Hub & Details Route (`/projects/[key]`) | `CRITICAL` | `TODO` | UI UAT (Click card $\rightarrow$ redirect to `/projects/WM`, breadcrumbs) |
+| `FEAT-01-02` | Project Hub & Details Route (`/projects/[key]`) | `CRITICAL` | `DONE` | Next.js build + UI UAT verified (assumes WM exists) |
 | `FEAT-01-03` | MCP Server Init & `get_project_context` Tool | `CRITICAL` | `TODO` | MCP Inspector / Stdio + UI context match |
 
 ---
@@ -134,3 +134,34 @@ Whenever a new chat session starts or an autonomous agent takes over:
   - Web UI Next.js app created with Directory Dashboard (`/`), Top-Nav, Minimal Design System theme tokens, and Project Creation modal.
 - **Handoff for Next Agent:**
   - Next task is `FEAT-01-02` in [Epic 01](file:///d:/Projects/Workmesh/docs/epics/epic-01-project-and-mcp-context.md): Build the Project Hub & Details Route (`/projects/[key]`), displaying project metadata, roadmap skeleton, and features/kanban board view.
+
+### Session 01: Project Hub & Details Route (`/projects/[key]`)
+- **Date / Timestamp:** 2026-10-10
+- **Completed:** `FEAT-01-02` (Project Hub & Details Route `/projects/[key]`)
+- **What Was Implemented:**
+  - **Shared Schemas (`@workmesh/shared`):** Modularized domain schemas into dedicated files with clean responsibility separation:
+    - `enums.ts`: `Priority`, `EpicStatus`, `FeatureStatus`, `BugStatus`, `EntityType`.
+    - `epics.ts`: `EpicSummary` and `Epic` as independent data models (not inheriting/extending each other).
+    - `features.ts`: `FeatureSummary` and `Feature` as independent data models (not inheriting/extending each other), plus `AcceptanceCriterion`.
+    - `projects.ts`: `createProjectSchema`, `CreateProjectInput`, `Project`, and lightweight `ProjectDetail`.
+  - **Hono REST API (`@workmesh/api`):** 
+    - Updated `GET /api/projects/:key` in `apps/api/src/routes/projects.ts` to strictly query by uppercase key prefix (removed unused numeric ID lookup).
+    - Optimized response payload for the listing view: selectively projects only summary columns for `epics` and `features`, avoiding bloat from heavy markdown descriptions and audit fields.
+  - **Web Client & State (`@workmesh/web`):**
+    - Removed unused `getById` and `useProjectQuery(id)`.
+    - Added `projectsApi.getByKey(key)` and React Query hook `useProjectByKeyQuery(key)` with deterministic query key `projectKeys.byKey(key)`.
+  - **Web UI & Components:**
+    - Route `apps/web/src/app/projects/[key]/page.tsx` with loading skeleton and not-found fallback.
+    - `Breadcrumbs`: Dedicated reusable component (`apps/web/src/components/ui/Breadcrumbs.tsx`) rendering semantic, accessible in-page navigation.
+    - `TopNav`: Lean, minimalist brand header (breadcrumbs moved inside page to eliminate duplication).
+    - `ProjectHeader`: Project title, uppercase prefix badge (`WM`), description, ticket counters, "+ Propose Feature" trigger, and Kanban vs List view switcher.
+    - `EpicsFilterBar`: Roadmap filter tabs with ticket badges and feature count pills, conditionally rendered only when active epics exist.
+    - `KanbanBoard`: 5 lifecycle columns (Proposed, Approved, In Progress, Ready for Test, Closed) with column counters, empty column states, and full empty-board state using `FeatureSummary`.
+    - `FeaturesListView`: Clean tabular view for inspecting features using `FeatureSummary` and `EpicSummary`.
+    - `FeatureCard`: Compact editorial card with Inconsolata monospace key badge (`WM-2`), priority pip, title, and criteria checklist progress (`✓ 0/3 criteria`).
+- **Verification & UAT:**
+  - Ran TypeScript checks across `apps/web` and shared packages with 0 errors.
+  - Next.js production build (`@workmesh/web`) verified with optimized static and dynamic routes.
+  - UAT Assumption: Assumes demo project `Workmesh` (`WM`) exists in the database. Clicking `ProjectCard` navigates to `/projects/WM`, renders breadcrumbs `Projects / Workmesh`, and clicking `Projects` returns seamlessly to `/`.
+- **Handoff for Next Agent:**
+  - Next task is `FEAT-01-03` in [Epic 01](file:///d:/Projects/Workmesh/docs/epics/epic-01-project-and-mcp-context.md): MCP Server Initialization & `get_project_context` Tool.

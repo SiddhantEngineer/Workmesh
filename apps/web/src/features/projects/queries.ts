@@ -5,7 +5,7 @@ import type { CreateProjectInput } from "@workmesh/shared";
 export const projectKeys = {
   all: ["projects"] as const,
   lists: () => [...projectKeys.all, "list"] as const,
-  detail: (id: number) => [...projectKeys.all, "detail", id] as const,
+  byKey: (key: string) => [...projectKeys.all, "byKey", key ? key.toUpperCase() : ""] as const,
 };
 
 /**
@@ -19,13 +19,13 @@ export function useProjectsQuery() {
 }
 
 /**
- * Hook to retrieve a single project by ID
+ * Hook to retrieve a single project by key prefix (e.g. "WM")
  */
-export function useProjectQuery(id: number) {
+export function useProjectByKeyQuery(key: string) {
   return useQuery({
-    queryKey: projectKeys.detail(id),
-    queryFn: () => projectsApi.getById(id),
-    enabled: typeof id === "number" && !isNaN(id),
+    queryKey: projectKeys.byKey(key),
+    queryFn: () => projectsApi.getByKey(key),
+    enabled: Boolean(key && key.trim().length > 0),
   });
 }
 

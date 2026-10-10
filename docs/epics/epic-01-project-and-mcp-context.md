@@ -42,7 +42,7 @@ This epic establishes the foundational vertical slice of Workmesh: multi-project
 ### FEAT-01-02: Project Hub & Details Route (`/projects/[key]`)
 - **ID:** `FEAT-01-02`
 - **Priority:** `CRITICAL`
-- **Status:** `TODO`
+- **Status:** `DONE`
 - **User Story:**  
   *As an engineer or manager, when I click on a project card, I want to be redirected to `/projects/[key]` (Project Hub) showing project metadata, roadmap/epic progress, and the list of features/kanban board, so that I have a dedicated home for that project.*
 - **Scope & Description:**
@@ -50,16 +50,19 @@ This epic establishes the foundational vertical slice of Workmesh: multi-project
   - Hono API endpoint: `GET /api/projects/:key` (retrieving project by uppercase key prefix along with its epics and features).
   - Web UI:
     - Project Header: Project Title, Key badge (`WM`), description, ticket counter.
-    - Breadcrumbs: `Projects / [Project Name]`.
+    - Breadcrumbs: Dedicated in-page `<Breadcrumbs />` component (`Projects / [Project Name]`).
     - View Switcher: Toggle between **Kanban Board** (5 lifecycle columns) and **Features List** view.
+    - Epics Filter Bar: Conditional roadmap skeleton rendered when active epics exist.
     - Empty state when no features exist yet, with a trigger button for "+ Propose Feature".
 - **Acceptance Criteria Checklist:**
-  - [ ] API endpoint `GET /api/projects/:key` returns project by key with 404 handling if not found.
-  - [ ] Clicking any `ProjectCard` on `/` navigates to `/projects/[key]`.
-  - [ ] Direct URL navigation to `/projects/[key]` loads the project header and data.
-  - [ ] Breadcrumb allows clicking "Projects" to return back to `/`.
-  - [ ] Renders the layout skeleton for Epics filter tabs and Kanban / List views.
+  - [x] API endpoint `GET /api/projects/:key` returns project by key with 404 handling if not found.
+  - [x] Clicking any `ProjectCard` on `/` navigates to `/projects/[key]`.
+  - [x] Direct URL navigation to `/projects/[key]` loads the project header and data.
+  - [x] Breadcrumb allows clicking "Projects" to return back to `/`.
+  - [x] Renders the layout skeleton for Epics filter tabs and Kanban / List views.
 - **Manual Verification via UI (UAT):**
+  - **Assumptions:**
+    - Assumes project `Workmesh` with prefix key `WM` exists in the database (or was created on the `/` directory dashboard).
   1. From `http://localhost:3000`, click on the "Workmesh" (`WM`) project card.
   2. Verify browser URL immediately redirects to `http://localhost:3000/projects/WM`.
   3. Verify project header displays "Workmesh", key tag `WM`, and description.

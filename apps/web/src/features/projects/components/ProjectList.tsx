@@ -4,6 +4,7 @@ import React from "react";
 import { FolderPlus, Layers } from "lucide-react";
 import type { Project } from "@workmesh/shared";
 import { ProjectCard } from "./ProjectCard";
+import { Spinner } from "../../../components/ui/Spinner";
 
 interface ProjectListProps {
   projects: Project[];
@@ -33,7 +34,8 @@ export function ProjectList({
       {/* Loading state */}
       {isLoading && (
         <div style={emptyStateStyle}>
-          <p style={{ color: "var(--text-secondary)" }}>Loading projects...</p>
+          <Spinner size={24} color="var(--accent-primary)" />
+          <p style={{ color: "var(--text-secondary)", marginTop: 8 }}>Loading projects...</p>
         </div>
       )}
 

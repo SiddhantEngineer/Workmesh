@@ -17,17 +17,43 @@ export const projectsRouter = new Hono()
   })
 
   /**
-   * GET /api/projects/:id
-   * Returns a single project by numeric ID.
+   * GET /api/projects/:key
+   * Returns a single project by uppercase prefix key along with
+   * lightweight summaries of epics and features for the board view.
    */
-  .get("/:id", async (c) => {
-    const id = Number(c.req.param("id"));
-    if (isNaN(id)) {
-      return c.json({ error: "Invalid project ID" }, 400);
-    }
+  .get("/:key", async (c) => {
+    const rawKey = c.req.param("key");
+    const upperKey = rawKey.toUpperCase();
 
     const project = await db.query.projects.findFirst({
-      where: (p, { and, eq, isNull }) => and(eq(p.id, id), isNull(p.deletedAt)),
+      where: (p, { and, eq, isNull }) => and(eq(p.key, upperKey), isNull(p.deletedAt)),
+      with: {
+        epics: {
+          where: (e, { isNull }) => isNull(e.deletedAt),
+          orderBy: (e, { asc }) => [asc(e.ticketNumber)],
+          columns: {
+            id: true,
+            projectId: true,
+            ticketNumber: true,
+            title: true,
+            status: true,
+          },
+        },
+        features: {
+          where: (f, { isNull }) => isNull(f.deletedAt),
+          orderBy: (f, { asc }) => [asc(f.ticketNumber)],
+          columns: {
+            id: true,
+            projectId: true,
+            epicId: true,
+            ticketNumber: true,
+            title: true,
+            priority: true,
+            status: true,
+            acceptanceCriteria: true,
+          },
+        },
+      },
     });
 
     if (!project) {

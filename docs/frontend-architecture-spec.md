@@ -51,13 +51,9 @@ apps/web/src/
 │   ├── layout/
 │   │   └── TopNav.tsx                # Minimal 48px header navigation
 │   ├── ui/
-│   │   └── Modal.tsx                 # Creation-only dialog (Escape key, scroll lock, backdrop)
-│   └── ThemeToggle.tsx
-```
-│   ├── layout/
-│   │   └── TopNav.tsx                # Minimal 48px header navigation
-│   ├── ui/
-│   │   └── Modal.tsx                 # Focus-heavy centered dialog (Escape key, scroll lock, backdrop)
+│   │   ├── Breadcrumbs.tsx           # Semantic in-page breadcrumb navigation
+│   │   ├── Modal.tsx                 # Creation-only dialog (Escape key, scroll lock, backdrop)
+│   │   └── Spinner.tsx               # Accessible animated loading spinner utility
 │   └── ThemeToggle.tsx
 ├── lib/                              # Core singletons and utilities
     ├── api-client.ts                 # Base fetch wrapper & ApiClientError

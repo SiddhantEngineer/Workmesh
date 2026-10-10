@@ -5,6 +5,7 @@ import { FolderPlus, Sparkles, AlertCircle } from "lucide-react";
 import { createProjectSchema, type Project } from "@workmesh/shared";
 import { useCreateProjectMutation } from "../queries";
 import { Modal } from "../../../components/ui/Modal";
+import { Spinner } from "../../../components/ui/Spinner";
 
 interface CreateProjectModalProps {
   isOpen: boolean;
@@ -157,9 +158,17 @@ export function CreateProjectModal({
             type="submit"
             disabled={createMutation.isPending}
             className="btn-primary"
-            style={submitButtonStyle}
+            style={{
+              ...submitButtonStyle,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+            }}
           >
-            {createMutation.isPending ? "Creating..." : "Create Project"}
+            {createMutation.isPending && (
+              <Spinner size="sm" color="#FFFFFF" label="Creating project..." />
+            )}
+            <span>{createMutation.isPending ? "Creating..." : "Create Project"}</span>
           </button>
         </div>
       </form>

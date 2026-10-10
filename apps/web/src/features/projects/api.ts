@@ -1,5 +1,5 @@
 import { apiClient } from "../../lib/api-client";
-import type { Project, CreateProjectInput } from "@workmesh/shared";
+import type { Project, ProjectDetail, CreateProjectInput } from "@workmesh/shared";
 
 export const projectsApi = {
   /**
@@ -10,10 +10,10 @@ export const projectsApi = {
   },
 
   /**
-   * Fetch a single project by numeric ID or key
+   * Fetch a single project by key prefix (e.g. "WM")
    */
-  getById: (id: number): Promise<Project> => {
-    return apiClient.get<Project>(`/api/projects/${id}`);
+  getByKey: (key: string): Promise<ProjectDetail> => {
+    return apiClient.get<ProjectDetail>(`/api/projects/${encodeURIComponent(key)}`);
   },
 
   /**

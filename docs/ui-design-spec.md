@@ -37,9 +37,12 @@ Adhering strictly to the **Minimal Design System** skill:
 
 ### Top-Nav Minimalist
 - **Slim 48px Header:**
-  - Left: Workmesh brand mark + Project Switcher Dropdown (with "+ New Project" option).
-  - Center/Right: Breadcrumb navigation (`Projects / Workmesh / Board`).
-  - Far Right: "+ New Ticket" quick button.
+  - Left: Workmesh brand mark.
+  - Right: Theme toggle + "+ New Project" trigger button.
+- **Dedicated In-Page Breadcrumbs (`<Breadcrumbs />`):**
+  - Rendered at the top of route content rather than inside the navbar to maintain a lean, distraction-free header.
+  - Structured semantic markup (`<nav>`, `<ol>`, `<li>`, `Link`, chevron dividers).
+  - Example: `Projects / Workmesh`.
 - **No Sidebars:**
   - 100% horizontal screen real estate is reserved for the 5 Kanban lifecycle columns.
 
