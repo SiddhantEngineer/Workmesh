@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { FolderPlus, Sparkles, AlertCircle } from "lucide-react";
+import { FolderPlus, Sparkles, AlertCircle, Check } from "lucide-react";
 import { createProjectSchema, type Project } from "@workmesh/shared";
 import { useCreateProjectMutation } from "../queries";
+import { useThemesQuery, getThemeVariables } from "../../themes";
 import { Modal } from "../../../components/ui/Modal";
 import { Spinner } from "../../../components/ui/Spinner";
 
@@ -21,8 +22,10 @@ export function CreateProjectModal({
   const [name, setName] = useState("");
   const [key, setKey] = useState("");
   const [description, setDescription] = useState("");
+  const [selectedThemeId, setSelectedThemeId] = useState<number>(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const { data: themes } = useThemesQuery();
   const createMutation = useCreateProjectMutation();
 
   const handleKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,6 +45,7 @@ export function CreateProjectModal({
       name,
       key,
       description: description || undefined,
+      themeId: selectedThemeId,
     });
 
     if (!result.success) {
@@ -61,6 +65,7 @@ export function CreateProjectModal({
       setName("");
       setKey("");
       setDescription("");
+      setSelectedThemeId(1);
       setErrors({});
       onCreated?.(newProject);
       onClose();
@@ -75,7 +80,7 @@ export function CreateProjectModal({
       onClose={onClose}
       icon={<FolderPlus size={18} color="var(--accent-primary)" />}
       title="Create New Project"
-      subtitle="Initialize a project workspace with a unique ticket prefix"
+      subtitle="Initialize a project workspace with a unique ticket prefix and theme"
     >
       {/* Server error banner */}
       {createMutation.isError && (
@@ -141,6 +146,56 @@ export function CreateProjectModal({
             onChange={(e) => setDescription(e.target.value)}
             style={textareaStyle}
           />
+        </div>
+
+        {/* Theme Selection - Grid of Template Preview Cards */}
+        <div style={formGroupStyle}>
+          <label style={labelStyle}>
+            Theme Color *
+            <span style={{ color: "var(--text-muted)", fontWeight: 400, marginLeft: 6 }}>
+              (Workspace visual identity)
+            </span>
+          </label>
+
+          <div style={themeGridStyle}>
+            {themes?.map((t) => {
+              const isSelected = selectedThemeId === t.id;
+              const tVars = getThemeVariables(t);
+
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  className="themed-card theme-preview-card"
+                  onClick={() => {
+                    setSelectedThemeId(t.id);
+                    if (errors.themeId) setErrors((prev) => ({ ...prev, themeId: "" }));
+                  }}
+                  style={{
+                    ...themeCardButtonStyle,
+                    ...tVars,
+                    border: isSelected
+                      ? "2px solid var(--accent-primary)"
+                      : "1px solid var(--theme-card-border)",
+                    boxShadow: isSelected
+                      ? "0 0 0 2px rgba(49, 44, 133, 0.25)"
+                      : "none",
+                  }}
+                >
+                  <div style={themeCardHeaderStyle}>
+                    <span style={{ fontWeight: 600, fontSize: "0.82rem" }}>{t.name}</span>
+                    {isSelected && (
+                      <Check size={14} style={{ color: "var(--theme-card-text)" }} />
+                    )}
+                  </div>
+                  <span style={{ fontSize: "0.72rem", color: "var(--theme-card-muted)" }}>
+                    Card Header Preview
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+          {errors.themeId && <span style={fieldErrorStyle}>{errors.themeId}</span>}
         </div>
 
         {/* Actions */}
@@ -243,6 +298,30 @@ const previewBadgeStyle: React.CSSProperties = {
   borderRadius: 4,
   width: "fit-content",
   marginTop: 2,
+};
+
+const themeGridStyle: React.CSSProperties = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fill, minmax(135px, 1fr))",
+  gap: 8,
+  marginTop: 4,
+};
+
+const themeCardButtonStyle: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 3,
+  padding: "10px 12px",
+  borderRadius: 6,
+  cursor: "pointer",
+  textAlign: "left",
+};
+
+const themeCardHeaderStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  width: "100%",
 };
 
 const actionsStyle: React.CSSProperties = {

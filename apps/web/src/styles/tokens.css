@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@500;700&family=Inter:wght@500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Typography Tokens */
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-primary: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Inconsolata', monospace;
+
+  /* Motion Tokens (from docs/interaction-and-animation-spec.md) */
+  --duration-instant: 100ms;
+  --duration-fast: 150ms;
+  --duration-standard: 200ms;
+  --duration-smooth: 260ms;
+  --duration-ambient: 1500ms;
+
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* Light Theme Defaults & Explicit [data-theme="light"] */
+:root,
+[data-theme="light"] {
+  --surface: #FFFFFF;
+  --surface-raised: #FFFFFF;
+  --text-primary: #0C0C09;
+  --text-secondary: #666660;
+  --text-muted: #8E8E88;
+
+  --accent-primary: #312C85;
+  --accent-primary-hover: #231F60;
+  --border-subtle: rgba(12, 12, 9, 0.12);
+  --border-focus: #312C85;
+
+  --color-success: #16A34A;
+  --color-warning: #D97706;
+  --color-danger: #DC2626;
+
+  /* Spacing Scale (4 / 8 / 12 / 16 / 24 / 32) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+}
+
+/* Dark Theme: System preference when unforced */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface: #0C0C09;
+    --surface-raised: #161612;
+    --text-primary: #F4F4F1;
+    --text-secondary: #9E9E94;
+    --text-muted: #6B6B64;
+
+    --accent-primary: #7C75F2;
+    --accent-primary-hover: #9892F7;
+    --border-subtle: rgba(244, 244, 241, 0.12);
+    --border-focus: #7C75F2;
+
+    --color-success: #22C55E;
+    --color-warning: #F59E0B;
+    --color-danger: #EF4444;
+  }
+}
+
+/* Explicit [data-theme="dark"] override */
+[data-theme="dark"] {
+  --surface: #0C0C09;
+  --surface-raised: #161612;
+  --text-primary: #F4F4F1;
+  --text-secondary: #9E9E94;
+  --text-muted: #6B6B64;
+
+  --accent-primary: #7C75F2;
+  --accent-primary-hover: #9892F7;
+  --border-subtle: rgba(244, 244, 241, 0.12);
+  --border-focus: #7C75F2;
+
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+}

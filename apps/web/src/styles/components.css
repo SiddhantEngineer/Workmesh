@@ -1,0 +1,326 @@
+/* ==========================================================
+   BUTTONS
+   ========================================================== */
+
+.btn-primary {
+  transition: background-color var(--duration-fast) ease,
+              transform var(--duration-instant) var(--ease-editorial),
+              box-shadow var(--duration-fast) ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-primary-hover);
+  box-shadow: 0 4px 14px rgba(49, 44, 133, 0.25);
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+.btn-secondary {
+  transition: background-color var(--duration-fast) ease,
+              color var(--duration-fast) ease,
+              transform var(--duration-instant) var(--ease-editorial);
+}
+
+.btn-secondary:hover {
+  background-color: var(--surface);
+  color: var(--text-primary);
+}
+
+.btn-secondary:active {
+  transform: scale(0.97);
+}
+
+/* ==========================================================
+   NAVIGATION & BREADCRUMBS
+   ========================================================== */
+
+.brand-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: opacity var(--duration-fast) ease, transform var(--duration-instant) ease;
+}
+
+.brand-link:hover {
+  opacity: 0.82;
+}
+
+.brand-link:active {
+  transform: scale(0.98);
+}
+
+.theme-toggle-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  background-color: var(--surface);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform var(--duration-standard) var(--ease-editorial),
+              background-color var(--duration-fast) ease,
+              border-color var(--duration-fast) ease;
+}
+
+.theme-toggle-btn:hover {
+  transform: rotate(15deg);
+  border-color: var(--border-focus);
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.90) rotate(45deg);
+}
+
+.breadcrumb-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--duration-fast) ease, transform var(--duration-instant) ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.breadcrumb-link:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+.breadcrumb-link:active {
+  transform: scale(0.98);
+}
+
+/* ==========================================================
+   CONTROLS & FILTERS
+   ========================================================== */
+
+.view-switcher-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease,
+              color var(--duration-fast) ease,
+              box-shadow var(--duration-fast) ease,
+              transform var(--duration-instant) var(--ease-editorial);
+}
+
+.view-switcher-button:active {
+  transform: scale(0.96);
+}
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 16px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform var(--duration-fast) var(--ease-editorial),
+              background-color var(--duration-fast) ease,
+              color var(--duration-fast) ease,
+              border-color var(--duration-fast) ease,
+              box-shadow var(--duration-fast) ease;
+}
+
+.filter-pill:hover {
+  transform: translateY(-1px);
+}
+
+.filter-pill:active {
+  transform: scale(0.96);
+}
+
+/* ==========================================================
+   TABLES & LIST VIEWS
+   ========================================================== */
+
+.list-table-row {
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color var(--duration-fast) ease;
+}
+
+.list-table-row:hover {
+  background-color: rgba(0, 0, 0, 0.025);
+}
+
+[data-theme="dark"] .list-table-row:hover {
+  background-color: rgba(255, 255, 255, 0.035);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .list-table-row:hover {
+    background-color: rgba(255, 255, 255, 0.035);
+  }
+}
+
+.action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.78rem;
+  transition: color var(--duration-fast) ease, transform var(--duration-instant) ease;
+}
+
+.action-link:hover .action-arrow {
+  transform: translateX(3px);
+}
+
+.action-link:active {
+  transform: scale(0.96);
+}
+
+.action-arrow {
+  transition: transform var(--duration-fast) var(--ease-editorial);
+}
+
+/* ==========================================================
+   CARDS & THEMED CONTAINERS
+   ========================================================== */
+
+/* Scoped Themed Containers */
+.themed-card,
+.project-card,
+.themed-hero-left {
+  --theme-card-bg: var(--project-card-bg-light, var(--surface-raised));
+  --theme-card-text: var(--project-card-text-light, var(--text-primary));
+  --theme-card-border: color-mix(in srgb, var(--theme-card-text) 16%, transparent);
+  --theme-card-muted: color-mix(in srgb, var(--theme-card-text) 60%, transparent);
+
+  background-color: var(--theme-card-bg) !important;
+  color: var(--theme-card-text) !important;
+}
+
+[data-theme="dark"] .themed-card,
+[data-theme="dark"] .project-card,
+[data-theme="dark"] .themed-hero-left {
+  --theme-card-bg: var(--project-card-bg-dark, var(--surface-raised));
+  --theme-card-text: var(--project-card-text-dark, var(--text-primary));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .themed-card,
+  :root:not([data-theme="light"]) .project-card,
+  :root:not([data-theme="light"]) .themed-hero-left {
+    --theme-card-bg: var(--project-card-bg-dark, var(--surface-raised));
+    --theme-card-text: var(--project-card-text-dark, var(--text-primary));
+  }
+}
+
+/* Project Cards */
+.project-card {
+  border: 1px solid var(--theme-card-border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--duration-standard) var(--ease-editorial),
+              box-shadow var(--duration-standard) var(--ease-editorial),
+              border-color var(--duration-fast) ease,
+              opacity var(--duration-standard) ease;
+  animation: cardEntrance 0.3s var(--ease-editorial) both;
+}
+
+.project-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--theme-card-text) 36%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-card-text) 14%, transparent),
+              0 6px 16px -6px color-mix(in srgb, var(--theme-card-text) 18%, transparent);
+}
+
+[data-theme="dark"] .project-card:hover {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-card-text) 28%, transparent),
+              0 8px 20px -6px rgba(0, 0, 0, 0.45);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .project-card:hover {
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-card-text) 28%, transparent),
+                0 8px 20px -6px rgba(0, 0, 0, 0.45);
+  }
+}
+
+.project-card .card-arrow {
+  transition: transform var(--duration-standard) var(--ease-editorial);
+}
+
+.project-card:hover .card-arrow {
+  transform: translateX(4px);
+}
+
+/* Kanban Feature Cards */
+.feature-card {
+  background-color: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-editorial),
+              box-shadow var(--duration-fast) var(--ease-editorial),
+              border-color var(--duration-fast) ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px -3px rgba(0, 0, 0, 0.05);
+  border-color: rgba(49, 44, 133, 0.28);
+}
+
+.feature-card:active {
+  transform: scale(0.98);
+}
+
+[data-theme="dark"] .feature-card:hover {
+  box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.35);
+  border-color: rgba(124, 117, 242, 0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .feature-card:hover {
+    box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.35);
+    border-color: rgba(124, 117, 242, 0.35);
+  }
+}
+
+/* Theme Swatch Preview Cards */
+.theme-preview-card {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: transform var(--duration-fast) var(--ease-editorial),
+              box-shadow var(--duration-fast) ease,
+              border-color var(--duration-fast) ease;
+}
+
+.theme-preview-card:hover {
+  transform: translateY(-2px);
+}
+
+.theme-preview-card:active {
+  transform: scale(0.97);
+}

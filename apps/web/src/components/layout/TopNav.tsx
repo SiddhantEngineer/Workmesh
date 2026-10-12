@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { FolderPlus, Layers } from "lucide-react";
+import { FolderPlus } from "lucide-react";
 import { ThemeToggle } from "../ThemeToggle";
 
 interface TopNavProps {
@@ -12,68 +12,68 @@ interface TopNavProps {
 
 export function TopNav({ onNewProject, actions }: TopNavProps) {
   return (
-    <header style={navStyle}>
-      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-        <Link
-          href="/"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            textDecoration: "none",
-            color: "inherit",
-          }}
-        >
-          <div style={logoBadgeStyle}>
-            <Layers size={18} color="#3b82f6" />
-          </div>
-          <div>
-            <h1 style={{ fontSize: "1.05rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
-              Workmesh
-            </h1>
-            <p style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>
-              Agent-First Ticket Management
-            </p>
-          </div>
-        </Link>
-      </div>
-
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        {actions}
-        <ThemeToggle />
-        {onNewProject && (
-          <button
-            onClick={onNewProject}
-            className="btn-primary"
-            style={newProjectButtonStyle}
+    <header style={headerWrapperStyle}>
+      <div style={navInnerStyle}>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Link
+            href="/"
+            className="brand-link"
           >
-            <FolderPlus size={16} />
-            <span>New Project</span>
-          </button>
-        )}
+            <span style={brandTitleStyle}>
+              Workmesh
+            </span>
+            <span style={brandSubtitleStyle}>
+              Agent-First Ticket Management
+            </span>
+          </Link>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          {actions}
+          <ThemeToggle />
+          {onNewProject && (
+            <button
+              onClick={onNewProject}
+              className="btn-primary"
+              style={newProjectButtonStyle}
+            >
+              <FolderPlus size={16} />
+              <span>New Project</span>
+            </button>
+          )}
+        </div>
       </div>
     </header>
   );
 }
 
-const navStyle: React.CSSProperties = {
+const headerWrapperStyle: React.CSSProperties = {
+  width: "100%",
+  backgroundColor: "var(--surface)",
+};
+
+const navInnerStyle: React.CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "12px 24px",
+  padding: "18px 0",
   borderBottom: "1px solid var(--border-subtle)",
-  backgroundColor: "var(--surface-raised)",
+  maxWidth: 1200,
+  margin: "0 auto",
+  width: "100%",
 };
 
-const logoBadgeStyle: React.CSSProperties = {
-  width: 30,
-  height: 30,
-  borderRadius: 6,
-  backgroundColor: "var(--surface)",
-  border: "1px solid var(--border-subtle)",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+const brandTitleStyle: React.CSSProperties = {
+  fontSize: "1.2rem",
+  fontWeight: 700,
+  letterSpacing: "-0.03em",
+  color: "var(--text-primary)",
+};
+
+const brandSubtitleStyle: React.CSSProperties = {
+  fontSize: "0.72rem",
+  color: "var(--text-muted)",
+  letterSpacing: "0.01em",
 };
 
 const newProjectButtonStyle: React.CSSProperties = {

@@ -15,6 +15,13 @@
       "when": 1791396164285,
       "tag": "0001_conscious_malcolm_colcord",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791615672675,
+      "tag": "0002_wakeful_zuras",
+      "breakpoints": true
     }
   ]
 }

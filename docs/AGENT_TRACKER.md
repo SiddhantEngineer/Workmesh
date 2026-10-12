@@ -18,9 +18,9 @@
 | **Current Task ID** | `FEAT-01-03` |
 | **Feature Title** | MCP Server Init & `get_project_context` Tool |
 | **Epic** | [Epic 01: Project Foundation & MCP Context](file:///d:/Projects/Workmesh/docs/epics/epic-01-project-and-mcp-context.md) |
-| **Status** | `TODO` |
-| **Active Session / Agent ID** | Ready to be claimed |
-| **Started At** | Pending claim |
+| **Status** | `DONE` |
+| **Active Session / Agent ID** | `Antigravity-Agent` |
+| **Started At** | `2026-10-12T22:55:00+05:30` |
 
 ---
 
@@ -33,7 +33,10 @@
 | :--- | :--- | :--- | :--- | :--- |
 | `FEAT-01-01` | Projects Directory & Workspace Creation (`/`) | `HIGH` | `DONE` | UI UAT (Project switcher & creation modal verified) |
 | `FEAT-01-02` | Project Hub & Details Route (`/projects/[key]`) | `CRITICAL` | `DONE` | Next.js build + UI UAT verified (assumes WM exists) |
-| `FEAT-01-03` | MCP Server Init & `get_project_context` Tool | `CRITICAL` | `TODO` | MCP Inspector / Stdio + UI context match |
+| `FEAT-01-03` | MCP Server Init & `get_project_context` Tool | `CRITICAL` | `DONE` | MCP Inspector stdio live call + DB auth & UI context match |
+| `FEAT-01-04` | Project Theming & Split Hero Card Header | `HIGH` | `DONE` | UI UAT (Theme preview cards, ProjectCard, and Split Hero Card verified) |
+
+
 
 ---
 
@@ -165,3 +168,93 @@ Whenever a new chat session starts or an autonomous agent takes over:
   - UAT Assumption: Assumes demo project `Workmesh` (`WM`) exists in the database. Clicking `ProjectCard` navigates to `/projects/WM`, renders breadcrumbs `Projects / Workmesh`, and clicking `Projects` returns seamlessly to `/`.
 - **Handoff for Next Agent:**
   - Next task is `FEAT-01-03` in [Epic 01](file:///d:/Projects/Workmesh/docs/epics/epic-01-project-and-mcp-context.md): MCP Server Initialization & `get_project_context` Tool.
+
+---
+
+### Session 02: Project Theming & Split Hero Card Header (`FEAT-01-04`)
+- **Date / Timestamp:** 2026-10-10
+- **Completed:** `FEAT-01-04` (Project Theming & Split Hero Card Header)
+- **What Was Implemented:**
+  - **Database & Drizzle (`@workmesh/db`):**
+    - Created `themes` table (`packages/db/src/schema/themes.ts`) with unique slug `key`, display `name`, and extensible `tokens: jsonb` typed with `ThemeTokens`.
+    - Added `themeId` foreign key to `projects` referencing `themes.id` (`NOT NULL`).
+    - Configured centralized Drizzle relations in `relations.ts`.
+    - Generated and executed migration `0002_wakeful_zuras.sql` with safe two-phase backfill and seeded 5 presets: `flora-blue` (inspired by reference image), `classic-slate`, `sage-forest`, `sunset-warmth`, and `velvet-orchid`.
+  - **Shared Schemas (`@workmesh/shared`):**
+    - Created `packages/shared/src/themes.ts` defining `Theme`, `ThemeTokens`, `CardThemeTokens`, and Zod schemas.
+    - Updated `createProjectSchema` to require positive integer `themeId`.
+    - Updated `Project` interface to include `themeId: number`.
+  - **Hono REST API (`@workmesh/api`):**
+    - Created `GET /api/themes` in `apps/api/src/routes/themes.ts` returning preset themes for client caching.
+    - Mounted `/api/themes` in `apps/api/src/index.ts`.
+    - Updated `POST /api/projects` in `apps/api/src/routes/projects.ts` to persist `themeId`.
+  - **Web Client & Styling (`@workmesh/web`):**
+    - Created `apps/web/src/features/themes/` module with `api.ts`, `queries.ts` (`useThemesQuery` with `staleTime: Infinity`, `useProjectTheme`), and `utils.ts` (`getThemeVariables`).
+    - Updated `apps/web/src/app/globals.css` with scoped `.themed-card`, `.project-card`, and `.themed-hero-left` CSS variable rules adapting dynamically across light and dark modes.
+    - `CreateProjectModal`: Added visual grid of theme template preview cards with header text, mode-aware colors, and interactive selection.
+    - `ProjectCard`: Full card themed styling with contrast borders and muted text.
+    - `ProjectHeader`: Redesigned Split Hero Card inspired by reference image telemetry banner (themed left panel, dark telemetry right panel with ticket counts and "+ Propose Feature" trigger, sub-bar with Kanban/List switcher).
+- **Verification & UAT:**
+  - `GET /api/themes` verified with curl returning all 5 seeded themes.
+  - Full Next.js production build (`@workmesh/web`) passed with 0 errors.
+  - UI verified by user: theme preview swatches, directory project cards, and Split Hero Card header display correct colors.
+- **Handoff for Next Agent:**
+  - Next task is `FEAT-01-03` in [Epic 01](file:///d:/Projects/Workmesh/docs/epics/epic-01-project-and-mcp-context.md): MCP Server Initialization & `get_project_context` Tool.
+
+---
+
+### Session 03: Interaction & Animation System Implementation
+- **Date / Timestamp:** 2026-10-10
+- **Completed:** Interaction & Animation Specification ([docs/interaction-and-animation-spec.md](file:///d:/Projects/Workmesh/docs/interaction-and-animation-spec.md)) and application across all existing pages.
+- **What Was Implemented:**
+  - **Interaction Spec (`docs/interaction-and-animation-spec.md`):** Comprehensive design tokens (`--duration-*`, `--ease-*`), micro-interaction states, 0ms tactile feedback locks, GPU-only acceleration guidelines, and `@media (prefers-reduced-motion: reduce)` accessibility rules.
+  - **UI Design Spec Integration (`docs/ui-design-spec.md`):** Cross-referenced animation specification under Section 1.2.
+  - **Design System & Global CSS (`apps/web/src/app/globals.css`):**
+    - Motion tokens added to `:root`.
+    - Keyframes: `fadeIn`, `modalPop`, `slideInDown`, `cardEntrance`, `heroEntrance`, `shimmer`, `spin`.
+    - Interactive utility classes: `.btn-primary`, `.btn-secondary`, `.brand-link`, `.theme-toggle-btn`, `.breadcrumb-link`, `.view-switcher-button`, `.filter-pill`, `.list-table-row`, `.action-link`, `.action-arrow`, `.feature-card`, `.theme-preview-card`, `.skeleton-shimmer`, `.error-card`.
+    - Reduced motion accessibility rules preventing animations when user prefers reduced motion.
+  - **Component Animations Applied:**
+    - `FeatureCard.tsx`: Smooth hover lift, elevation shadow, active scale snap.
+    - `FeaturesListView.tsx`: Table row hover highlight, action link arrow glide (`translateX(3px)`).
+    - `EpicsFilterBar.tsx`: Interactive filter pills with hover lift and active scale down.
+    - `ProjectHeader.tsx`: Hero entrance animation, view switcher button tab transitions.
+    - `TopNav.tsx`: Brand link hover feedback.
+    - `ThemeToggle.tsx`: Tactile hover tilt (`15deg`) and active click rotate (`45deg`) / scale.
+    - `Breadcrumbs.tsx`: Interactive link hover transitions.
+    - `CreateProjectModal.tsx`: Theme preview cards with interactive hover lift and active snap.
+    - `ProjectHubPage` (`page.tsx`): Error card entrance pop and primary action button press.
+- **Handoff for Next Agent:**
+  - Resume development on next roadmap task: `FEAT-01-03` in [Epic 01](file:///d:/Projects/Workmesh/docs/epics/epic-01-project-and-mcp-context.md): MCP Server Initialization & `get_project_context` Tool in `@workmesh/mcp-server`.
+
+---
+
+### Session 04: MCP Server Initialization & `get_project_context` Tool (`FEAT-01-03`)
+- **Date / Timestamp:** 2026-10-12
+- **Completed:** `FEAT-01-03` (MCP Server Init & `get_project_context` Tool)
+- **What Was Implemented:**
+  - **Shared Schemas (`@workmesh/shared`):**
+    - Defined `ACTIVE_EPIC_STATUSES = ["PROPOSED", "APPROVED", "IN_PROGRESS"]` in `packages/shared/src/enums.ts` avoiding magic strings and aligning with Drizzle ORM typing.
+    - Added `getProjectContextInputSchema` in `packages/shared/src/projects.ts` with context budget controls (`epicLimit` capped at 50, `includeDescriptions` defaulting to false).
+    - Added `ActiveEpicSummary` and `ProjectContextSummary` interfaces with pagination signaling (`hasMoreEpics`).
+  - **Modular MCP Server Architecture (`@workmesh/mcp-server`):**
+    - Initialized workspace package `@workmesh/mcp-server` with `@modelcontextprotocol/sdk`.
+    - `src/tools/projects.ts`: Registered `get_project_context` using modern `server.registerTool`.
+    - `src/tools/index.ts`: Master tool aggregator to mount future epic tools (`epics.ts`, `tasks.ts`, `bugs.ts`).
+    - `src/server.ts`: Factory creating `McpServer` instance and mounting domain tools.
+    - `src/index.ts`: Lean CLI executable entrypoint handling environment loading, stdio transport, and graceful `SIGINT`/`SIGTERM` process teardown.
+  - **Database Efficiency & Guardrails (`@workmesh/db`):**
+    - Pushed filtering, counting (`count()`), and pagination directly down to PostgreSQL using `drizzle-orm` operators.
+    - Implemented `limit: epicLimit + 1` SQL lookahead pattern to calculate `hasMoreEpics` in a single query.
+    - Eliminated dangerous arbitrary fallbacks; enforced explicit project identification (`projectKey` or `projectId`).
+    - Fixed root `.env` loading in `packages/db/src/client.ts` (`dotenv.config()` + `dotenv.config({ path: "../../.env" })`) to resolve correct PostgreSQL authentication across monorepo root and subpackages.
+- **Verification & UAT:**
+  - TypeScript build (`cmd /c npm run build --workspace=@workmesh/mcp-server`) verified with 0 errors.
+  - Manually verified via MCP Inspector over stdio protocol:
+    1. Tool `get_project_context` discovered with full schema.
+    2. Executed with `{ projectKey: "WM" }`, authenticated with PostgreSQL database, and returned project metadata and active epics matching the Web UI.
+    3. Confirmed negative guard prevents silent context contamination when identifiers are omitted.
+- **Handoff for Next Agent:**
+  - **Epic 01 is now 100% complete!**
+  - Next task is `FEAT-02-01` in [Epic 02: Epic & Feature Proposal and Human Approval](file:///d:/Projects/Workmesh/docs/epics/epic-02-proposal-and-human-approval.md): Epic Proposal & Breakdown Flow (`propose_epic` MCP tool + UI Epic filter pills).
+

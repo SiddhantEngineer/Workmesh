@@ -28,7 +28,6 @@ export function FeatureCard({ feature, projectKey }: FeatureCardProps) {
     <Link
       href={`/projects/${projectKey}/features/${ticketKey}`}
       className="feature-card"
-      style={cardStyle}
     >
       <div style={headerStyle}>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -56,20 +55,6 @@ export function FeatureCard({ feature, projectKey }: FeatureCardProps) {
     </Link>
   );
 }
-
-const cardStyle: React.CSSProperties = {
-  backgroundColor: "var(--surface-raised)",
-  border: "1px solid var(--border-subtle)",
-  borderRadius: 6,
-  padding: "12px 14px",
-  display: "flex",
-  flexDirection: "column",
-  gap: "var(--space-2)",
-  textDecoration: "none",
-  color: "inherit",
-  transition: "border-color 0.15s ease, transform 0.1s ease",
-  cursor: "pointer",
-};
 
 const headerStyle: React.CSSProperties = {
   display: "flex",

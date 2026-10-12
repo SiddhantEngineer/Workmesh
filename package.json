@@ -12,6 +12,9 @@
     "web:dev": "npm run dev --workspace=@workmesh/web",
     "db:generate": "npm run db:generate --workspace=@workmesh/db",
     "db:migrate": "npm run db:migrate --workspace=@workmesh/db",
-    "db:studio": "npm run db:studio --workspace=@workmesh/db"
+    "db:studio": "npm run db:studio --workspace=@workmesh/db",
+    "mcp:dev": "npm run dev --workspace=@workmesh/mcp-server",
+    "mcp:build": "npm run build --workspace=@workmesh/mcp-server",
+    "mcp:start": "npm run start --workspace=@workmesh/mcp-server"
   }
 }

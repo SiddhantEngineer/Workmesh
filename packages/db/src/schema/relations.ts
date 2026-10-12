@@ -1,4 +1,5 @@
 import { relations } from "drizzle-orm";
+import { themes } from "./themes";
 import { projects } from "./projects";
 import { epics } from "./epics";
 import { features } from "./features";
@@ -9,12 +10,21 @@ import { activityLogs } from "./activity_logs";
 // DRIZZLE RELATIONS (Centralized graph)
 // ==========================================
 
-export const projectsRelations = relations(projects, ({ many }) => ({
+export const themesRelations = relations(themes, ({ many }) => ({
+  projects: many(projects),
+}));
+
+export const projectsRelations = relations(projects, ({ one, many }) => ({
+  theme: one(themes, {
+    fields: [projects.themeId],
+    references: [themes.id],
+  }),
   epics: many(epics),
   features: many(features),
   bugs: many(bugs),
   activityLogs: many(activityLogs),
 }));
+
 
 export const epicsRelations = relations(epics, ({ one, many }) => ({
   project: one(projects, {

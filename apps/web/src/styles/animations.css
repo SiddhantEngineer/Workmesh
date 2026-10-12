@@ -1,0 +1,133 @@
+/* ==========================================================
+   ANIMATIONS & KEYFRAMES
+   ========================================================== */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0% { opacity: 0.45; }
+  50% { opacity: 0.90; }
+  100% { opacity: 0.45; }
+}
+
+/* ==========================================================
+   ANIMATION UTILITY CLASSES
+   ========================================================== */
+
+.animate-backdrop {
+  animation: fadeIn 0.18s var(--ease-editorial) forwards;
+}
+
+.animate-modal {
+  animation: modalPop 0.22s var(--ease-editorial) forwards;
+}
+
+.animate-badge-pop {
+  animation: slideInDown 0.18s var(--ease-editorial) forwards;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+.skeleton-shimmer {
+  animation: shimmer var(--duration-ambient) ease-in-out infinite;
+  background-color: var(--border-subtle);
+  border-radius: 4px;
+}
+
+.hero-entrance {
+  animation: heroEntrance 0.26s var(--ease-editorial) both;
+}
+
+.error-card {
+  animation: modalPop 0.25s var(--ease-editorial) both;
+}
+
+/* ==========================================================
+   ACCESSIBILITY & REDUCED MOTION
+   ========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .skeleton-shimmer {
+    animation: none !important;
+    opacity: 0.7 !important;
+  }
+
+  .project-card:hover,
+  .feature-card:hover,
+  .filter-pill:hover,
+  .theme-preview-card:hover {
+    transform: none !important;
+  }
+
+  .btn-primary:active,
+  .btn-secondary:active,
+  .action-link:active,
+  .filter-pill:active,
+  .view-switcher-button:active {
+    transform: none !important;
+  }
+}

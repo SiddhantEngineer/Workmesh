@@ -3,7 +3,8 @@ import postgres from "postgres";
 import * as schema from "./schema/index";
 import * as dotenv from "dotenv";
 
-// Load environment variables from root if running locally/scripts
+// Load environment variables from current directory or monorepo root
+dotenv.config();
 dotenv.config({ path: "../../.env" });
 
 const connectionString =

@@ -1,4 +1,5 @@
 import { pgTable, serial, varchar, text, integer, timestamp } from "drizzle-orm/pg-core";
+import { themes } from "./themes";
 
 /**
  * Projects Table
@@ -11,6 +12,11 @@ export const projects = pgTable("projects", {
   key: varchar("key", { length: 10 }).notNull().unique(),
   description: text("description"),
 
+  // Foreign key to themes table; every project must belong to a theme
+  themeId: integer("theme_id")
+    .notNull()
+    .references(() => themes.id),
+
   // Atomic counter for project-scoped ticket numbers
   nextTicketNumber: integer("next_ticket_number").default(1).notNull(),
 
@@ -18,3 +24,4 @@ export const projects = pgTable("projects", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
   deletedAt: timestamp("deleted_at"), // Soft delete
 });
+

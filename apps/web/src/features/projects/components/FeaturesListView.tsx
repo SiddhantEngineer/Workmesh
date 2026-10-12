@@ -60,14 +60,15 @@ export function FeaturesListView({ projectKey, features, epics }: FeaturesListVi
             const priorityStyle = PRIORITY_BADGE_STYLE[feature.priority];
 
             return (
-              <tr key={feature.id} style={tableRowStyle}>
+              <tr key={feature.id} className="list-table-row">
                 <td style={tdStyle}>
                   <span style={keyBadgeStyle}>{ticketKey}</span>
                 </td>
                 <td style={tdStyle}>
                   <Link
                     href={`/projects/${projectKey}/features/${ticketKey}`}
-                    style={featureTitleLinkStyle}
+                    className="breadcrumb-link"
+                    style={{ fontWeight: 500 }}
                   >
                     {feature.title}
                   </Link>
@@ -104,10 +105,10 @@ export function FeaturesListView({ projectKey, features, epics }: FeaturesListVi
                 <td style={{ ...tdStyle, textAlign: "right" }}>
                   <Link
                     href={`/projects/${projectKey}/features/${ticketKey}`}
-                    style={actionLinkStyle}
+                    className="action-link"
                   >
                     <span>View</span>
-                    <ArrowUpRight size={14} />
+                    <ArrowUpRight size={14} className="action-arrow" />
                   </Link>
                 </td>
               </tr>

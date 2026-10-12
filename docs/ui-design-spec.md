@@ -31,6 +31,26 @@ Adhering strictly to the **Minimal Design System** skill:
 ### Spacing Scale
 - `4px`, `8px`, `12px`, `16px`, `24px`, `32px` (no arbitrary margins or paddings).
 
+### Interaction & Animation System
+- All micro-interactions, motion tokens, transition curves, tactile locks, and reduced-motion standards are governed by [docs/interaction-and-animation-spec.md](file:///d:/Projects/Workmesh/docs/interaction-and-animation-spec.md).
+
+---
+
+## 1.1 Project Theme System & Extensible Design Tokens
+
+To prevent repetitive UI and help users visually segregate workspaces, each project is assigned a **Theme** stored in the database (`themes` table):
+
+### Theme Entity Architecture
+- **Id & Unique Slug Key**: E.g., `flora-blue`, `classic-slate`, `sage-forest`, `sunset-warmth`, `velvet-orchid`.
+- **Extensible Tokens Container (`jsonb`)**:
+  - Structured by component namespace (e.g. `tokens.card`, and later extensible for `feature` and `bug` cards without database migrations).
+  - Mode-aware color pairs preserve readability and contrast across system light and dark themes:
+    - `card.bgLight` & `card.textLight`
+    - `card.bgDark` & `card.textDark`
+- **Performance Strategy**:
+  - The client queries all themes once at application boot (`GET /api/themes` with `staleTime: Infinity`).
+  - Project API endpoints return `themeId` without executing relational joins, leaving token hydration to the frontend cache.
+
 ---
 
 ## 2. Layout & Global Navigation
@@ -45,6 +65,17 @@ Adhering strictly to the **Minimal Design System** skill:
   - Example: `Projects / Workmesh`.
 - **No Sidebars:**
   - 100% horizontal screen real estate is reserved for the 5 Kanban lifecycle columns.
+
+### 2.1 Project Hub Split Hero Card (`<ProjectHeader />`)
+Instead of a flat monochrome header row, the project hub features a split hero card:
+- **Left Hero Panel (Themed)**:
+  - Background and primary text dynamically inherit the project's theme tokens.
+  - Displays project title, key prefix badge (`Inconsolata`), description, and metadata pills (Ticket Prefix, Epics count, Features count).
+- **Right Telemetry / Stats Block (Contrasting Dark)**:
+  - High-contrast dark telemetry panel displaying tickets allocated and the `+ Propose Feature` action button.
+- **Sub-bar**:
+  - Retains view switchers (`Kanban Board` vs `Features List`).
+
 
 ---
 

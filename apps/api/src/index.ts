@@ -4,6 +4,7 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import * as dotenv from "dotenv";
 import { projectsRouter } from "./routes/projects";
+import { themesRouter } from "./routes/themes";
 
 // Load environment variables from repository root
 dotenv.config({ path: "../../.env" });
@@ -26,8 +27,10 @@ app.get("/health", (c) =>
   c.json({ status: "ok", timestamp: new Date().toISOString() })
 );
 
-// Mount project endpoints
+// Mount endpoints
 app.route("/api/projects", projectsRouter);
+app.route("/api/themes", themesRouter);
+
 
 const port = Number(process.env.PORT) || 3001;
 

@@ -11,6 +11,7 @@ import { ProjectHeader } from "../../../features/projects/components/ProjectHead
 import { EpicsFilterBar } from "../../../features/projects/components/EpicsFilterBar";
 import { KanbanBoard } from "../../../features/projects/components/KanbanBoard";
 import { FeaturesListView } from "../../../features/projects/components/FeaturesListView";
+import { ProjectBoardSkeleton } from "../../../features/projects/components/ProjectBoardSkeleton";
 import { useProjectByKeyQuery } from "../../../features/projects/queries";
 
 export default function ProjectHubPage() {
@@ -45,70 +46,46 @@ export default function ProjectHubPage() {
     return project.features.filter((f) => f.epicId === selectedEpicId);
   }, [project?.features, selectedEpicId]);
 
-  // Loading Skeleton View
+  // Loading Skeleton View (Unified with loading.tsx for seamless zero-flash loading)
   if (isLoading) {
-    return (
-      <div style={pageContainerStyle}>
-        <TopNav />
-        <main style={mainContentStyle}>
-          <Breadcrumbs
-            items={[
-              { label: "Projects", href: "/" },
-              { label: projectKey || "Loading..." },
-            ]}
-          />
-          <div style={loadingContainerStyle}>
-            <Spinner size={28} color="var(--accent-primary)" />
-            <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
-              Loading project workspace...
-            </p>
-          </div>
-        </main>
-      </div>
-    );
+    return <ProjectBoardSkeleton />;
   }
 
   // Not Found / Error View
   if (isError || !project) {
     return (
-      <div style={pageContainerStyle}>
-        <TopNav />
-        <main style={mainContentStyle}>
-          <Breadcrumbs
-            items={[
-              { label: "Projects", href: "/" },
-              { label: projectKey || "Not Found" },
-            ]}
-          />
-          <div style={errorCardStyle}>
-            <div style={errorIconWrapperStyle}>
-              <AlertCircle size={28} color="var(--color-danger)" />
-            </div>
-            <h2 style={{ fontSize: "1.2rem", fontWeight: 700 }}>
-              Project Not Found
-            </h2>
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.88rem" }}>
-              No active project with prefix key &ldquo;{projectKey}&rdquo; was found.
-              {error ? ` (${error.message})` : ""}
-            </p>
-            <Link href="/" style={backButtonStyle}>
-              <ArrowLeft size={15} />
-              <span>Back to Projects Directory</span>
-            </Link>
+      <div>
+        <Breadcrumbs
+          items={[
+            { label: "Projects", href: "/" },
+            { label: projectKey || "Not Found" },
+          ]}
+        />
+        <div className="error-card" style={errorCardStyle}>
+          <div style={errorIconWrapperStyle}>
+            <AlertCircle size={28} color="var(--color-danger)" />
           </div>
-        </main>
+          <h2 style={{ fontSize: "1.2rem", fontWeight: 700 }}>
+            Project Not Found
+          </h2>
+          <p style={{ color: "var(--text-secondary)", fontSize: "0.88rem" }}>
+            No active project with prefix key &ldquo;{projectKey}&rdquo; was found.
+            {error ? ` (${error.message})` : ""}
+          </p>
+          <Link href="/" className="btn-primary" style={backButtonStyle}>
+            <ArrowLeft size={15} />
+            <span>Back to Projects Directory</span>
+          </Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={pageContainerStyle}>
-      <TopNav />
-
-      <main style={mainContentStyle}>
-        {/* Dedicated Page Breadcrumbs */}
-        <div style={{ marginBottom: "var(--space-2)" }}>
-          <Breadcrumbs
+    <div>
+      {/* Dedicated Page Breadcrumbs */}
+      <div style={{ marginBottom: "var(--space-2)" }}>
+        <Breadcrumbs
             items={[
               { label: "Projects", href: "/" },
               { label: project.name },
@@ -158,7 +135,6 @@ export default function ProjectHubPage() {
             />
           )}
         </div>
-      </main>
     </div>
   );
 }

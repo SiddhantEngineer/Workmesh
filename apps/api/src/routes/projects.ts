@@ -89,6 +89,7 @@ export const projectsRouter = new Hono()
         name: data.name,
         key: data.key,
         description: data.description || null,
+        themeId: data.themeId,
       })
       .returning();
 

@@ -45,10 +45,9 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="btn-secondary"
+      className="theme-toggle-btn"
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
       title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-      style={buttonStyle}
     >
       {theme === "dark" ? (
         <Sun size={16} color="var(--text-primary)" style={iconStyle} />

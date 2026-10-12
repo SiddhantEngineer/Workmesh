@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { FolderPlus, Layers } from "lucide-react";
 import type { Project } from "@workmesh/shared";
 import { ProjectCard } from "./ProjectCard";
@@ -19,14 +19,17 @@ export function ProjectList({
   onCreateProject,
   onSelectProject,
 }: ProjectListProps) {
+  // Navigation lock: locks all other cards when any card is clicked
+  const [openingProjectKey, setOpeningProjectKey] = useState<string | null>(null);
+
   return (
     <div>
       {/* Page Header */}
       <div style={pageHeaderStyle}>
-        <h2 style={{ fontSize: "1.6rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
+        <h2 style={{ fontSize: "1.85rem", fontWeight: 700, letterSpacing: "-0.03em" }}>
           Projects
         </h2>
-        <p style={{ color: "var(--text-secondary)", fontSize: "0.92rem", marginTop: 4 }}>
+        <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginTop: 4 }}>
           Select a workspace or create a new project to start collaborating with agents
         </p>
       </div>
@@ -62,15 +65,20 @@ export function ProjectList({
         </div>
       )}
 
-      {/* Projects Grid */}
+      {/* Full-Width Editorial Projects Stack */}
       {!isLoading && projects.length > 0 && (
-        <div style={gridStyle}>
+        <div style={fullWidthContainerStyle}>
           {projects.map((project, idx) => (
             <ProjectCard
               key={project.id}
               project={project}
               index={idx}
-              onSelect={onSelectProject}
+              isOpening={openingProjectKey === project.key}
+              isDisabled={openingProjectKey !== null && openingProjectKey !== project.key}
+              onSelect={(p) => {
+                setOpeningProjectKey(p.key);
+                onSelectProject?.(p);
+              }}
             />
           ))}
         </div>
@@ -80,13 +88,14 @@ export function ProjectList({
 }
 
 const pageHeaderStyle: React.CSSProperties = {
-  marginBottom: 24,
+  marginBottom: 28,
 };
 
-const gridStyle: React.CSSProperties = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-  gap: 16,
+const fullWidthContainerStyle: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 20,
+  width: "100%",
 };
 
 const emptyStateStyle: React.CSSProperties = {

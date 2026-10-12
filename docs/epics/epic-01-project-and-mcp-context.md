@@ -1,6 +1,6 @@
 # Epic 01: Project Foundation & MCP Context
 
-**Status:** IN_PROGRESS  
+**Status:** DONE  
 **Type:** Vertical Slice  
 **Architecture:** Shared Schemas $\rightarrow$ Hono API $\rightarrow$ MCP Server $\rightarrow$ Next.js Web UI  
 
@@ -74,7 +74,7 @@ This epic establishes the foundational vertical slice of Workmesh: multi-project
 ### FEAT-01-03: MCP Server Initialization & `get_project_context` Tool
 - **ID:** `FEAT-01-03`
 - **Priority:** `CRITICAL`
-- **Status:** `TODO`
+- **Status:** `DONE`
 - **User Story:**  
   *As an AI coding agent connecting via MCP, I want to call `get_project_context`, so that I immediately receive the active project's key prefix, goals, and high-level roadmap before proposing or claiming tasks.*
 - **Scope & Description:**
@@ -83,13 +83,48 @@ This epic establishes the foundational vertical slice of Workmesh: multi-project
   - Query DB or API client to retrieve project name, key, description, and list of epics.
   - Return clean JSON formatted summary for the agent prompt context.
 - **Acceptance Criteria Checklist:**
-  - [ ] `@workmesh/mcp-server` configured with TypeScript build and binary entrypoint.
-  - [ ] Tool `get_project_context` registered with Zod input schema (`projectKey?: string`, `projectId?: number`).
-  - [ ] Handles missing project gracefully with informative error messages.
-  - [ ] Returns project details along with count and titles of active Epics.
+  - [x] `@workmesh/mcp-server` configured with TypeScript build and binary entrypoint.
+  - [x] Tool `get_project_context` registered with Zod input schema (`projectKey?: string`, `projectId?: number`).
+  - [x] Handles missing project gracefully with informative error messages.
+  - [x] Returns project details along with count and titles of active Epics.
 - **Manual Verification via UI (UAT):**
   1. Open Web UI at `http://localhost:3000/projects/WM` and confirm project `Workmesh` (`WM`) is visible.
   2. Run the MCP server via stdio in terminal or configure inside MCP Inspector (`npx @modelcontextprotocol/inspector node packages/mcp-server/dist/index.js`).
   3. Execute `get_project_context` with `{ projectKey: "WM" }`.
   4. Verify tool output contains project title, description, and key prefix matching the UI.
   5. Verify that running without arguments resolves default/active project correctly.
+
+---
+
+### FEAT-01-04: Project Theming & Split Hero Card Header
+- **ID:** `FEAT-01-04`
+- **Priority:** `HIGH`
+- **Status:** `DONE`
+- **User Story:**  
+  *As a team member managing multiple workspaces, I want each project to have a unique theme color with card background and text colors, and see a split hero card header on the project board, so that projects are visually segregated and engaging without repetitive white cards.*
+- **Scope & Description:**
+  - Database table `themes` with `id`, unique `key`, `name`, and extensible `tokens: jsonb` (mode-aware `card.bgLight`, `card.textLight`, `card.bgDark`, `card.textDark`).
+  - `projects.theme_id` foreign key referencing `themes(id)` (required).
+  - API endpoint: `GET /api/themes` returning preset themes.
+  - API endpoints `GET /api/projects` and `GET /api/projects/:key` returning `themeId` without redundant database JOINs.
+  - Web UI:
+    - Cached client themes query (`useThemesQuery`) with infinite stale time.
+    - `CreateProjectModal`: Interactive visual grid of theme template cards with header text preview.
+    - `ProjectCard`: Full card themed styling on `/`.
+    - `ProjectHeader`: Redesigned Split Hero Card inspired by reference telemetry banner (themed left panel, dark telemetry right panel with ticket counts and "+ Propose Feature" button, sub-bar with Kanban/List switcher).
+- **Acceptance Criteria Checklist:**
+  - [x] Database migration and presets seeded (`flora-blue`, `classic-slate`, `sage-forest`, `sunset-warmth`, `velvet-orchid`).
+  - [x] Shared schemas and types updated with `themeId` and `ThemeTokens`.
+  - [x] API endpoint `GET /api/themes` implemented and tested.
+  - [x] `POST /api/projects` validates and persists `themeId`.
+  - [x] `CreateProjectModal` renders theme template preview cards and requires theme selection.
+  - [x] `ProjectCard` on directory renders themed background and high-contrast text.
+  - [x] `ProjectHeader` renders the split hero card format with themed left panel and dark right telemetry panel.
+
+- **Manual Verification via UI (UAT):**
+  1. Open `http://localhost:3000` and click "+ New Project".
+  2. Confirm theme card grid is visible and selecting a theme highlights it.
+  3. Create a project with "Flora Blue" theme.
+  4. Verify the newly created project card in the directory displays Flora Blue colors.
+  5. Click into the project and confirm the Project Header displays the Split Hero Card layout with matching theme colors.
+

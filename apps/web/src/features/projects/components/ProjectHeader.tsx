@@ -3,6 +3,7 @@
 import React from "react";
 import { LayoutGrid, ListFilter, PlusCircle, Hash } from "lucide-react";
 import type { ProjectDetail } from "@workmesh/shared";
+import { useProjectTheme, getThemeVariables } from "../../themes";
 
 interface ProjectHeaderProps {
   project: ProjectDetail;
@@ -21,62 +22,90 @@ export function ProjectHeader({
   const epicsCount = project.epics?.length || 0;
   const featuresCount = project.features?.length || 0;
 
+  const { theme } = useProjectTheme(project.themeId);
+  const themeVars = getThemeVariables(theme);
+
+  const formattedDate = project.createdAt
+    ? new Date(project.createdAt).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
+    : null;
+
   return (
     <div style={containerStyle}>
-      {/* Main Header Content */}
-      <div style={mainRowStyle}>
-        <div style={titleGroupStyle}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      {/* Split Hero Card Header (Inspired by telemetry hero reference) */}
+      <div className="hero-entrance" style={{ ...heroCardStyle, ...themeVars }}>
+        {/* Left Themed Panel */}
+        <div className="themed-hero-left" style={leftPanelStyle}>
+          {/* Top Tagline & Date */}
+          <div style={topMetaRowStyle}>
+            <span style={taglineStyle}>WORKSPACE // {project.key}</span>
+            {formattedDate && <span style={dateStyle}>{formattedDate}</span>}
+          </div>
+
+          {/* Project Title and Key Badge */}
+          <div style={titleRowStyle}>
             <h1 style={titleStyle}>{project.name}</h1>
             <span style={keyBadgeStyle}>{project.key}</span>
           </div>
+
+          {/* Description */}
           {project.description && (
             <p style={descriptionStyle}>{project.description}</p>
           )}
+
+          {/* Metadata Badges */}
+          <div style={metaPillRowStyle}>
+            <div style={metaPillStyle}>
+              <span style={metaPillLabelStyle}>PREFIX</span>
+              <span style={metaPillValueStyle}>{project.key}-#</span>
+            </div>
+            <div style={metaPillStyle}>
+              <span style={metaPillLabelStyle}>EPICS</span>
+              <span style={metaPillValueStyle}>{epicsCount}</span>
+            </div>
+            <div style={metaPillStyle}>
+              <span style={metaPillLabelStyle}>FEATURES</span>
+              <span style={metaPillValueStyle}>{featuresCount}</span>
+            </div>
+          </div>
         </div>
 
-        {/* Action Buttons */}
-        {onProposeFeature && (
-          <div style={actionGroupStyle}>
+        {/* Right Contrasting Telemetry Panel */}
+        <div style={rightTelemetryStyle}>
+          <div>
+            <div style={telemetryHeaderStyle}>
+              <span>TICKET ALLOCATION</span>
+              <Hash size={13} style={{ opacity: 0.6 }} />
+            </div>
+
+            <div style={telemetryNumberRowStyle}>
+              <span style={telemetryNumberStyle}>{totalTickets}</span>
+              <span style={telemetryLabelStyle}>tickets allocated</span>
+            </div>
+          </div>
+
+          {onProposeFeature && (
             <button
               onClick={onProposeFeature}
               className="btn-primary"
               style={proposeButtonStyle}
             >
-              <PlusCircle size={16} />
+              <PlusCircle size={15} />
               <span>+ Propose Feature</span>
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
-      {/* Metadata & View Switcher Bar */}
+      {/* Sub-bar: Kanban vs List View Switcher */}
       <div style={subBarStyle}>
-        <div style={statsContainerStyle}>
-          <div style={statItemStyle}>
-            <Hash size={13} style={{ color: "var(--text-muted)" }} />
-            <span>
-              <strong>{totalTickets}</strong> tickets allocated
-            </span>
-          </div>
-          <span style={statDividerStyle}>•</span>
-          <div style={statItemStyle}>
-            <span>
-              <strong>{epicsCount}</strong> epics
-            </span>
-          </div>
-          <span style={statDividerStyle}>•</span>
-          <div style={statItemStyle}>
-            <span>
-              <strong>{featuresCount}</strong> features
-            </span>
-          </div>
-        </div>
-
-        {/* View Switcher: Kanban vs List */}
         <div style={switcherContainerStyle}>
           <button
             onClick={() => onViewModeChange("kanban")}
+            className="view-switcher-button"
             style={{
               ...switcherButtonStyle,
               backgroundColor:
@@ -92,6 +121,7 @@ export function ProjectHeader({
           </button>
           <button
             onClick={() => onViewModeChange("list")}
+            className="view-switcher-button"
             style={{
               ...switcherButtonStyle,
               backgroundColor:
@@ -115,96 +145,178 @@ const containerStyle: React.CSSProperties = {
   display: "flex",
   flexDirection: "column",
   gap: "var(--space-3)",
-  paddingBottom: "var(--space-4)",
-  borderBottom: "1px solid var(--border-subtle)",
+  paddingBottom: "var(--space-2)",
 };
 
-const mainRowStyle: React.CSSProperties = {
+const heroCardStyle: React.CSSProperties = {
   display: "flex",
+  flexWrap: "wrap",
+  borderRadius: 10,
+  overflow: "hidden",
+  border: "1px solid var(--theme-card-border)",
+  boxShadow: "0 2px 10px rgba(0, 0, 0, 0.04)",
+};
+
+const leftPanelStyle: React.CSSProperties = {
+  flex: 1,
+  minWidth: 320,
+  backgroundColor: "var(--theme-card-bg)",
+  color: "var(--theme-card-text)",
+  padding: "24px 28px",
+  display: "flex",
+  flexDirection: "column",
+  gap: 14,
+};
+
+const topMetaRowStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
   justifyContent: "space-between",
-  alignItems: "flex-start",
-  gap: 16,
+  fontSize: "0.74rem",
+  fontFamily: "var(--font-mono)",
+  fontWeight: 700,
+  letterSpacing: "0.08em",
+  opacity: 0.75,
+};
+
+const taglineStyle: React.CSSProperties = {
+  textTransform: "uppercase",
+};
+
+const dateStyle: React.CSSProperties = {
+  textTransform: "uppercase",
+};
+
+const titleRowStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: 12,
   flexWrap: "wrap",
 };
 
-const titleGroupStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: 6,
-  flex: 1,
-  minWidth: 260,
+const titleStyle: React.CSSProperties = {
+  fontSize: "1.85rem",
+  fontWeight: 700,
+  color: "var(--theme-card-text)",
+  letterSpacing: "-0.025em",
+  lineHeight: 1.2,
 };
 
 const keyBadgeStyle: React.CSSProperties = {
   fontFamily: "var(--font-mono)",
-  fontSize: "0.85rem",
+  fontSize: "0.82rem",
   fontWeight: 700,
-  backgroundColor: "var(--surface)",
-  border: "1px solid var(--border-subtle)",
-  color: "var(--text-primary)",
-  padding: "3px 8px",
+  backgroundColor: "color-mix(in srgb, var(--theme-card-text) 12%, transparent)",
+  border: "1px solid var(--theme-card-border)",
+  color: "var(--theme-card-text)",
+  padding: "2px 8px",
   borderRadius: 4,
 };
 
-const titleStyle: React.CSSProperties = {
-  fontSize: "1.6rem",
-  fontWeight: 700,
-  color: "var(--text-primary)",
-  letterSpacing: "-0.02em",
-};
-
 const descriptionStyle: React.CSSProperties = {
-  fontSize: "0.92rem",
-  color: "var(--text-secondary)",
-  lineHeight: 1.5,
+  fontSize: "0.94rem",
+  color: "var(--theme-card-muted)",
+  lineHeight: 1.55,
   maxWidth: 720,
 };
 
-const actionGroupStyle: React.CSSProperties = {
+const metaPillRowStyle: React.CSSProperties = {
   display: "flex",
   alignItems: "center",
   gap: 10,
+  flexWrap: "wrap",
+  paddingTop: 4,
+};
+
+const metaPillStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: 6,
+  backgroundColor: "color-mix(in srgb, var(--theme-card-text) 8%, transparent)",
+  border: "1px solid var(--theme-card-border)",
+  padding: "4px 10px",
+  borderRadius: 5,
+  fontSize: "0.78rem",
+};
+
+const metaPillLabelStyle: React.CSSProperties = {
+  fontFamily: "var(--font-mono)",
+  fontSize: "0.7rem",
+  fontWeight: 700,
+  letterSpacing: "0.05em",
+  opacity: 0.75,
+};
+
+const metaPillValueStyle: React.CSSProperties = {
+  fontWeight: 600,
+  color: "var(--theme-card-text)",
+};
+
+const rightTelemetryStyle: React.CSSProperties = {
+  width: 260,
+  minWidth: 220,
+  backgroundColor: "#0D1722",
+  color: "#FFFFFF",
+  padding: "24px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  gap: 20,
+  borderLeft: "1px solid rgba(255, 255, 255, 0.08)",
+};
+
+const telemetryHeaderStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  fontSize: "0.72rem",
+  fontFamily: "var(--font-mono)",
+  fontWeight: 700,
+  letterSpacing: "0.08em",
+  color: "rgba(255, 255, 255, 0.65)",
+  marginBottom: 10,
+};
+
+const telemetryNumberRowStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "baseline",
+  gap: 8,
+};
+
+const telemetryNumberStyle: React.CSSProperties = {
+  fontSize: "2.4rem",
+  fontWeight: 700,
+  lineHeight: 1,
+  color: "#FFFFFF",
+  fontFamily: "var(--font-display)",
+};
+
+const telemetryLabelStyle: React.CSSProperties = {
+  fontSize: "0.8rem",
+  color: "rgba(255, 255, 255, 0.6)",
 };
 
 const proposeButtonStyle: React.CSSProperties = {
   display: "flex",
   alignItems: "center",
-  gap: 6,
+  justifyContent: "center",
+  gap: 7,
   backgroundColor: "var(--accent-primary)",
   color: "#FFFFFF",
-  padding: "8px 14px",
+  padding: "9px 14px",
   borderRadius: 6,
   fontSize: "0.84rem",
   fontWeight: 600,
   border: "none",
   cursor: "pointer",
+  width: "100%",
 };
 
 const subBarStyle: React.CSSProperties = {
   display: "flex",
-  justifyContent: "space-between",
+  justifyContent: "flex-end",
   alignItems: "center",
-  gap: 16,
-  flexWrap: "wrap",
-  paddingTop: 8,
-};
-
-const statsContainerStyle: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: 8,
-  fontSize: "0.82rem",
-  color: "var(--text-secondary)",
-};
-
-const statItemStyle: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: 5,
-};
-
-const statDividerStyle: React.CSSProperties = {
-  color: "var(--border-subtle)",
+  paddingTop: 4,
 };
 
 const switcherContainerStyle: React.CSSProperties = {

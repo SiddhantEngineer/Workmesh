@@ -27,6 +27,15 @@ export const EPIC_STATUS_LABELS: Record<EpicStatus, string> = {
   REJECTED: "Rejected",
 };
 
+/**
+ * Subset of epic statuses representing active/open initiatives (used for roadmap views and context bootstrapping).
+ */
+export const ACTIVE_EPIC_STATUSES: EpicStatus[] = [
+  "PROPOSED",
+  "APPROVED",
+  "IN_PROGRESS",
+];
+
 export const FEATURE_STATUSES = [
   "PROPOSED",
   "APPROVED",

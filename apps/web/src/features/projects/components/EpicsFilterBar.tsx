@@ -26,6 +26,7 @@ export function EpicsFilterBar({
       <div style={listStyle}>
         <button
           onClick={() => onSelectEpic(null)}
+          className="filter-pill"
           style={{
             ...pillStyle,
             backgroundColor:
@@ -57,6 +58,7 @@ export function EpicsFilterBar({
             <button
               key={epic.id}
               onClick={() => onSelectEpic(isSelected ? null : epic.id)}
+              className="filter-pill"
               style={{
                 ...pillStyle,
                 backgroundColor: isSelected ? "var(--accent-primary)" : "var(--surface-raised)",
