@@ -21,6 +21,7 @@ This project is an **Agent-First Ticket Management System** designed for human-A
 | **API Server** | [Hono](https://hono.dev/) | Ultra-fast, lightweight web framework handling REST endpoints, RPC, and SSE streaming. |
 | **Database** | [PostgreSQL](https://www.postgresql.org/) | Relational store for Epics, Features, Bugs, Audit Trails, and Agent Execution logs. |
 | **ORM & Migrations**| [Drizzle ORM](https://orm.drizzle.team/) | Type-safe SQL schema definitions, light runtime overhead, and automated migration management. |
+| **Domain Services** | TypeScript Services in `@workmesh/db` | Unified domain logic, atomic transactions, sequence generation, and activity audit logging shared across both Hono API and MCP Server without duplication. |
 | **Validation & Types** | [Zod](https://zod.dev/) | Single source of truth for validation across MCP tool arguments, Hono request schemas, and form inputs. |
 | **Agent Protocol** | [@modelcontextprotocol/sdk](https://github.com/modelcontextprotocol) | Official TypeScript SDK implementing MCP standards to expose tools and resources to AI agents. |
 | **Real-time Sync** | **Server-Sent Events (SSE)** | Unidirectional streaming from server to browser for live ticket updates, status changes, and agent activity. |

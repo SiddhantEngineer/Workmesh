@@ -31,6 +31,35 @@ app.get("/health", (c) =>
 app.route("/api/projects", projectsRouter);
 app.route("/api/themes", themesRouter);
 
+// Centralized 404 handler
+app.notFound((c) => {
+  return c.json(
+    {
+      success: false,
+      error: {
+        message: `Route not found: ${c.req.method} ${c.req.path}`,
+        code: "NOT_FOUND",
+      },
+    },
+    404
+  );
+});
+
+// Centralized unhandled error handler
+app.onError((err, c) => {
+  console.error(`[API Error] ${c.req.method} ${c.req.path}:`, err);
+  return c.json(
+    {
+      success: false,
+      error: {
+        message: err.message || "Internal Server Error",
+        code: "INTERNAL_SERVER_ERROR",
+      },
+    },
+    500
+  );
+});
+
 
 const port = Number(process.env.PORT) || 3001;
 

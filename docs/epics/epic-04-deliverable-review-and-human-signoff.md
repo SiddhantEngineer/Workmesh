@@ -2,7 +2,7 @@
 
 **Status:** TODO  
 **Type:** Vertical Slice  
-**Architecture:** Shared Schemas $\rightarrow$ Hono API $\rightarrow$ MCP Server $\rightarrow$ Next.js Web UI  
+**Architecture:** Shared Schemas $\rightarrow$ DB Domain Services $\rightarrow$ [Hono API & MCP Server] $\rightarrow$ Next.js Web UI  
 
 ---
 

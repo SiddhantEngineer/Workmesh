@@ -152,13 +152,13 @@ Tracks an immutable audit trail of actions:
 ```text
 [ External Agent (IDE) ]
            │
-           │ (MCP: claim_task / submit_for_review)
+           │ (MCP: get_project_context / claim_task / submit_for_review)
            ▼
-[ packages/mcp-server ]
-           │
-           │ (RPC / Internal Hono API Client)
-           ▼
-[ apps/api (Hono) ] ──────> [ PostgreSQL (Drizzle) ]
+[ packages/mcp-server ] ───┐
+                           ▼
+               [ @workmesh/db (Domain Services & Transactions) ]
+                           ▲
+[ apps/api (Hono) ] ───────┘
            │
            │ (Server-Sent Events: /api/projects/:id/stream)
            ▼

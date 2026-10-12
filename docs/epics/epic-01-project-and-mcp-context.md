@@ -2,7 +2,7 @@
 
 **Status:** DONE  
 **Type:** Vertical Slice  
-**Architecture:** Shared Schemas $\rightarrow$ Hono API $\rightarrow$ MCP Server $\rightarrow$ Next.js Web UI  
+**Architecture:** Shared Schemas $\rightarrow$ DB Domain Services $\rightarrow$ [Hono API & MCP Server] $\rightarrow$ Next.js Web UI  
 
 ---
 
@@ -79,14 +79,14 @@ This epic establishes the foundational vertical slice of Workmesh: multi-project
   *As an AI coding agent connecting via MCP, I want to call `get_project_context`, so that I immediately receive the active project's key prefix, goals, and high-level roadmap before proposing or claiming tasks.*
 - **Scope & Description:**
   - Initialize `@workmesh/mcp-server` package with `@modelcontextprotocol/sdk` supporting stdio transport.
-  - Implement `get_project_context` tool accepting optional `projectKey` or `projectId`.
-  - Query DB or API client to retrieve project name, key, description, and list of epics.
+  - Implement `get_project_context` tool accepting optional `projectKey` or `projectId` with smart resolution (resolving `WORKMESH_PROJECT_KEY`, auto-selecting single active project, or listing active projects).
+  - Delegate to shared domain service `getProjectContext` for single-query counts, active epics slice, and feature/bug telemetry stats.
   - Return clean JSON formatted summary for the agent prompt context.
 - **Acceptance Criteria Checklist:**
   - [x] `@workmesh/mcp-server` configured with TypeScript build and binary entrypoint.
   - [x] Tool `get_project_context` registered with Zod input schema (`projectKey?: string`, `projectId?: number`).
   - [x] Handles missing project gracefully with informative error messages.
-  - [x] Returns project details along with count and titles of active Epics.
+  - [x] Returns project details along with count, titles of active Epics, and feature/bug telemetry stats.
 - **Manual Verification via UI (UAT):**
   1. Open Web UI at `http://localhost:3000/projects/WM` and confirm project `Workmesh` (`WM`) is visible.
   2. Run the MCP server via stdio in terminal or configure inside MCP Inspector (`npx @modelcontextprotocol/inspector node packages/mcp-server/dist/index.js`).

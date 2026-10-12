@@ -11,7 +11,7 @@ workmesh/
 │   └── api/           # Hono backend API & SSE server
 ├── packages/
 │   ├── shared/        # Shared Zod schemas, types, and domain models
-│   ├── db/            # PostgreSQL connection and Drizzle ORM schema
+│   ├── db/            # PostgreSQL connection, Drizzle schema, and transactional domain services
 │   └── mcp-server/    # Model Context Protocol (MCP) server for agents
 └── docs/              # Project and architecture specifications
 ```

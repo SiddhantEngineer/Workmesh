@@ -2,7 +2,7 @@
 
 **Status:** TODO  
 **Type:** Vertical Slice  
-**Architecture:** Shared Schemas $\rightarrow$ Hono API $\rightarrow$ MCP Server $\rightarrow$ Next.js Web UI  
+**Architecture:** Shared Schemas $\rightarrow$ DB Domain Services $\rightarrow$ [Hono API & MCP Server] $\rightarrow$ Next.js Web UI  
 
 ---
 
@@ -21,12 +21,13 @@ This epic establishes the planning and guardrail workflow. Both AI agents and hu
   *As an AI agent or human planner, I want to propose an Epic with title, description, and priority, so that large milestones can be staged for engineering review.*
 - **Scope & Description:**
   - Shared Zod schema for proposing an Epic (`title`, `description`, `priority`: `LOW` | `MEDIUM` | `HIGH` | `CRITICAL`).
+  - Shared domain service `epicService.proposeEpic(...)` with atomic ticket numbering and `recordActivity`.
   - Hono API endpoints: `POST /api/projects/:id/epics` and `GET /api/projects/:id/epics`.
   - MCP Tool: `propose_epic` accepting `projectId`, `title`, `description`, `priority`.
   - Web UI: Epic badge rendering and filter selector above the Kanban board.
 - **Acceptance Criteria Checklist:**
   - [ ] Shared Zod schema enforces non-empty title and valid priority enum.
-  - [ ] API stores Epic with initial status `PROPOSED` and generates sequential key (e.g., `WM-E1`).
+  - [ ] API stores Epic with initial status `PROPOSED` and generates sequential key (e.g., `WM-1`).
   - [ ] MCP tool `propose_epic` registers successfully and returns created Epic payload.
   - [ ] Activity log record created for Epic proposal (`entityType: "EPIC"`, `action: "PROPOSED"`).
   - [ ] Web UI displays existing epics in an Epic filter pill bar.

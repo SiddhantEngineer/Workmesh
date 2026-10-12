@@ -2,7 +2,7 @@
 
 **Status:** TODO  
 **Type:** Vertical Slice  
-**Architecture:** Shared Schemas $\rightarrow$ Hono API $\rightarrow$ Next.js Web UI  
+**Architecture:** Shared Schemas $\rightarrow$ DB Domain Services $\rightarrow$ [Hono API & Next.js Web UI]  
 
 ---
 

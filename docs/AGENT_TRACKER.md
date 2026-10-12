@@ -15,12 +15,12 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Current Task ID** | `FEAT-01-03` |
-| **Feature Title** | MCP Server Init & `get_project_context` Tool |
-| **Epic** | [Epic 01: Project Foundation & MCP Context](file:///d:/Projects/Workmesh/docs/epics/epic-01-project-and-mcp-context.md) |
-| **Status** | `DONE` |
-| **Active Session / Agent ID** | `Antigravity-Agent` |
-| **Started At** | `2026-10-12T22:55:00+05:30` |
+| **Current Task ID** | `FEAT-02-01` |
+| **Feature Title** | Epic Proposal & Breakdown Flow |
+| **Epic** | [Epic 02: Epic & Feature Proposal and Human Approval](file:///d:/Projects/Workmesh/docs/epics/epic-02-proposal-and-human-approval.md) |
+| **Status** | `TODO` |
+| **Active Session / Agent ID** | `NONE` |
+| **Started At** | `—` |
 
 ---
 
@@ -257,4 +257,32 @@ Whenever a new chat session starts or an autonomous agent takes over:
 - **Handoff for Next Agent:**
   - **Epic 01 is now 100% complete!**
   - Next task is `FEAT-02-01` in [Epic 02: Epic & Feature Proposal and Human Approval](file:///d:/Projects/Workmesh/docs/epics/epic-02-proposal-and-human-approval.md): Epic Proposal & Breakdown Flow (`propose_epic` MCP tool + UI Epic filter pills).
+
+---
+
+### Session 05: Epic 01 Architectural Remediation & Backend Refactoring
+- **Date / Timestamp:** 2026-10-13
+- **Completed:** Full backend architectural remediation across `@workmesh/db`, `@workmesh/api`, and `@workmesh/mcp-server`.
+- **What Was Implemented:**
+  - **Shared Domain Services Layer (`@workmesh/db/src/services`):**
+    - Created `packages/db/src/services/activity_logs.ts` with `recordActivity` helper to guarantee standardized audit records across both Hono API and MCP tools.
+    - Created `packages/db/src/services/projects.ts` containing:
+      - `createProject`: Wrapped in `db.transaction()` with atomic catch of Postgres `23505` constraint violations (throwing typed `DuplicateProjectKeyError` for clean 409 responses).
+      - `listProjects`: Efficient active projects query sorted newest first.
+      - `getProjectByKey`: Relational fetch including active epics and features.
+      - `getProjectContext`: Consolidated count queries using SQL `FILTER (WHERE status = ANY(...))`, active epics slice, feature breakdown stats + open bugs count, and smart default project resolution (checking `WORKMESH_PROJECT_KEY`, auto-selecting single active project, or listing available keys).
+    - Exported services from `@workmesh/db` root entrypoint.
+  - **Database Schema & Indexing Fix (`@workmesh/db/src/schema/projects.ts`):**
+    - Replaced hard table `.unique()` constraint with partial unique index: `uniqueIndex("projects_key_active_idx").on(table.key).where(sql`deleted_at IS NULL`)` to allow soft-deleted project keys to be reused or recreated.
+  - **API Layer Refactoring (`apps/api`):**
+    - Refactored `apps/api/src/routes/projects.ts` to delegate directly to domain services, removing raw SQL duplication and TOCTOU race conditions.
+    - Added centralized `app.notFound` and `app.onError` middleware in `apps/api/src/index.ts` returning structured `{ success: false, error: { message, code } }` JSON responses.
+  - **MCP Server Refactoring (`packages/mcp-server`):**
+    - Refactored `get_project_context` tool in `packages/mcp-server/src/tools/projects.ts` to delegate directly to `getProjectContext`, eliminating query duplication and providing rich, human-readable error messages for missing or ambiguous projects.
+- **Verification & QA:**
+  - TypeScript workspace typecheck (`npx tsc --noEmit`) verified 0 errors across all packages.
+  - Verified MCP server build (`npm run mcp:build`) with exit code 0.
+- **Handoff for Next Agent:**
+  - Next task is `FEAT-02-01` in [Epic 02: Epic & Feature Proposal and Human Approval](file:///d:/Projects/Workmesh/docs/epics/epic-02-proposal-and-human-approval.md): Epic Proposal & Breakdown Flow (`propose_epic` MCP tool + UI Epic filter pills).
+
 
