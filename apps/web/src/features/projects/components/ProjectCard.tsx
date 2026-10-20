@@ -59,18 +59,18 @@ export function ProjectCard({
     >
       {/* Top Header Tagline & Meta */}
       <div style={cardHeaderRowStyle}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={keyBadgeStyle}>{project.key}</span>
-          <span style={cardTaglineStyle}>WORKSPACE // {project.key}</span>
+          <span style={cardNamespaceStyle}>Workspace</span>
         </div>
-        <div style={cardTopMetaStyle}>
+        <div style={cardTopMetaStyle} className="tabular-nums">
           {formattedDate && <span>{formattedDate}</span>}
           <span>•</span>
           <span>{totalTickets} tickets allocated</span>
         </div>
       </div>
 
-      {/* Hero Project Title (Large commanding typography as in reference screenshot) */}
+      {/* Hero Project Title */}
       <h3 style={heroTitleStyle}>{project.name}</h3>
 
       {/* Description */}
@@ -80,9 +80,9 @@ export function ProjectCard({
 
       {/* Footer Details & Action Button */}
       <div style={cardFooterStyle}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "0.82rem", color: "var(--theme-card-muted)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "0.84rem", color: "var(--theme-card-muted)" }}>
           <Terminal size={14} />
-          <span>Prefix: <strong style={{ color: "var(--theme-card-text)" }}>{project.key}-#</strong></span>
+          <span>Prefix: <span style={{ color: "var(--theme-card-text)", fontWeight: 600 }}>{project.key}-#</span></span>
         </div>
 
         <div style={cardLinkStyle}>
@@ -118,19 +118,18 @@ const keyBadgeStyle: React.CSSProperties = {
   backgroundColor: "color-mix(in srgb, var(--theme-card-text) 10%, transparent)",
   border: "1px solid var(--theme-card-border)",
   color: "var(--theme-card-text)",
-  fontFamily: "var(--font-mono)",
+  fontFamily: "var(--font-primary)",
   fontSize: "0.78rem",
-  fontWeight: 700,
+  fontWeight: 600,
   padding: "3px 8px",
   borderRadius: 4,
+  letterSpacing: "-0.01em",
 };
 
-const cardTaglineStyle: React.CSSProperties = {
-  fontFamily: "var(--font-mono)",
-  fontSize: "0.72rem",
-  fontWeight: 700,
-  letterSpacing: "0.08em",
-  textTransform: "uppercase",
+const cardNamespaceStyle: React.CSSProperties = {
+  fontFamily: "var(--font-primary)",
+  fontSize: "0.78rem",
+  fontWeight: 500,
   color: "var(--theme-card-muted)",
 };
 
@@ -138,9 +137,9 @@ const cardTopMetaStyle: React.CSSProperties = {
   display: "flex",
   alignItems: "center",
   gap: 8,
-  fontSize: "0.78rem",
+  fontSize: "0.80rem",
   color: "var(--theme-card-muted)",
-  fontFamily: "var(--font-mono)",
+  fontFamily: "var(--font-primary)",
 };
 
 const heroTitleStyle: React.CSSProperties = {

@@ -15,9 +15,9 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Current Task ID** | `FEAT-02-01` |
-| **Feature Title** | Epic Proposal & Breakdown Flow |
-| **Epic** | [Epic 02: Epic & Feature Proposal and Human Approval](file:///d:/Projects/Workmesh/docs/epics/epic-02-proposal-and-human-approval.md) |
+| **Current Task ID** | `FEAT-03-01` |
+| **Feature Title** | Actionable Task Discovery Flow |
+| **Epic** | [Epic 03: Task Discovery & Agent Claiming](file:///d:/Projects/Workmesh/docs/epics/epic-03-task-discovery-and-agent-claiming.md) |
 | **Status** | `TODO` |
 | **Active Session / Agent ID** | `NONE` |
 | **Started At** | `—` |
@@ -36,8 +36,6 @@
 | `FEAT-01-03` | MCP Server Init & `get_project_context` Tool | `CRITICAL` | `DONE` | MCP Inspector stdio live call + DB auth & UI context match |
 | `FEAT-01-04` | Project Theming & Split Hero Card Header | `HIGH` | `DONE` | UI UAT (Theme preview cards, ProjectCard, and Split Hero Card verified) |
 
-
-
 ---
 
 ### Epic 02: Epic & Feature Proposal and Human Approval
@@ -45,9 +43,9 @@
 
 | Feature ID | Feature Name | Priority | Status | Verified Via |
 | :--- | :--- | :--- | :--- | :--- |
-| `FEAT-02-01` | Epic Proposal & Breakdown Flow | `HIGH` | `TODO` | MCP `propose_epic` + UI Epic filter pills |
-| `FEAT-02-02` | Feature Proposal with Acceptance Criteria Flow | `CRITICAL` | `TODO` | MCP `propose_feature` + UI "+ New Ticket" modal |
-| `FEAT-02-03` | Proposed Column & Human Approval / Rejection Flow | `CRITICAL` | `TODO` | UI Kanban 1-click Approve/Reject action buttons |
+| `FEAT-02-01` | Epic Creation & Breakdown Flow | `HIGH` | `DONE` | MCP `create_epic` live call + UI CreateEpicModal & EpicsFilterBar verified |
+| `FEAT-02-02` | Feature Creation with Acceptance Criteria Flow | `CRITICAL` | `DONE` | Live REST API + MCP `create_feature` + UI CreateFeatureModal verified |
+| `FEAT-02-03` | Proposed Column & Human Approval / Rejection Flow | `CRITICAL` | `DONE` | UI Kanban 1-click Approve/Reject action buttons + API human-only guard + DB audit log |
 
 ---
 
@@ -283,6 +281,112 @@ Whenever a new chat session starts or an autonomous agent takes over:
   - TypeScript workspace typecheck (`npx tsc --noEmit`) verified 0 errors across all packages.
   - Verified MCP server build (`npm run mcp:build`) with exit code 0.
 - **Handoff for Next Agent:**
-  - Next task is `FEAT-02-01` in [Epic 02: Epic & Feature Proposal and Human Approval](file:///d:/Projects/Workmesh/docs/epics/epic-02-proposal-and-human-approval.md): Epic Proposal & Breakdown Flow (`propose_epic` MCP tool + UI Epic filter pills).
+  - Next task is `FEAT-02-01` in [Epic 02: Epic & Feature Proposal and Human Approval](file:///d:/Projects/Workmesh/docs/epics/epic-02-proposal-and-human-approval.md): Epic Creation & Breakdown Flow.
+
+---
+
+### Session 06: Epic Creation & Breakdown Flow (`FEAT-02-01`)
+- **Date / Timestamp:** 2026-10-13
+- **Completed:** `FEAT-02-01` (Epic Creation & Breakdown Flow)
+- **What Was Implemented:**
+  - **Shared Schemas (`@workmesh/shared`):**
+    - Defined `createEpicBodySchema` & `createEpicInputSchema` in `packages/shared/src/epics.ts`.
+    - Added `key?: string;` property to `Epic` and `EpicSummary` interfaces to carry computed badge identifiers (e.g., `WM-1`).
+  - **Database Domain Service (`@workmesh/db`):**
+    - Created `packages/db/src/services/epics.ts` implementing `createEpic` and `listEpics`.
+    - `createEpic` uses PostgreSQL atomic row update (`UPDATE projects SET next_ticket_number = next_ticket_number + 1 RETURNING next_ticket_number`) inside a transaction to allocate unique, gapless ticket numbers.
+    - Automatically records an audit log entry via `recordActivity` with entity type `EPIC` and action `CREATED`.
+    - Exported from `@workmesh/db` index.
+  - **Hono REST API (`apps/api`):**
+    - Created `apps/api/src/routes/epics.ts` with `POST /api/projects/:key/epics` and `GET /api/projects/:key/epics`.
+    - Mounted on `apps/api/src/index.ts`.
+  - **Web Client & State (`apps/web`):**
+    - Created `apps/web/src/features/epics/api.ts` and `apps/web/src/features/epics/queries.ts` (`useCreateEpicMutation`, `useEpicsQuery`) with automatic cache invalidation for the project hub.
+    - Created `apps/web/src/features/epics/components/CreateEpicModal.tsx` following the Minimal Design System and interaction tokens (`.animate-modal`, `.animate-backdrop`, snappy 0ms tactile feedback).
+    - Updated `ProjectHeader.tsx` with `+ Create Epic` button in the telemetry actions column.
+    - Updated `EpicsFilterBar.tsx` to render an orange `Proposed` badge for newly staged epics and an inline `+ Epic` action button.
+    - Wired modal state and mutation into `apps/web/src/app/projects/[key]/page.tsx`.
+  - **MCP Server (`packages/mcp-server`):**
+    - Implemented `create_epic` tool in `packages/mcp-server/src/tools/epics.ts` with parameter validation using `createEpicInputSchema`.
+    - Mounted in `packages/mcp-server/src/tools/index.ts`.
+- **Verification & UAT:**
+  - Full workspace TypeScript typecheck (`npx tsc --noEmit`) verified with 0 errors across all packages.
+  - MCP tool live execution manually verified via MCP Inspector.
+  - REST API verified live: `POST /api/projects/WM/epics` created epic `WM-1` in `PROPOSED` status and `GET /api/projects/WM/epics` returned the list.
+- **Handoff for Next Agent:**
+  - Next task is `FEAT-02-02` in [Epic 02: Epic & Feature Proposal and Human Approval](file:///d:/Projects/Workmesh/docs/epics/epic-02-proposal-and-human-approval.md): Feature Creation with Acceptance Criteria Flow.
+
+---
+
+### Session 07: Feature Creation with Acceptance Criteria Flow (`FEAT-02-02`)
+- **Date / Timestamp:** 2026-10-14
+- **Completed:** `FEAT-02-02` (Feature Creation with Acceptance Criteria Flow)
+- **What Was Implemented:**
+  - **Shared Schemas (`@workmesh/shared`):**
+    - Defined `createFeatureBodySchema` (enforcing `epicId`, title, description, priority, and `min(1)` criteria) and `createFeatureInputSchema` in `packages/shared/src/features.ts`.
+    - Added `key?: string;` property to `Feature` and `FeatureSummary` interfaces for formatted ticket keys (e.g. `WM-4`).
+  - **Database Domain Service (`@workmesh/db`):**
+    - Created `packages/db/src/services/features.ts` with `createFeature` and `listFeatures`.
+    - `createFeature` validates parent Epic existence and cross-project boundary integrity.
+    - Atomically claims the next project-scoped sequence counter from `projects.nextTicketNumber` in a PostgreSQL row-locked transaction.
+    - Normalizes criteria strings into structured JSON `{ text, completed: false }` saved in PostgreSQL `jsonb`.
+    - Persists feature with initial status `PROPOSED` and records audit entry via `recordActivity`.
+    - Exported from `@workmesh/db` index.
+  - **Hono REST API (`apps/api`):**
+    - Created `apps/api/src/routes/features.ts` with `projectFeaturesRouter` (`GET /api/projects/:key/features`, `POST /api/projects/:key/features`) and `epicFeaturesRouter` (`POST /api/epics/:epicId/features`).
+    - Mounted in `apps/api/src/index.ts`.
+  - **Web Client & State (`apps/web`):**
+    - Created `apps/web/src/features/features/api.ts` and `apps/web/src/features/features/queries.ts` (`useCreateFeatureMutation`, `useFeaturesQuery`) with cache invalidation of the project hub.
+    - Created `apps/web/src/features/features/components/CreateFeatureModal.tsx` following the Minimal Design System and interaction tokens (`.animate-modal`, `.animate-backdrop`, 0ms tactile feedback) with parent Epic selector and dynamic criteria checklist builder.
+    - Wired `isCreateFeatureOpen` into `apps/web/src/app/projects/[key]/page.tsx` on `ProjectHeader` and `KanbanBoard` triggers.
+  - **MCP Server (`packages/mcp-server`):**
+    - Implemented `create_feature` tool in `packages/mcp-server/src/tools/features.ts` using `createFeatureInputSchema`.
+    - Mounted in `packages/mcp-server/src/tools/index.ts`.
+- **Verification & UAT:**
+  - Full workspace TypeScript typecheck (`npx tsc --noEmit`) verified with 0 errors across all packages.
+  - MCP package build (`npm run build --workspace=@workmesh/mcp-server`) verified with exit code 0.
+  - Live REST API verified: `POST /api/projects/WM/features` created feature `WM-4` under Epic `WM-1` with 2 acceptance criteria in `PROPOSED` status, and `GET /api/projects/WM` reflected updated counters and feature list.
+- **Handoff for Next Agent:**
+  - Next task is `FEAT-02-03` in [Epic 02: Epic & Feature Proposal and Human Approval](file:///d:/Projects/Workmesh/docs/epics/epic-02-proposal-and-human-approval.md): Proposed Column & Human Approval / Rejection Flow (`PATCH /api/features/:id/approve` and `PATCH /api/features/:id/reject`, UI Kanban 1-click Approve/Reject action buttons, and Human-only enforcement rule).
+
+---
+
+### Session 08: Proposed Column & Human Approval / Rejection Flow (`FEAT-02-03`)
+- **Date / Timestamp:** 2026-10-14
+- **Completed:** `FEAT-02-03` (Proposed Column & Human Approval / Rejection Flow)
+- **What Was Implemented:**
+  - **Shared Schemas (`@workmesh/shared`):**
+    - Defined `approveFeatureBodySchema` (optional notes) and `rejectFeatureBodySchema` (required reason string) in `packages/shared/src/features.ts`.
+  - **Database Domain Service (`@workmesh/db`):**
+    - Added `approveFeature(featureId, options, actor)` and `rejectFeature(featureId, options, actor)` to `packages/db/src/services/features.ts`.
+    - Added `FeatureNotFoundError`, `InvalidFeatureStatusTransitionError`, and `HumanActorRequiredError`.
+    - Enforced transition state invariants: only features with `PROPOSED` status can be transitioned.
+    - Persisted immutable audit logs with `action: "APPROVED"` / `action: "REJECTED"` and actor type `HUMAN`.
+  - **Hono REST API (`apps/api`):**
+    - Created `featuresRouter` with `PATCH /api/features/:id/approve` and `PATCH /api/features/:id/reject` mounted in `apps/api/src/index.ts`.
+    - Enforced Human-Only guard middleware: callers with `x-actor-type: AGENT` receive `403 Forbidden`.
+  - **Web Client & State (`apps/web`):**
+    - Added `featuresApi.approve` and `featuresApi.reject` to `apps/web/src/features/features/api.ts`.
+    - Added `useApproveFeatureMutation` and `useRejectFeatureMutation` to `apps/web/src/features/features/queries.ts` with instant query invalidation of the project hub.
+    - Updated `FeatureCard.tsx`: when in `PROPOSED` status, renders a dedicated bottom action strip with 1-click `[✓ Approve]` and `[✕ Reject]` buttons with 0ms tactile feedback and loading spinners.
+    - Created `RejectFeatureModal.tsx` dialog for prompting the human operator for a rejection reason.
+    - Added CSS design system styles `.feature-action-btn-approve`, `.feature-action-btn-reject`, and `.btn-danger` in `apps/web/src/styles/components.css`.
+- **Verification & UAT:**
+  - TypeScript typecheck (`npx tsc --noEmit`) verified 0 errors across all monorepo workspaces.
+  - Live API testing verified:
+    - Agent guard returned `403 Forbidden` when attempting approval/rejection with `x-actor-type: AGENT`.
+    - `PATCH /api/features/1/approve` successfully transitioned `WM-4` ("Implement Session Cookie") from `PROPOSED` to `APPROVED`, moving it immediately into the Approved Kanban column.
+    - Subsequent approval attempt properly failed with `Cannot approve Feature 1: only features with status 'PROPOSED' can be transitioned`.
+    - `PATCH /api/features/2/reject` successfully transitioned `WM-5` to `REJECTED` and removed it from active Kanban columns.
+    - Database audit query confirmed both actions logged with `actor: { type: "HUMAN" }` and timestamps.
+  - Web UI live visual verification confirmed:
+    - `WM-6` in Proposed column renders clean, non-wrapping `0/2 criteria` counter with dedicated full-width `[✓ Approve]` and `[✕ Reject]` action buttons.
+    - `WM-4` in Approved column renders with standard card styling.
+- **Handoff for Next Agent:**
+  - **Epic 02 is now 100% complete!**
+  - Next task is `FEAT-03-01` in [Epic 03: Task Discovery & Agent Claiming](file:///d:/Projects/Workmesh/docs/epics/epic-03-task-discovery-and-agent-claiming.md): Actionable Task Discovery Flow (`list_actionable_tasks` MCP tool matching Approved column).
+
+
+
 
 

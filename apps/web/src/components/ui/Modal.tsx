@@ -70,12 +70,14 @@ export function Modal({
       >
         {/* Header */}
         <div style={headerStyle}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             {icon && <div style={iconBadgeStyle}>{icon}</div>}
             <div>
-              <h2 style={{ fontSize: "1.1rem", fontWeight: 600 }}>{title}</h2>
+              <h2 style={{ fontSize: "1.05rem", fontWeight: 600, color: "var(--text-primary)", margin: 0 }}>
+                {title}
+              </h2>
               {subtitle && (
-                <p style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}>
+                <p style={{ fontSize: "0.82rem", color: "var(--text-secondary)", margin: "3px 0 0 0" }}>
                   {subtitle}
                 </p>
               )}
@@ -84,10 +86,10 @@ export function Modal({
           <button
             onClick={onClose}
             aria-label="Close dialog"
-            className="btn-secondary"
+            className="modal-close-btn"
             style={closeButtonStyle}
           >
-            <X size={18} color="var(--text-secondary)" />
+            <X size={16} />
           </button>
         </div>
 
@@ -101,8 +103,8 @@ export function Modal({
 const overlayStyle: React.CSSProperties = {
   position: "fixed",
   inset: 0,
-  backgroundColor: "rgba(0, 0, 0, 0.75)",
-  backdropFilter: "blur(4px)",
+  backgroundColor: "rgba(0, 0, 0, 0.78)",
+  backdropFilter: "blur(6px)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -113,35 +115,33 @@ const overlayStyle: React.CSSProperties = {
 const modalStyle: React.CSSProperties = {
   backgroundColor: "var(--surface-raised)",
   border: "1px solid var(--border-subtle)",
-  borderRadius: 8,
+  borderRadius: 10,
   width: "100%",
-  boxShadow: "0 12px 32px rgba(0, 0, 0, 0.2)",
+  boxShadow: "0 24px 48px -12px rgba(0, 0, 0, 0.65), 0 0 0 1px var(--border-subtle)",
   overflow: "hidden",
+  color: "var(--text-primary)",
 };
 
 const headerStyle: React.CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "16px 20px",
+  padding: "18px 24px",
   borderBottom: "1px solid var(--border-subtle)",
 };
 
 const iconBadgeStyle: React.CSSProperties = {
-  width: 32,
-  height: 32,
-  borderRadius: 6,
+  width: 36,
+  height: 36,
+  borderRadius: 8,
   backgroundColor: "var(--surface)",
   border: "1px solid var(--border-subtle)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  flexShrink: 0,
 };
 
 const closeButtonStyle: React.CSSProperties = {
-  padding: 6,
-  borderRadius: 6,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+  padding: 0,
 };

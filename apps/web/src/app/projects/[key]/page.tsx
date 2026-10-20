@@ -13,6 +13,8 @@ import { KanbanBoard } from "../../../features/projects/components/KanbanBoard";
 import { FeaturesListView } from "../../../features/projects/components/FeaturesListView";
 import { ProjectBoardSkeleton } from "../../../features/projects/components/ProjectBoardSkeleton";
 import { useProjectByKeyQuery } from "../../../features/projects/queries";
+import { CreateEpicModal } from "../../../features/epics/components/CreateEpicModal";
+import { CreateFeatureModal } from "../../../features/features/components/CreateFeatureModal";
 
 export default function ProjectHubPage() {
   const routeParams = useParams();
@@ -21,6 +23,8 @@ export default function ProjectHubPage() {
 
   const [viewMode, setViewMode] = useState<"kanban" | "list">("kanban");
   const [selectedEpicId, setSelectedEpicId] = useState<number | null>(null);
+  const [isCreateEpicOpen, setIsCreateEpicOpen] = useState(false);
+  const [isCreateFeatureOpen, setIsCreateFeatureOpen] = useState(false);
 
   const {
     data: project,
@@ -98,9 +102,8 @@ export default function ProjectHubPage() {
           project={project}
           viewMode={viewMode}
           onViewModeChange={setViewMode}
-          onProposeFeature={() => {
-            alert("Feature proposal flow will be available in Epic 02.");
-          }}
+          onCreateEpic={() => setIsCreateEpicOpen(true)}
+          onProposeFeature={() => setIsCreateFeatureOpen(true)}
         />
 
         {/* Roadmap / Epics Filter Bar (only rendered when epics exist) */}
@@ -111,6 +114,7 @@ export default function ProjectHubPage() {
               epics={project.epics}
               selectedEpicId={selectedEpicId}
               onSelectEpic={setSelectedEpicId}
+              onCreateEpic={() => setIsCreateEpicOpen(true)}
               featuresCountByEpic={featuresCountByEpic}
               totalFeaturesCount={project.features?.length || 0}
             />
@@ -123,9 +127,7 @@ export default function ProjectHubPage() {
             <KanbanBoard
               projectKey={project.key}
               features={filteredFeatures}
-              onProposeFeature={() => {
-                alert("Feature proposal flow will be available in Epic 02.");
-              }}
+              onProposeFeature={() => setIsCreateFeatureOpen(true)}
             />
           ) : (
             <FeaturesListView
@@ -135,12 +137,28 @@ export default function ProjectHubPage() {
             />
           )}
         </div>
+
+        {/* Create Epic Modal Dialog */}
+        <CreateEpicModal
+          isOpen={isCreateEpicOpen}
+          onClose={() => setIsCreateEpicOpen(false)}
+          projectKey={project.key}
+        />
+
+        {/* Create Feature Modal Dialog */}
+        <CreateFeatureModal
+          isOpen={isCreateFeatureOpen}
+          onClose={() => setIsCreateFeatureOpen(false)}
+          projectKey={project.key}
+          epics={project.epics || []}
+          defaultEpicId={selectedEpicId}
+        />
     </div>
   );
 }
 
 const pageContainerStyle: React.CSSProperties = {
-  minHeight: "100vh",
+  minHeight: "100dvh",
   display: "flex",
   flexDirection: "column",
   backgroundColor: "var(--surface)",

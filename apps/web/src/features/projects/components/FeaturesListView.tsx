@@ -97,7 +97,7 @@ export function FeaturesListView({ projectKey, features, epics }: FeaturesListVi
                 <td style={tdStyle}>
                   <div style={criteriaStyle}>
                     <CheckSquare size={13} style={{ color: "var(--text-muted)" }} />
-                    <span>
+                    <span className="tabular-nums">
                       {completedCriteria}/{totalCriteria}
                     </span>
                   </div>
@@ -141,11 +141,10 @@ const tableHeaderRowStyle: React.CSSProperties = {
 
 const thStyle: React.CSSProperties = {
   padding: "10px 14px",
-  fontSize: "0.74rem",
+  fontSize: "0.78rem",
   fontWeight: 600,
-  color: "var(--text-muted)",
-  textTransform: "uppercase",
-  letterSpacing: "0.05em",
+  color: "var(--text-secondary)",
+  letterSpacing: "-0.01em",
 };
 
 const tableRowStyle: React.CSSProperties = {
@@ -159,13 +158,14 @@ const tdStyle: React.CSSProperties = {
 };
 
 const keyBadgeStyle: React.CSSProperties = {
-  fontFamily: "var(--font-mono)",
-  fontSize: "0.78rem",
-  fontWeight: 700,
+  fontFamily: "var(--font-primary)",
+  fontSize: "0.76rem",
+  fontWeight: 600,
   backgroundColor: "var(--surface)",
   border: "1px solid var(--border-subtle)",
   padding: "2px 6px",
   borderRadius: 4,
+  letterSpacing: "-0.01em",
 };
 
 const featureTitleLinkStyle: React.CSSProperties = {

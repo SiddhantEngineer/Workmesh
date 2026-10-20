@@ -3,33 +3,93 @@
    ========================================================== */
 
 .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: var(--accent-primary);
+  color: var(--accent-primary-fg, #FFFFFF);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
   transition: background-color var(--duration-fast) ease,
               transform var(--duration-instant) var(--ease-editorial),
               box-shadow var(--duration-fast) ease;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background-color: var(--accent-primary-hover);
-  box-shadow: 0 4px 14px rgba(49, 44, 133, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
-.btn-primary:active {
+.btn-primary:active:not(:disabled) {
   transform: scale(0.97);
 }
 
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 0.86rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
   transition: background-color var(--duration-fast) ease,
+              border-color var(--duration-fast) ease,
               color var(--duration-fast) ease,
               transform var(--duration-instant) var(--ease-editorial);
 }
 
-.btn-secondary:hover {
-  background-color: var(--surface);
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--surface-raised);
+  border-color: var(--text-muted);
   color: var(--text-primary);
 }
 
-.btn-secondary:active {
+.btn-secondary:active:not(:disabled) {
   transform: scale(0.97);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.modal-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease,
+              border-color var(--duration-fast) ease,
+              color var(--duration-fast) ease;
+}
+
+.modal-close-btn:hover {
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
 }
 
 /* ==========================================================
@@ -62,18 +122,18 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform var(--duration-standard) var(--ease-editorial),
-              background-color var(--duration-fast) ease,
-              border-color var(--duration-fast) ease;
+  transition: background-color var(--duration-fast) ease,
+              border-color var(--duration-fast) ease,
+              transform var(--duration-instant) var(--ease-editorial);
 }
 
 .theme-toggle-btn:hover {
-  transform: rotate(15deg);
-  border-color: var(--border-focus);
+  background-color: var(--surface-hover);
+  border-color: var(--border-strong);
 }
 
 .theme-toggle-btn:active {
-  transform: scale(0.90) rotate(45deg);
+  transform: scale(0.95);
 }
 
 .breadcrumb-link {
@@ -134,11 +194,11 @@
 }
 
 .filter-pill:hover {
-  transform: translateY(-1px);
+  border-color: var(--border-strong);
 }
 
 .filter-pill:active {
-  transform: scale(0.96);
+  transform: scale(0.97);
 }
 
 /* ==========================================================
@@ -172,11 +232,11 @@
   text-decoration: none;
   font-weight: 600;
   font-size: 0.78rem;
-  transition: color var(--duration-fast) ease, transform var(--duration-instant) ease;
+  transition: color var(--duration-fast) ease;
 }
 
-.action-link:hover .action-arrow {
-  transform: translateX(3px);
+.action-link:hover {
+  color: var(--accent-primary-hover);
 }
 
 .action-link:active {
@@ -197,7 +257,7 @@
 .themed-hero-left {
   --theme-card-bg: var(--project-card-bg-light, var(--surface-raised));
   --theme-card-text: var(--project-card-text-light, var(--text-primary));
-  --theme-card-border: color-mix(in srgb, var(--theme-card-text) 16%, transparent);
+  --theme-card-border: color-mix(in srgb, var(--theme-card-text) 8%, transparent);
   --theme-card-muted: color-mix(in srgb, var(--theme-card-text) 60%, transparent);
 
   background-color: var(--theme-card-bg) !important;
@@ -223,52 +283,39 @@
 /* Project Cards */
 .project-card {
   border: 1px solid var(--theme-card-border);
-  border-radius: 12px;
-  padding: 28px 32px;
+  border-radius: var(--radius-xl);
+  padding: 24px 28px;
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
   text-decoration: none;
   cursor: pointer;
-  transition: transform var(--duration-standard) var(--ease-editorial),
-              box-shadow var(--duration-standard) var(--ease-editorial),
-              border-color var(--duration-fast) ease,
+  transition: border-color var(--duration-fast) ease,
+              box-shadow var(--duration-fast) ease,
+              transform var(--duration-instant) var(--ease-editorial),
               opacity var(--duration-standard) ease;
-  animation: cardEntrance 0.3s var(--ease-editorial) both;
 }
 
-.project-card:hover {
-  transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--theme-card-text) 36%, transparent);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-card-text) 14%, transparent),
-              0 6px 16px -6px color-mix(in srgb, var(--theme-card-text) 18%, transparent);
-}
-
-[data-theme="dark"] .project-card:hover {
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-card-text) 28%, transparent),
-              0 8px 20px -6px rgba(0, 0, 0, 0.45);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .project-card:hover {
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-card-text) 28%, transparent),
-                0 8px 20px -6px rgba(0, 0, 0, 0.45);
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover {
+    border-color: color-mix(in srgb, var(--theme-card-text) 22%, transparent);
+    box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.08);
   }
 }
 
-.project-card .card-arrow {
-  transition: transform var(--duration-standard) var(--ease-editorial);
+.project-card:active {
+  transform: scale(0.99);
 }
 
-.project-card:hover .card-arrow {
-  transform: translateX(4px);
+.project-card .card-arrow {
+  display: inline-flex;
 }
 
 /* Kanban Feature Cards */
 .feature-card {
   background-color: var(--surface-raised);
   border: 1px solid var(--border-subtle);
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   padding: 12px 14px;
   display: flex;
   flex-direction: column;
@@ -276,31 +323,62 @@
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  transition: transform var(--duration-fast) var(--ease-editorial),
-              box-shadow var(--duration-fast) var(--ease-editorial),
-              border-color var(--duration-fast) ease;
+  transition: border-color var(--duration-fast) ease,
+              background-color var(--duration-fast) ease,
+              box-shadow var(--duration-fast) ease,
+              transform var(--duration-instant) var(--ease-editorial);
 }
 
-.feature-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px -3px rgba(0, 0, 0, 0.05);
-  border-color: rgba(49, 44, 133, 0.28);
+@media (hover: hover) and (pointer: fine) {
+  .feature-card:hover {
+    border-color: var(--border-strong);
+    background-color: var(--surface-hover);
+    box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.06);
+  }
 }
 
 .feature-card:active {
-  transform: scale(0.98);
+  transform: scale(0.985);
 }
 
-[data-theme="dark"] .feature-card:hover {
-  box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.35);
-  border-color: rgba(124, 117, 242, 0.35);
+/* Acceptance Criteria Progress Bar */
+.criteria-progress-bar {
+  width: 100%;
+  height: 3px;
+  background-color: var(--border-subtle);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-top: 4px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .feature-card:hover {
-    box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.35);
-    border-color: rgba(124, 117, 242, 0.35);
-  }
+.criteria-progress-fill {
+  height: 100%;
+  background-color: var(--color-success);
+  border-radius: var(--radius-full);
+  transition: width var(--duration-fast) var(--ease-editorial);
+}
+
+/* Kanban Board Horizontal Scroll Container */
+.kanban-board-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-subtle) transparent;
+}
+
+.kanban-board-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.kanban-board-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.kanban-board-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--border-subtle);
+  border-radius: var(--radius-full);
+}
+
+.kanban-board-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: var(--border-strong);
 }
 
 /* Theme Swatch Preview Cards */
@@ -309,18 +387,111 @@
   flex-direction: column;
   gap: 3px;
   padding: 10px 12px;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   cursor: pointer;
   text-align: left;
-  transition: transform var(--duration-fast) var(--ease-editorial),
-              box-shadow var(--duration-fast) ease,
-              border-color var(--duration-fast) ease;
+  transition: border-color var(--duration-fast) ease,
+              background-color var(--duration-fast) ease,
+              transform var(--duration-instant) var(--ease-editorial);
 }
 
-.theme-preview-card:hover {
-  transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+  .theme-preview-card:hover {
+    border-color: var(--border-strong);
+  }
 }
 
 .theme-preview-card:active {
   transform: scale(0.97);
 }
+
+/* ==========================================================
+   FEATURE CARD INLINE ACTIONS & DESTRUCTIVE BUTTONS
+   ========================================================== */
+
+.feature-action-btn-approve {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #15803D;
+  background-color: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.28);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease,
+              border-color var(--duration-fast) ease,
+              transform var(--duration-instant) var(--ease-editorial);
+}
+
+.feature-action-btn-approve:hover:not(:disabled) {
+  background-color: rgba(34, 197, 94, 0.22);
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+.feature-action-btn-approve:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+[data-theme="dark"] .feature-action-btn-approve {
+  color: #4ADE80;
+  background-color: rgba(34, 197, 94, 0.16);
+  border-color: rgba(34, 197, 94, 0.32);
+}
+
+.feature-action-btn-reject {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-danger);
+  background-color: rgba(239, 68, 68, 0.10);
+  border: 1px solid rgba(239, 68, 68, 0.24);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease,
+              border-color var(--duration-fast) ease,
+              transform var(--duration-instant) var(--ease-editorial);
+}
+
+.feature-action-btn-reject:hover:not(:disabled) {
+  background-color: rgba(239, 68, 68, 0.20);
+  border-color: rgba(239, 68, 68, 0.40);
+}
+
+.feature-action-btn-reject:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.btn-danger {
+  background-color: var(--color-danger);
+  color: #FFFFFF;
+  border: none;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 8px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease,
+              transform var(--duration-instant) var(--ease-editorial),
+              box-shadow var(--duration-fast) ease;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #DC2626;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+}
+
+.btn-danger:active:not(:disabled) {
+  transform: scale(0.97);
+}
+

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Plus } from "lucide-react";
 import type { EpicSummary } from "@workmesh/shared";
 
 interface EpicsFilterBarProps {
@@ -8,6 +9,7 @@ interface EpicsFilterBarProps {
   epics: EpicSummary[];
   selectedEpicId: number | null;
   onSelectEpic: (epicId: number | null) => void;
+  onCreateEpic?: () => void;
   featuresCountByEpic?: Record<number, number>;
   totalFeaturesCount: number;
 }
@@ -17,6 +19,7 @@ export function EpicsFilterBar({
   epics,
   selectedEpicId,
   onSelectEpic,
+  onCreateEpic,
   featuresCountByEpic = {},
   totalFeaturesCount,
 }: EpicsFilterBarProps) {
@@ -66,11 +69,28 @@ export function EpicsFilterBar({
                 borderColor: isSelected ? "var(--accent-primary)" : "var(--border-subtle)",
               }}
             >
-              <span style={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: "0.74rem" }}>
+              <span style={{ fontWeight: 600, fontSize: "0.76rem" }}>
                 {epicTicketKey}
               </span>
               <span style={{ fontWeight: 500 }}>{epic.title}</span>
+              {epic.status === "PROPOSED" && (
+                <span
+                  style={{
+                    fontSize: "0.70rem",
+                    padding: "1px 6px",
+                    borderRadius: "var(--radius-sm)",
+                    backgroundColor: isSelected
+                      ? "rgba(255, 255, 255, 0.25)"
+                      : "rgba(249, 115, 22, 0.12)",
+                    color: isSelected ? "#FFFFFF" : "#F97316",
+                    fontWeight: 600,
+                  }}
+                >
+                  Proposed
+                </span>
+              )}
               <span
+                className="tabular-nums"
                 style={{
                   ...countBadgeStyle,
                   backgroundColor: isSelected ? "rgba(255, 255, 255, 0.2)" : "var(--surface)",
@@ -82,6 +102,25 @@ export function EpicsFilterBar({
             </button>
           );
         })}
+
+        {onCreateEpic && (
+          <button
+            onClick={onCreateEpic}
+            className="filter-pill"
+            style={{
+              ...pillStyle,
+              backgroundColor: "transparent",
+              borderStyle: "dashed",
+              borderColor: "var(--border-subtle)",
+              color: "var(--text-secondary)",
+              gap: 4,
+            }}
+            title="Create a new epic under this project"
+          >
+            <Plus size={12} />
+            <span>Epic</span>
+          </button>
+        )}
       </div>
     </div>
   );
@@ -96,11 +135,10 @@ const containerStyle: React.CSSProperties = {
 };
 
 const labelStyle: React.CSSProperties = {
-  fontSize: "0.78rem",
+  fontSize: "0.80rem",
   fontWeight: 600,
-  color: "var(--text-muted)",
-  textTransform: "uppercase",
-  letterSpacing: "0.05em",
+  color: "var(--text-secondary)",
+  letterSpacing: "-0.01em",
   flexShrink: 0,
 };
 
@@ -116,17 +154,17 @@ const pillStyle: React.CSSProperties = {
   alignItems: "center",
   gap: 6,
   padding: "5px 10px",
-  borderRadius: 16,
+  borderRadius: "var(--radius-full)",
   border: "1px solid var(--border-subtle)",
   fontSize: "0.78rem",
   cursor: "pointer",
   whiteSpace: "nowrap",
-  transition: "all 0.15s ease",
+  transition: "background-color var(--duration-fast) ease, color var(--duration-fast) ease, border-color var(--duration-fast) ease, transform var(--duration-instant) var(--ease-editorial)",
 };
 
 const countBadgeStyle: React.CSSProperties = {
   fontSize: "0.7rem",
   padding: "1px 5px",
-  borderRadius: 10,
+  borderRadius: "var(--radius-full)",
   fontWeight: 600,
 };

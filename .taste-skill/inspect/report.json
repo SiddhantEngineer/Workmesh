@@ -1,0 +1,2407 @@
+{
+ "url": "http://127.0.0.1:3000",
+ "at": "2026-10-20T12:09:30.155Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.84,
+    0.86,
+    0.94
+   ],
+   "motion": {
+    "elements": 8,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 8,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 1952,
+     "screens": 2.2,
+     "words": 133,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 19,
+     "sections": 0,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Projects",
+     "words": 1,
+     "chars": 8,
+     "lines": 1,
+     "size": 28,
+     "vw": 1.9,
+     "font": "Geist",
+     "weight": 700,
+     "tracking": -0.03,
+     "leading": 1.2,
+     "top": 94,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Projects",
+     "words": 1,
+     "lines": 1,
+     "size": 28,
+     "font": "Geist"
+    },
+    "headings": [
+     {
+      "text": "Projects",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 28,
+      "vw": 1.9,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.03,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.97,
+      "top": 94,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Test2",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 2.3,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.93,
+      "top": 249,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Test",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 2.3,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.93,
+      "top": 498,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Workout",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 2.3,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.93,
+      "top": 747,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "asd",
+      "words": 1,
+      "chars": 3,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 2.3,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.93,
+      "top": 996,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "asda",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 2.3,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.93,
+      "top": 1245,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "porject 1",
+      "words": 2,
+      "chars": 9,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 2.3,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.93,
+      "top": 1494,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "First Project",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 2.3,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.93,
+      "top": 1743,
+      "tag": "h3",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 8,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 1,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Geist",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      18,
+      28,
+      34
+     ],
+     "sizeCount": 7,
+     "notLoaded": [],
+     "body": {
+      "font": "Geist",
+      "size": 15.2,
+      "leading": 1.2,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 7.2
+     },
+     "measureChars": 183,
+     "max": {
+      "size": 33.6,
+      "vw": 2.3,
+      "font": "Geist",
+      "text": "Test2"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.07,
+     "centerShare": 0.02,
+     "smallText": 14
+    },
+    "eyebrows": [
+     {
+      "text": "CORE1",
+      "above": "Test2",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.5,
+      "top": 206
+     },
+     {
+      "text": "WM",
+      "above": "Test",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.5,
+      "top": 455
+     },
+     {
+      "text": "SA",
+      "above": "Workout",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.5,
+      "top": 704
+     },
+     {
+      "text": "WASD",
+      "above": "asd",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.5,
+      "top": 953
+     },
+     {
+      "text": "WER",
+      "above": "asda",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.5,
+      "top": 1202
+     },
+     {
+      "text": "CORE",
+      "above": "porject 1",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.5,
+      "top": 1451
+     },
+     {
+      "text": "FP",
+      "above": "First Project",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.5,
+      "top": 1700
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0c0c09",
+     "bodyBgHsl": {
+      "h": 60,
+      "s": 0.14,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#0c0c09",
+       "top": 0,
+       "hsl": {
+        "h": 60,
+        "s": 0.14,
+        "l": 0.04
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#e3f2f8",
+       "share": 0.32
+      },
+      {
+       "color": "#9e9e94",
+       "share": 0.15
+      },
+      {
+       "color": "#e2f1f8",
+       "share": 0.15
+      },
+      {
+       "color": "#f5f3f0",
+       "share": 0.11
+      },
+      {
+       "color": "#e3f5e8",
+       "share": 0.09
+      }
+     ],
+     "button": {
+      "bg": "#7c75f2",
+      "hsl": {
+       "h": 243,
+       "s": 0.83,
+       "l": 0.7
+      },
+      "fg": "#0c0c09"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 1,
+     "inHero": 1,
+     "radius": 6,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "New Project"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 1,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 8,
+     "hairlineSamples": [
+      "div 1392px",
+      "div 1334px",
+      "div 1334px",
+      "div 1334px",
+      "div 1334px"
+     ],
+     "outlinedBoxes": 7,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 7,
+     "boxRadius": 12,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 1,
+     "fixed": false,
+     "height": 70,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 1952,
+    "margins": {
+     "left": 53,
+     "right": 53
+    },
+    "sections": [
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 181,
+      "height": 229,
+      "words": 14,
+      "media": 0,
+      "middle": 999,
+      "heading": {
+       "text": "Test2",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 53,
+      "textLeft": 53,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 430,
+      "height": 229,
+      "words": 14,
+      "media": 0,
+      "middle": 1016,
+      "heading": {
+       "text": "Test",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 53,
+      "textLeft": 53,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 679,
+      "height": 229,
+      "words": 17,
+      "media": 0,
+      "middle": 998,
+      "heading": {
+       "text": "Workout",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 53,
+      "textLeft": 53,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 928,
+      "height": 229,
+      "words": 14,
+      "media": 0,
+      "middle": 1002,
+      "heading": {
+       "text": "asd",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 53,
+      "textLeft": 53,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 1177,
+      "height": 229,
+      "words": 14,
+      "media": 0,
+      "middle": 1011,
+      "heading": {
+       "text": "asda",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 53,
+      "textLeft": 53,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 1426,
+      "height": 229,
+      "words": 15,
+      "media": 0,
+      "middle": 999,
+      "heading": {
+       "text": "porject 1",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 53,
+      "textLeft": 53,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 1675,
+      "height": 229,
+      "words": 18,
+      "media": 0,
+      "middle": 950,
+      "heading": {
+       "text": "First Project",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 53,
+      "textLeft": 53,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Projects",
+      "size": 28,
+      "top": 94,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 53,
+      "n": 7
+     },
+     {
+      "x": 24,
+      "n": 2
+     }
+    ],
+    "leftBlocks": 9,
+    "bodySize": 15,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.5,
+    "voidBox": {
+     "x": 240,
+     "y": 180,
+     "w": 900,
+     "h": 720
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": true,
+    "ground": "#0c0c09",
+    "sidebar": null,
+    "topbar": null,
+    "canvas": {
+     "left": 24,
+     "right": 16
+    },
+    "hero": {
+     "text": "Projects",
+     "words": 1,
+     "chars": 8,
+     "lines": 1,
+     "size": 28,
+     "vw": 1.9,
+     "font": "Geist",
+     "weight": 700,
+     "tracking": -0.03,
+     "leading": 1.2,
+     "top": 94,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 7,
+     "firstScreen": 3,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 7,
+     "radii": [
+      [
+       12,
+       7
+      ]
+     ],
+     "heavyBorders": 7,
+     "borderSamples": [
+      "#f2f2f2 on #1b1411 (16.24:1)",
+      "#f2f2ff on #1a1324 (16.27:1)",
+      "#e6f2e6 on #111e15 (14.92:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 1,
+     "hues": 1,
+     "samples": [
+      {
+       "hue": 243,
+       "size": 32,
+       "radius": "4px"
+      }
+     ]
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.17,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      18,
+      28,
+      34
+     ]
+    },
+    "title": {
+     "text": "Projects",
+     "size": 28,
+     "top": 94
+    },
+    "colourShare": 0.005
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.71,
+    0.8
+   ],
+   "motion": {
+    "elements": 2,
+    "css": 1,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 1952,
+     "screens": 1.9,
+     "words": 133,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 19,
+     "sections": 0,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Projects",
+     "words": 1,
+     "chars": 8,
+     "lines": 1,
+     "size": 28,
+     "vw": 3.6,
+     "font": "Geist",
+     "weight": 700,
+     "tracking": -0.03,
+     "leading": 1.2,
+     "top": 94,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Projects",
+     "words": 1,
+     "lines": 1,
+     "size": 28,
+     "font": "Geist"
+    },
+    "headings": [
+     {
+      "text": "Projects",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 28,
+      "vw": 3.6,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.03,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 94,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Test2",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 4.4,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.86,
+      "top": 249,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Test",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 4.4,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.86,
+      "top": 498,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Workout",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 4.4,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.86,
+      "top": 747,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "asd",
+      "words": 1,
+      "chars": 3,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 4.4,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.86,
+      "top": 996,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "asda",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 4.4,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.86,
+      "top": 1245,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "porject 1",
+      "words": 2,
+      "chars": 9,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 4.4,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.86,
+      "top": 1494,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "First Project",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 4.4,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.86,
+      "top": 1743,
+      "tag": "h3",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 8,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 1,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Geist",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      18,
+      28,
+      34
+     ],
+     "sizeCount": 7,
+     "notLoaded": [],
+     "body": {
+      "font": "Geist",
+      "size": 15.2,
+      "leading": 1.2,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 7.2
+     },
+     "measureChars": 95,
+     "max": {
+      "size": 33.6,
+      "vw": 4.4,
+      "font": "Geist",
+      "text": "Test2"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.07,
+     "centerShare": 0.02,
+     "smallText": 14
+    },
+    "eyebrows": [
+     {
+      "text": "CORE1",
+      "above": "Test2",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.5,
+      "top": 206
+     },
+     {
+      "text": "WM",
+      "above": "Test",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.5,
+      "top": 455
+     },
+     {
+      "text": "SA",
+      "above": "Workout",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.5,
+      "top": 704
+     },
+     {
+      "text": "WASD",
+      "above": "asd",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.5,
+      "top": 953
+     },
+     {
+      "text": "WER",
+      "above": "asda",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.5,
+      "top": 1202
+     },
+     {
+      "text": "CORE",
+      "above": "porject 1",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.5,
+      "top": 1451
+     },
+     {
+      "text": "FP",
+      "above": "First Project",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.5,
+      "top": 1700
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0c0c09",
+     "bodyBgHsl": {
+      "h": 60,
+      "s": 0.14,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#0c0c09",
+       "top": 0,
+       "hsl": {
+        "h": 60,
+        "s": 0.14,
+        "l": 0.04
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#e3f2f8",
+       "share": 0.32
+      },
+      {
+       "color": "#9e9e94",
+       "share": 0.15
+      },
+      {
+       "color": "#e2f1f8",
+       "share": 0.15
+      },
+      {
+       "color": "#f5f3f0",
+       "share": 0.11
+      },
+      {
+       "color": "#e3f5e8",
+       "share": 0.09
+      }
+     ],
+     "button": {
+      "bg": "#7c75f2",
+      "hsl": {
+       "h": 243,
+       "s": 0.83,
+       "l": 0.7
+      },
+      "fg": "#0c0c09"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 1,
+     "inHero": 1,
+     "radius": 6,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "New Project"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 1,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 8,
+     "hairlineSamples": [
+      "div 720px",
+      "div 662px",
+      "div 662px",
+      "div 662px",
+      "div 662px"
+     ],
+     "outlinedBoxes": 7,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 7,
+     "boxRadius": 12,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 1,
+     "fixed": false,
+     "height": 70,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 1952,
+    "margins": {
+     "left": 53,
+     "right": 53
+    },
+    "sections": [
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 181,
+      "height": 229,
+      "words": 14,
+      "media": 0,
+      "middle": 327,
+      "heading": {
+       "text": "Test2",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 53,
+      "textLeft": 53,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 430,
+      "height": 229,
+      "words": 14,
+      "media": 0,
+      "middle": 344,
+      "heading": {
+       "text": "Test",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 53,
+      "textLeft": 53,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 679,
+      "height": 229,
+      "words": 17,
+      "media": 0,
+      "middle": 326,
+      "heading": {
+       "text": "Workout",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 53,
+      "textLeft": 53,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 928,
+      "height": 229,
+      "words": 14,
+      "media": 0,
+      "middle": 330,
+      "heading": {
+       "text": "asd",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 53,
+      "textLeft": 53,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 1177,
+      "height": 229,
+      "words": 14,
+      "media": 0,
+      "middle": 339,
+      "heading": {
+       "text": "asda",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 53,
+      "textLeft": 53,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 1426,
+      "height": 229,
+      "words": 15,
+      "media": 0,
+      "middle": 327,
+      "heading": {
+       "text": "porject 1",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 53,
+      "textLeft": 53,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 1675,
+      "height": 229,
+      "words": 18,
+      "media": 0,
+      "middle": 278,
+      "heading": {
+       "text": "First Project",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 53,
+      "textLeft": 53,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Projects",
+      "size": 28,
+      "top": 94,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 53,
+      "n": 7
+     },
+     {
+      "x": 24,
+      "n": 2
+     }
+    ],
+    "leftBlocks": 9,
+    "bodySize": 15,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": true,
+    "ground": "#0c0c09",
+    "sidebar": null,
+    "topbar": null,
+    "canvas": {
+     "left": 24,
+     "right": 16
+    },
+    "hero": {
+     "text": "Projects",
+     "words": 1,
+     "chars": 8,
+     "lines": 1,
+     "size": 28,
+     "vw": 3.6,
+     "font": "Geist",
+     "weight": 700,
+     "tracking": -0.03,
+     "leading": 1.2,
+     "top": 94,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 7,
+     "firstScreen": 4,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 7,
+     "radii": [
+      [
+       12,
+       7
+      ]
+     ],
+     "heavyBorders": 7,
+     "borderSamples": [
+      "#f2f2f2 on #1b1411 (16.24:1)",
+      "#f2f2ff on #1a1324 (16.27:1)",
+      "#e6f2e6 on #111e15 (14.92:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 1,
+     "hues": 1,
+     "samples": [
+      {
+       "hue": 243,
+       "size": 32,
+       "radius": "4px"
+      }
+     ]
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.17,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      18,
+      28,
+      34
+     ]
+    },
+    "title": {
+     "text": "Projects",
+     "size": 28,
+     "top": 94
+    },
+    "colourShare": 0.009
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.61,
+    0.91,
+    0.74
+   ],
+   "motion": {
+    "elements": 2,
+    "css": 1,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 2163,
+     "screens": 2.6,
+     "words": 133,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 19,
+     "sections": 0,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Projects",
+     "words": 1,
+     "chars": 8,
+     "lines": 1,
+     "size": 28,
+     "vw": 7.2,
+     "font": "Geist",
+     "weight": 700,
+     "tracking": -0.03,
+     "leading": 1.2,
+     "top": 111,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Projects",
+     "words": 1,
+     "lines": 1,
+     "size": 28,
+     "font": "Geist"
+    },
+    "headings": [
+     {
+      "text": "Projects",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.03,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 111,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Test2",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 8.6,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 310,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Test",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 8.6,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 584,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Workout",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 8.6,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 858,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "asd",
+      "words": 1,
+      "chars": 3,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 8.6,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 1132,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "asda",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 8.6,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 1406,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "porject 1",
+      "words": 2,
+      "chars": 9,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 8.6,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 1680,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "First Project",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 8.6,
+      "font": "Geist",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 1954,
+      "tag": "h3",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 8,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 1,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Geist",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      18,
+      28,
+      34
+     ],
+     "sizeCount": 7,
+     "notLoaded": [],
+     "body": {
+      "font": "Geist",
+      "size": 15.2,
+      "leading": 1.2,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 7.2
+     },
+     "measureChars": 45,
+     "max": {
+      "size": 33.6,
+      "vw": 8.6,
+      "font": "Geist",
+      "text": "Test2"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.07,
+     "centerShare": 0.02,
+     "smallText": 14
+    },
+    "eyebrows": [
+     {
+      "text": "Oct 13, 2026",
+      "above": "Test2",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.8,
+      "top": 275
+     },
+     {
+      "text": "Oct 13, 2026",
+      "above": "Test",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.8,
+      "top": 549
+     },
+     {
+      "text": "Oct 10, 2026",
+      "above": "Workout",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.8,
+      "top": 823
+     },
+     {
+      "text": "Oct 10, 2026",
+      "above": "asd",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.8,
+      "top": 1097
+     },
+     {
+      "text": "Oct 10, 2026",
+      "above": "asda",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.8,
+      "top": 1371
+     },
+     {
+      "text": "Oct 10, 2026",
+      "above": "porject 1",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.8,
+      "top": 1645
+     },
+     {
+      "text": "Oct 8, 2026",
+      "above": "First Project",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12.8,
+      "top": 1919
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0c0c09",
+     "bodyBgHsl": {
+      "h": 60,
+      "s": 0.14,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#0c0c09",
+       "top": 0,
+       "hsl": {
+        "h": 60,
+        "s": 0.14,
+        "l": 0.04
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#e3f2f8",
+       "share": 0.32
+      },
+      {
+       "color": "#9e9e94",
+       "share": 0.15
+      },
+      {
+       "color": "#e2f1f8",
+       "share": 0.15
+      },
+      {
+       "color": "#f5f3f0",
+       "share": 0.11
+      },
+      {
+       "color": "#e3f5e8",
+       "share": 0.09
+      }
+     ],
+     "button": {
+      "bg": "#7c75f2",
+      "hsl": {
+       "h": 243,
+       "s": 0.83,
+       "l": 0.7
+      },
+      "fg": "#0c0c09"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 1,
+     "inHero": 1,
+     "radius": 6,
+     "height": 54,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "New Project"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 1,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 8,
+     "hairlineSamples": [
+      "div 342px",
+      "div 284px",
+      "div 284px",
+      "div 284px",
+      "div 284px"
+     ],
+     "outlinedBoxes": 7,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 7,
+     "boxRadius": 12,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 7,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 217
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 1,
+     "fixed": false,
+     "height": 87,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 2163,
+    "margins": {
+     "left": 53,
+     "right": 51
+    },
+    "sections": [
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 217,
+      "height": 254,
+      "words": 14,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Test2",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 74,
+      "textLeft": 53,
+      "textRight": 74,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 491,
+      "height": 254,
+      "words": 14,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Test",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 74,
+      "textLeft": 53,
+      "textRight": 74,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 765,
+      "height": 254,
+      "words": 17,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Workout",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 74,
+      "textLeft": 53,
+      "textRight": 74,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 1039,
+      "height": 254,
+      "words": 14,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "asd",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 74,
+      "textLeft": 53,
+      "textRight": 74,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 1313,
+      "height": 254,
+      "words": 14,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "asda",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 74,
+      "textLeft": 53,
+      "textRight": 74,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 1587,
+      "height": 254,
+      "words": 15,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "porject 1",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 74,
+      "textLeft": 53,
+      "textRight": 74,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "a.project-card",
+      "tag": "a",
+      "top": 1861,
+      "height": 254,
+      "words": 18,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "First Project",
+       "size": 34,
+       "tag": "h3"
+      },
+      "left": 53,
+      "right": 74,
+      "textLeft": 53,
+      "textRight": 74,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Projects",
+      "size": 28,
+      "top": 111,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 53,
+      "n": 7
+     },
+     {
+      "x": 24,
+      "n": 2
+     }
+    ],
+    "leftBlocks": 9,
+    "bodySize": 15,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": true,
+    "ground": "#0c0c09",
+    "sidebar": null,
+    "topbar": null,
+    "canvas": {
+     "left": 24,
+     "right": 16
+    },
+    "hero": {
+     "text": "Projects",
+     "words": 1,
+     "chars": 8,
+     "lines": 1,
+     "size": 28,
+     "vw": 7.2,
+     "font": "Geist",
+     "weight": 700,
+     "tracking": -0.03,
+     "leading": 1.2,
+     "top": 111,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 7,
+     "firstScreen": 3,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 7,
+     "radii": [
+      [
+       12,
+       7
+      ]
+     ],
+     "heavyBorders": 7,
+     "borderSamples": [
+      "#f2f2f2 on #1b1411 (16.24:1)",
+      "#f2f2ff on #1a1324 (16.27:1)",
+      "#e6f2e6 on #111e15 (14.92:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 1,
+     "hues": 1,
+     "samples": [
+      {
+       "hue": 243,
+       "size": 32,
+       "radius": "4px"
+      }
+     ]
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.17,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      18,
+      28,
+      34
+     ]
+    },
+    "title": {
+     "text": "Projects",
+     "size": 28,
+     "top": 111
+    },
+    "colourShare": 0.026
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "WARN",
+   "id": "palette-cream",
+   "width": 1440,
+   "message": "Yellow-cream background (text #f5f3f0).",
+   "fix": "Use the drawn palette. If you want warmth, take a low-chroma stone or bone, not a yellow cream.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "hero-void",
+   "width": 1440,
+   "message": "50% of the first screen is one empty block (900×720px at 240,180).",
+   "fix": "Place the void on purpose or fill it: move the picture, the film or one fact into it, grow the headline to meet it, or shrink the screen to its content. A void reads as placed only when something closes it on the far side and it is the screen's one rest."
+  },
+  {
+   "level": "WARN",
+   "id": "heavy-borders",
+   "width": 1440,
+   "message": "7 panel borders are dark against their ground: #f2f2f2 on #1b1411 (16.24:1) | #f2f2ff on #1a1324 (16.27:1) | #e6f2e6 on #111e15 (14.92:1)",
+   "fix": "A panel border is a whisper: about 1.1–1.3:1 against its ground on a light screen (#e5e7eb–#ededed on white), and about 1.2–1.5:1 on a dark one (#1a1a1a on #000, #2e2e2e on #111). Darker lines turn the screen into a grid of boxes; keep the stronger line for controls.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "below-fold",
+   "width": 1440,
+   "message": "Only 3 of 7 blocks start on the first 1440px screen.",
+   "fix": "Every block the brief names shows its header and first rows on the first desktop screen: size the headline block to its question, cap long lists with \"View all\", and put time-sensitive blocks before long tables."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "D:\\Projects\\Workmesh\\.taste-skill\\inspect\\desktop-fold.jpg",
+   "pages": [
+    "D:\\Projects\\Workmesh\\.taste-skill\\inspect\\desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "D:\\Projects\\Workmesh\\.taste-skill\\inspect\\tablet-fold.jpg",
+   "pages": [
+    "D:\\Projects\\Workmesh\\.taste-skill\\inspect\\tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "D:\\Projects\\Workmesh\\.taste-skill\\inspect\\mobile-fold.jpg",
+   "pages": [
+    "D:\\Projects\\Workmesh\\.taste-skill\\inspect\\mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

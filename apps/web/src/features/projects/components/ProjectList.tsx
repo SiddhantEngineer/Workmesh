@@ -26,9 +26,9 @@ export function ProjectList({
     <div>
       {/* Page Header */}
       <div style={pageHeaderStyle}>
-        <h2 style={{ fontSize: "1.85rem", fontWeight: 700, letterSpacing: "-0.03em" }}>
+        <h1 style={{ fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.03em" }}>
           Projects
-        </h2>
+        </h1>
         <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginTop: 4 }}>
           Select a workspace or create a new project to start collaborating with agents
         </p>

@@ -34,17 +34,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 }
 
 const shellContainerStyle: React.CSSProperties = {
-  minHeight: "100vh",
+  minHeight: "100dvh",
   display: "flex",
   flexDirection: "column",
   backgroundColor: "var(--surface)",
-  padding: "0 28px",
+  padding: "0 24px",
 };
 
 const mainContentStyle: React.CSSProperties = {
   flex: 1,
-  maxWidth: 1200,
+  maxWidth: 1440,
   width: "100%",
   margin: "0 auto",
-  padding: "32px 0",
+  padding: "24px 0 48px 0",
 };

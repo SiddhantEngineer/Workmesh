@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { LayoutGrid, ListFilter, PlusCircle, Hash } from "lucide-react";
+import { LayoutGrid, ListFilter, PlusCircle, Milestone, Hash } from "lucide-react";
 import type { ProjectDetail } from "@workmesh/shared";
 import { useProjectTheme, getThemeVariables } from "../../themes";
 
@@ -9,6 +9,7 @@ interface ProjectHeaderProps {
   project: ProjectDetail;
   viewMode: "kanban" | "list";
   onViewModeChange: (mode: "kanban" | "list") => void;
+  onCreateEpic?: () => void;
   onProposeFeature?: () => void;
 }
 
@@ -16,6 +17,7 @@ export function ProjectHeader({
   project,
   viewMode,
   onViewModeChange,
+  onCreateEpic,
   onProposeFeature,
 }: ProjectHeaderProps) {
   const totalTickets = (project.nextTicketNumber || 1) - 1;
@@ -41,8 +43,8 @@ export function ProjectHeader({
         <div className="themed-hero-left" style={leftPanelStyle}>
           {/* Top Tagline & Date */}
           <div style={topMetaRowStyle}>
-            <span style={taglineStyle}>WORKSPACE // {project.key}</span>
-            {formattedDate && <span style={dateStyle}>{formattedDate}</span>}
+            <span style={taglineStyle}>Workspace</span>
+            {formattedDate && <span style={dateStyle} className="tabular-nums">{formattedDate}</span>}
           </div>
 
           {/* Project Title and Key Badge */}
@@ -59,16 +61,16 @@ export function ProjectHeader({
           {/* Metadata Badges */}
           <div style={metaPillRowStyle}>
             <div style={metaPillStyle}>
-              <span style={metaPillLabelStyle}>PREFIX</span>
+              <span style={metaPillLabelStyle}>Prefix</span>
               <span style={metaPillValueStyle}>{project.key}-#</span>
             </div>
             <div style={metaPillStyle}>
-              <span style={metaPillLabelStyle}>EPICS</span>
-              <span style={metaPillValueStyle}>{epicsCount}</span>
+              <span style={metaPillLabelStyle}>Epics</span>
+              <span style={metaPillValueStyle} className="tabular-nums">{epicsCount}</span>
             </div>
             <div style={metaPillStyle}>
-              <span style={metaPillLabelStyle}>FEATURES</span>
-              <span style={metaPillValueStyle}>{featuresCount}</span>
+              <span style={metaPillLabelStyle}>Features</span>
+              <span style={metaPillValueStyle} className="tabular-nums">{featuresCount}</span>
             </div>
           </div>
         </div>
@@ -77,26 +79,39 @@ export function ProjectHeader({
         <div style={rightTelemetryStyle}>
           <div>
             <div style={telemetryHeaderStyle}>
-              <span>TICKET ALLOCATION</span>
+              <span>Ticket Allocation</span>
               <Hash size={13} style={{ opacity: 0.6 }} />
             </div>
 
             <div style={telemetryNumberRowStyle}>
-              <span style={telemetryNumberStyle}>{totalTickets}</span>
+              <span style={telemetryNumberStyle} className="tabular-nums">{totalTickets}</span>
               <span style={telemetryLabelStyle}>tickets allocated</span>
             </div>
           </div>
 
-          {onProposeFeature && (
-            <button
-              onClick={onProposeFeature}
-              className="btn-primary"
-              style={proposeButtonStyle}
-            >
-              <PlusCircle size={15} />
-              <span>+ Propose Feature</span>
-            </button>
-          )}
+          <div style={telemetryActionColStyle}>
+            {onCreateEpic && (
+              <button
+                onClick={onCreateEpic}
+                className="btn-secondary"
+                style={secondaryButtonStyle}
+              >
+                <Milestone size={14} />
+                <span>+ Create Epic</span>
+              </button>
+            )}
+
+            {onProposeFeature && (
+              <button
+                onClick={onProposeFeature}
+                className="btn-primary"
+                style={proposeButtonStyle}
+              >
+                <PlusCircle size={15} />
+                <span>+ Propose Feature</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -172,19 +187,21 @@ const topMetaRowStyle: React.CSSProperties = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  fontSize: "0.74rem",
-  fontFamily: "var(--font-mono)",
-  fontWeight: 700,
-  letterSpacing: "0.08em",
-  opacity: 0.75,
+  fontSize: "0.78rem",
+  fontFamily: "var(--font-primary)",
+  fontWeight: 600,
+  letterSpacing: "-0.01em",
+  opacity: 0.85,
 };
 
 const taglineStyle: React.CSSProperties = {
-  textTransform: "uppercase",
+  fontWeight: 600,
+  color: "var(--theme-card-muted)",
 };
 
 const dateStyle: React.CSSProperties = {
-  textTransform: "uppercase",
+  fontWeight: 500,
+  color: "var(--theme-card-muted)",
 };
 
 const titleRowStyle: React.CSSProperties = {
@@ -203,14 +220,15 @@ const titleStyle: React.CSSProperties = {
 };
 
 const keyBadgeStyle: React.CSSProperties = {
-  fontFamily: "var(--font-mono)",
-  fontSize: "0.82rem",
-  fontWeight: 700,
-  backgroundColor: "color-mix(in srgb, var(--theme-card-text) 12%, transparent)",
+  fontFamily: "var(--font-primary)",
+  fontSize: "0.80rem",
+  fontWeight: 600,
+  backgroundColor: "color-mix(in srgb, var(--theme-card-text) 10%, transparent)",
   border: "1px solid var(--theme-card-border)",
   color: "var(--theme-card-text)",
   padding: "2px 8px",
   borderRadius: 4,
+  letterSpacing: "-0.01em",
 };
 
 const descriptionStyle: React.CSSProperties = {
@@ -240,11 +258,11 @@ const metaPillStyle: React.CSSProperties = {
 };
 
 const metaPillLabelStyle: React.CSSProperties = {
-  fontFamily: "var(--font-mono)",
-  fontSize: "0.7rem",
-  fontWeight: 700,
-  letterSpacing: "0.05em",
-  opacity: 0.75,
+  fontFamily: "var(--font-primary)",
+  fontSize: "0.74rem",
+  fontWeight: 600,
+  letterSpacing: "-0.01em",
+  opacity: 0.8,
 };
 
 const metaPillValueStyle: React.CSSProperties = {
@@ -269,11 +287,11 @@ const telemetryHeaderStyle: React.CSSProperties = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  fontSize: "0.72rem",
-  fontFamily: "var(--font-mono)",
-  fontWeight: 700,
-  letterSpacing: "0.08em",
-  color: "rgba(255, 255, 255, 0.65)",
+  fontSize: "0.78rem",
+  fontFamily: "var(--font-primary)",
+  fontWeight: 600,
+  letterSpacing: "-0.01em",
+  color: "rgba(255, 255, 255, 0.75)",
   marginBottom: 10,
 };
 
@@ -296,6 +314,30 @@ const telemetryLabelStyle: React.CSSProperties = {
   color: "rgba(255, 255, 255, 0.6)",
 };
 
+const telemetryActionColStyle: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 8,
+  width: "100%",
+};
+
+const secondaryButtonStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: 7,
+  backgroundColor: "rgba(255, 255, 255, 0.08)",
+  color: "#FFFFFF",
+  padding: "8px 14px",
+  borderRadius: "var(--radius-md)",
+  fontSize: "0.82rem",
+  fontWeight: 600,
+  border: "1px solid rgba(255, 255, 255, 0.16)",
+  cursor: "pointer",
+  width: "100%",
+  transition: "background-color var(--duration-fast) ease, border-color var(--duration-fast) ease, transform var(--duration-instant) var(--ease-editorial)",
+};
+
 const proposeButtonStyle: React.CSSProperties = {
   display: "flex",
   alignItems: "center",
@@ -304,12 +346,13 @@ const proposeButtonStyle: React.CSSProperties = {
   backgroundColor: "var(--accent-primary)",
   color: "#FFFFFF",
   padding: "9px 14px",
-  borderRadius: 6,
+  borderRadius: "var(--radius-md)",
   fontSize: "0.84rem",
   fontWeight: 600,
   border: "none",
   cursor: "pointer",
   width: "100%",
+  transition: "background-color var(--duration-fast) ease, transform var(--duration-instant) var(--ease-editorial)",
 };
 
 const subBarStyle: React.CSSProperties = {
@@ -324,7 +367,7 @@ const switcherContainerStyle: React.CSSProperties = {
   alignItems: "center",
   backgroundColor: "var(--surface)",
   border: "1px solid var(--border-subtle)",
-  borderRadius: 6,
+  borderRadius: "var(--radius-md)",
   padding: 3,
   gap: 2,
 };
@@ -335,9 +378,9 @@ const switcherButtonStyle: React.CSSProperties = {
   gap: 6,
   padding: "5px 10px",
   border: "none",
-  borderRadius: 4,
+  borderRadius: "var(--radius-sm)",
   fontSize: "0.8rem",
   fontWeight: 500,
   cursor: "pointer",
-  transition: "all 0.15s ease",
+  transition: "background-color var(--duration-fast) ease, color var(--duration-fast) ease, transform var(--duration-instant) var(--ease-editorial)",
 };

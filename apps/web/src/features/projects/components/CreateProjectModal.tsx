@@ -130,7 +130,7 @@ export function CreateProjectModal({
             <div className="animate-badge-pop" style={previewBadgeStyle}>
               <Sparkles size={13} color="var(--color-success)" />
               <span>
-                Tickets will look like: <strong>{key}-1</strong>, <strong>{key}-2</strong>
+                Tickets will look like: <code style={previewCodeStyle}>{key}-1</code>, <code style={previewCodeStyle}>{key}-2</code>
               </span>
             </div>
           )}
@@ -243,10 +243,10 @@ const errorBannerStyle: React.CSSProperties = {
 };
 
 const formStyle: React.CSSProperties = {
-  padding: 20,
+  padding: "20px 24px",
   display: "flex",
   flexDirection: "column",
-  gap: "var(--space-4)",
+  gap: 16,
 };
 
 const formGroupStyle: React.CSSProperties = {
@@ -291,13 +291,17 @@ const previewBadgeStyle: React.CSSProperties = {
   alignItems: "center",
   gap: 6,
   fontSize: "0.8rem",
-  fontFamily: "var(--font-mono)",
   color: "var(--color-success)",
   backgroundColor: "rgba(22, 163, 74, 0.08)",
   padding: "4px 8px",
-  borderRadius: 4,
+  borderRadius: "var(--radius-sm)",
   width: "fit-content",
   marginTop: 2,
+};
+
+const previewCodeStyle: React.CSSProperties = {
+  fontFamily: "var(--font-mono)",
+  fontWeight: 700,
 };
 
 const themeGridStyle: React.CSSProperties = {
@@ -327,18 +331,22 @@ const themeCardHeaderStyle: React.CSSProperties = {
 const actionsStyle: React.CSSProperties = {
   display: "flex",
   justifyContent: "flex-end",
-  gap: "var(--space-3)",
-  marginTop: "var(--space-2)",
+  alignItems: "center",
+  gap: 10,
+  marginTop: 6,
+  paddingTop: 16,
+  borderTop: "1px solid var(--border-subtle)",
 };
 
 const cancelButtonStyle: React.CSSProperties = {
-  padding: "8px 14px",
+  padding: "8px 16px",
   borderRadius: 6,
-  fontSize: "0.88rem",
+  fontSize: "0.86rem",
   fontWeight: 500,
-  color: "var(--text-secondary)",
-  backgroundColor: "transparent",
+  color: "var(--text-primary)",
+  backgroundColor: "var(--surface)",
   border: "1px solid var(--border-subtle)",
+  cursor: "pointer",
 };
 
 const submitButtonStyle: React.CSSProperties = {

@@ -1,35 +1,50 @@
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@500;700&family=Inter:wght@500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700&family=Inconsolata:wght@500;700&family=Inter:wght@500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap');
 
 :root {
   /* Typography Tokens */
-  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-primary: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'Inconsolata', monospace;
+  --font-display: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-primary: 'Geist', 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Geist Mono', 'Inconsolata', monospace;
 
-  /* Motion Tokens (from docs/interaction-and-animation-spec.md) */
+  /* Motion Tokens (Emil Kowalski Design Engineering & Workmesh Motion Spec) */
   --duration-instant: 100ms;
   --duration-fast: 150ms;
   --duration-standard: 200ms;
   --duration-smooth: 260ms;
-  --duration-ambient: 1500ms;
+  --duration-ambient: 1200ms;
 
   --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  /* Radius Scale */
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
 }
 
 /* Light Theme Defaults & Explicit [data-theme="light"] */
 :root,
 [data-theme="light"] {
-  --surface: #FFFFFF;
+  --surface: #F8F8F8;
   --surface-raised: #FFFFFF;
+  --surface-hover: #F2F2F2;
+  --surface-active: #EAEAEA;
   --text-primary: #0C0C09;
-  --text-secondary: #666660;
+  --text-secondary: #5C5C56;
   --text-muted: #8E8E88;
 
   --accent-primary: #312C85;
   --accent-primary-hover: #231F60;
-  --border-subtle: rgba(12, 12, 9, 0.12);
+  --accent-primary-fg: #FFFFFF;
+  --border-subtle: rgba(12, 12, 9, 0.08);
+  --border-strong: rgba(12, 12, 9, 0.16);
   --border-focus: #312C85;
 
   --color-success: #16A34A;
@@ -50,13 +65,17 @@
   :root:not([data-theme="light"]) {
     --surface: #0C0C09;
     --surface-raised: #161612;
+    --surface-hover: #1E1E19;
+    --surface-active: #262620;
     --text-primary: #F4F4F1;
     --text-secondary: #9E9E94;
-    --text-muted: #6B6B64;
+    --text-muted: #8E8E86;
 
     --accent-primary: #7C75F2;
     --accent-primary-hover: #9892F7;
-    --border-subtle: rgba(244, 244, 241, 0.12);
+    --accent-primary-fg: #0C0C09;
+    --border-subtle: rgba(244, 244, 241, 0.09);
+    --border-strong: rgba(244, 244, 241, 0.18);
     --border-focus: #7C75F2;
 
     --color-success: #22C55E;
@@ -69,13 +88,17 @@
 [data-theme="dark"] {
   --surface: #0C0C09;
   --surface-raised: #161612;
+  --surface-hover: #1E1E19;
+  --surface-active: #262620;
   --text-primary: #F4F4F1;
   --text-secondary: #9E9E94;
-  --text-muted: #6B6B64;
+  --text-muted: #8E8E86;
 
   --accent-primary: #7C75F2;
   --accent-primary-hover: #9892F7;
-  --border-subtle: rgba(244, 244, 241, 0.12);
+  --accent-primary-fg: #0C0C09;
+  --border-subtle: rgba(244, 244, 241, 0.09);
+  --border-strong: rgba(244, 244, 241, 0.18);
   --border-focus: #7C75F2;
 
   --color-success: #22C55E;

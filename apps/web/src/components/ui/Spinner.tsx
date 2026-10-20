@@ -46,7 +46,7 @@ export function Spinner({
         className={`animate-spin ${className}`.trim()}
         style={{
           color,
-          animation: "spin 1s linear infinite",
+          animation: "spin 0.75s linear infinite",
           flexShrink: 0,
           ...style,
         }}

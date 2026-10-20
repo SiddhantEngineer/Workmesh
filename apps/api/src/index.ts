@@ -4,6 +4,12 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import * as dotenv from "dotenv";
 import { projectsRouter } from "./routes/projects";
+import { epicsRouter } from "./routes/epics";
+import {
+  projectFeaturesRouter,
+  epicFeaturesRouter,
+  featuresRouter,
+} from "./routes/features";
 import { themesRouter } from "./routes/themes";
 
 // Load environment variables from repository root
@@ -18,7 +24,7 @@ app.use(
   cors({
     origin: "*",
     allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowHeaders: ["Content-Type", "Authorization"],
+    allowHeaders: ["Content-Type", "Authorization", "x-actor-type"],
   })
 );
 
@@ -29,6 +35,10 @@ app.get("/health", (c) =>
 
 // Mount endpoints
 app.route("/api/projects", projectsRouter);
+app.route("/api/projects/:key/epics", epicsRouter);
+app.route("/api/projects/:key/features", projectFeaturesRouter);
+app.route("/api/epics/:epicId/features", epicFeaturesRouter);
+app.route("/api/features", featuresRouter);
 app.route("/api/themes", themesRouter);
 
 // Centralized 404 handler

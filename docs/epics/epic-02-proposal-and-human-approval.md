@@ -18,22 +18,22 @@ This epic establishes the planning and guardrail workflow. Both AI agents and hu
 - **Priority:** `HIGH`
 - **Status:** `TODO`
 - **User Story:**  
-  *As an AI agent or human planner, I want to propose an Epic with title, description, and priority, so that large milestones can be staged for engineering review.*
+  *As an AI agent or human planner, I want to create an Epic with title, description, and priority, so that large milestones can be staged for engineering review.*
 - **Scope & Description:**
-  - Shared Zod schema for proposing an Epic (`title`, `description`, `priority`: `LOW` | `MEDIUM` | `HIGH` | `CRITICAL`).
-  - Shared domain service `epicService.proposeEpic(...)` with atomic ticket numbering and `recordActivity`.
-  - Hono API endpoints: `POST /api/projects/:id/epics` and `GET /api/projects/:id/epics`.
-  - MCP Tool: `propose_epic` accepting `projectId`, `title`, `description`, `priority`.
+  - Shared Zod schema for creating an Epic (`title`, `description`, `priority`: `LOW` | `MEDIUM` | `HIGH` | `CRITICAL`).
+  - Shared domain service `epicService.createEpic(...)` with atomic ticket numbering and `recordActivity`.
+  - Hono API endpoints: `POST /api/projects/:key/epics` and `GET /api/projects/:key/epics`.
+  - MCP Tool: `create_epic` accepting `projectId` / `projectKey`, `title`, `description`, `priority`.
   - Web UI: Epic badge rendering and filter selector above the Kanban board.
 - **Acceptance Criteria Checklist:**
   - [ ] Shared Zod schema enforces non-empty title and valid priority enum.
   - [ ] API stores Epic with initial status `PROPOSED` and generates sequential key (e.g., `WM-1`).
-  - [ ] MCP tool `propose_epic` registers successfully and returns created Epic payload.
-  - [ ] Activity log record created for Epic proposal (`entityType: "EPIC"`, `action: "PROPOSED"`).
+  - [ ] MCP tool `create_epic` registers successfully and returns created Epic payload.
+  - [ ] Activity log record created for Epic creation (`entityType: "EPIC"`, `action: "CREATED"`).
   - [ ] Web UI displays existing epics in an Epic filter pill bar.
 - **Manual Verification via UI (UAT):**
   1. Open Web UI at `http://localhost:3000`.
-  2. Invoke `propose_epic` via MCP client with title "Auth Integration", priority "HIGH".
+  2. Invoke `create_epic` via MCP client with title "Auth Integration", priority "HIGH".
   3. Refresh/observe UI and verify "Auth Integration" appears in the Epic selector/filter.
   4. Verify the Epic is stored with `PROPOSED` status.
 
@@ -78,11 +78,11 @@ This epic establishes the planning and guardrail workflow. Both AI agents and hu
   - Web UI: "Proposed" column on Kanban board with direct action buttons on cards or inside the Ticket Detail modal.
   - Enforce Human-Only rule: Agents cannot execute these approval transitions.
 - **Acceptance Criteria Checklist:**
-  - [ ] Non-human transition attempts are blocked at the API layer.
-  - [ ] Card in Proposed column displays [Approve] and [Reject] action triggers.
-  - [ ] Clicking [Approve] transitions status to `APPROVED` and moves card into the **Approved** column.
-  - [ ] Clicking [Reject] opens prompt for reason, sets status to `REJECTED`, and archives/moves card.
-  - [ ] Activity log records approval/rejection with timestamp and actor type `HUMAN`.
+  - [x] Non-human transition attempts are blocked at the API layer.
+  - [x] Card in Proposed column displays [Approve] and [Reject] action triggers.
+  - [x] Clicking [Approve] transitions status to `APPROVED` and moves card into the **Approved** column.
+  - [x] Clicking [Reject] opens prompt for reason, sets status to `REJECTED`, and archives/moves card.
+  - [x] Activity log records approval/rejection with timestamp and actor type `HUMAN`.
 - **Manual Verification via UI (UAT):**
   1. Locate a card in the **Proposed** column.
   2. Click the [Approve] button directly on the card (or inside its detail modal).

@@ -61,16 +61,16 @@ export function ThemeToggle() {
 const buttonStyle: React.CSSProperties = {
   width: 34,
   height: 34,
-  borderRadius: 6,
+  borderRadius: "var(--radius-sm)",
   backgroundColor: "var(--surface)",
   border: "1px solid var(--border-subtle)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   cursor: "pointer",
-  transition: "all 0.15s ease",
+  transition: "transform var(--duration-fast) var(--ease-editorial), background-color var(--duration-fast) ease, border-color var(--duration-fast) ease",
 };
 
 const iconStyle: React.CSSProperties = {
-  transition: "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
+  transition: "transform 0.22s var(--ease-editorial)",
 };

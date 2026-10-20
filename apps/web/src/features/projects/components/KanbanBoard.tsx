@@ -14,14 +14,15 @@ interface KanbanBoardProps {
 interface ColumnConfig {
   status: FeatureStatus;
   description: string;
+  accent: string;
 }
 
 const COLUMNS: ColumnConfig[] = [
-  { status: "PROPOSED", description: "Awaiting approval" },
-  { status: "APPROVED", description: "Ready to claim" },
-  { status: "IN_PROGRESS", description: "Active work" },
-  { status: "READY_FOR_TEST", description: "Awaiting QA" },
-  { status: "CLOSED", description: "Verified deliverables" },
+  { status: "PROPOSED", description: "Awaiting human review", accent: "var(--accent-primary)" },
+  { status: "APPROVED", description: "Ready to claim", accent: "#2563EB" },
+  { status: "IN_PROGRESS", description: "Active work", accent: "var(--color-warning)" },
+  { status: "READY_FOR_TEST", description: "Awaiting human QA", accent: "#7C75F2" },
+  { status: "CLOSED", description: "Verified deliverables", accent: "var(--color-success)" },
 ];
 
 export function KanbanBoard({ projectKey, features, onProposeFeature }: KanbanBoardProps) {
@@ -52,7 +53,7 @@ export function KanbanBoard({ projectKey, features, onProposeFeature }: KanbanBo
   }
 
   return (
-    <div style={kanbanGridStyle}>
+    <div className="kanban-board-scroll" style={kanbanGridStyle}>
       {COLUMNS.map((col) => {
         const columnFeatures = features.filter((f) => f.status === col.status);
 
@@ -61,8 +62,18 @@ export function KanbanBoard({ projectKey, features, onProposeFeature }: KanbanBo
             <div style={columnHeaderStyle}>
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span
+                    style={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: "50%",
+                      backgroundColor: col.accent,
+                      display: "inline-block",
+                      flexShrink: 0,
+                    }}
+                  />
                   <h4 style={columnTitleStyle}>{FEATURE_STATUS_LABELS[col.status]}</h4>
-                  <span style={columnCountBadgeStyle}>{columnFeatures.length}</span>
+                  <span className="tabular-nums" style={columnCountBadgeStyle}>{columnFeatures.length}</span>
                 </div>
                 <p style={columnSubtitleStyle}>{col.description}</p>
               </div>
@@ -71,14 +82,15 @@ export function KanbanBoard({ projectKey, features, onProposeFeature }: KanbanBo
             <div style={cardsContainerStyle}>
               {columnFeatures.length === 0 ? (
                 <div style={emptyColumnStyle}>
-                  <span>No tickets</span>
+                  <span>No tickets in this column</span>
                 </div>
               ) : (
-                columnFeatures.map((feature) => (
+                columnFeatures.map((feature, idx) => (
                   <FeatureCard
                     key={feature.id}
                     feature={feature}
                     projectKey={projectKey}
+                    index={idx}
                   />
                 ))
               )}
@@ -92,7 +104,7 @@ export function KanbanBoard({ projectKey, features, onProposeFeature }: KanbanBo
 
 const kanbanGridStyle: React.CSSProperties = {
   display: "grid",
-  gridTemplateColumns: "repeat(5, minmax(220px, 1fr))",
+  gridTemplateColumns: "repeat(5, minmax(260px, 1fr))",
   gap: "var(--space-3)",
   alignItems: "flex-start",
   overflowX: "auto",

@@ -9,12 +9,12 @@ CREATE TABLE "themes" (
 );
 --> statement-breakpoint
 INSERT INTO "themes" ("key", "name", "tokens") VALUES
-('flora-blue', 'Flora Blue', '{"card": {"bgLight": "#D0E2EC", "textLight": "#0C1E28", "bgDark": "#132B3A", "textDark": "#E0F0F8"}}'::jsonb),
-('classic-slate', 'Classic Slate', '{"card": {"bgLight": "#FFFFFF", "textLight": "#0C0C09", "bgDark": "#161612", "textDark": "#F4F4F1"}}'::jsonb),
-('sage-forest', 'Sage Forest', '{"card": {"bgLight": "#DCE8DC", "textLight": "#142617", "bgDark": "#142918", "textDark": "#E2F3E4"}}'::jsonb),
-('sunset-warmth', 'Sunset Warmth', '{"card": {"bgLight": "#FCE8DD", "textLight": "#331608", "bgDark": "#33180D", "textDark": "#FCEEE5"}}'::jsonb),
-('velvet-orchid', 'Velvet Orchid', '{"card": {"bgLight": "#EDE4F5", "textLight": "#251036", "bgDark": "#251236", "textDark": "#F4EDFA"}}'::jsonb)
-ON CONFLICT ("key") DO NOTHING;
+('flora-blue', 'Flora Blue', '{"card": {"bgLight": "#F0F5FA", "textLight": "#0C2338", "bgDark": "#121B24", "textDark": "#E2F1F8"}}'::jsonb),
+('classic-slate', 'Classic Slate', '{"card": {"bgLight": "#FFFFFF", "textLight": "#0C0C09", "bgDark": "#161613", "textDark": "#F4F4F0"}}'::jsonb),
+('sage-forest', 'Sage Forest', '{"card": {"bgLight": "#F1F6F2", "textLight": "#0D2B17", "bgDark": "#111E15", "textDark": "#E2F5E7"}}'::jsonb),
+('sunset-warmth', 'Sunset Warmth', '{"card": {"bgLight": "#FBF7F5", "textLight": "#2E1A12", "bgDark": "#1B1411", "textDark": "#F5F3F0"}}'::jsonb),
+('velvet-orchid', 'Velvet Orchid', '{"card": {"bgLight": "#F6F2FA", "textLight": "#26133B", "bgDark": "#1A1324", "textDark": "#F3EEF9"}}'::jsonb)
+ON CONFLICT ("key") DO UPDATE SET "tokens" = EXCLUDED."tokens", "name" = EXCLUDED."name";
 --> statement-breakpoint
 ALTER TABLE "projects" ADD COLUMN "theme_id" integer;
 --> statement-breakpoint

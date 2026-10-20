@@ -5,21 +5,31 @@
   padding: 0;
 }
 
+html {
+  color-scheme: light dark;
+}
+
 body {
   background-color: var(--surface);
   color: var(--text-primary);
   font-family: var(--font-primary);
-  min-height: 100vh;
+  min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   transition: background-color var(--duration-standard) ease, color var(--duration-standard) ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
+  letter-spacing: -0.02em;
 }
 
 code, kbd, samp, pre, .font-mono {
   font-family: var(--font-mono);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }
 
 button {
@@ -29,24 +39,29 @@ button {
   background: none;
 }
 
-button:focus-visible, input:focus-visible, textarea:focus-visible {
+button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
   outline: 2px solid var(--border-focus);
   outline-offset: 2px;
 }
 
-input, textarea {
+input, textarea, select {
   font-family: inherit;
   color: var(--text-primary);
-  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+  transition: border-color var(--duration-fast) ease;
 }
 
-input:focus, textarea:focus {
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
+select option {
+  background-color: var(--surface-raised);
+  color: var(--text-primary);
+}
+
+input:focus, textarea:focus, select:focus {
   border-color: var(--border-focus) !important;
-  box-shadow: 0 0 0 3px rgba(49, 44, 133, 0.12);
-}
-
-@media (prefers-color-scheme: dark) {
-  input:focus, textarea:focus {
-    box-shadow: 0 0 0 3px rgba(124, 117, 242, 0.2);
-  }
+  outline: 2px solid var(--border-focus);
+  outline-offset: 0;
 }

@@ -19,12 +19,24 @@ export function TopNav({ onNewProject, actions }: TopNavProps) {
             href="/"
             className="brand-link"
           >
-            <span style={brandTitleStyle}>
-              Workmesh
-            </span>
-            <span style={brandSubtitleStyle}>
-              Agent-First Ticket Management
-            </span>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              {/* Bespoke Workmesh Monogram/Symbol */}
+              <div style={brandIconWrapperStyle}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 6L12 2L20 6V18L12 22L4 18V6Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 2V22" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 2"/>
+                  <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                </svg>
+              </div>
+              <div>
+                <span style={brandTitleStyle}>
+                  Workmesh
+                </span>
+                <span style={brandSubtitleStyle}>
+                  Agent-First Ticket Management
+                </span>
+              </div>
+            </div>
           </Link>
         </div>
 
@@ -35,9 +47,8 @@ export function TopNav({ onNewProject, actions }: TopNavProps) {
             <button
               onClick={onNewProject}
               className="btn-primary"
-              style={newProjectButtonStyle}
             >
-              <FolderPlus size={16} />
+              <FolderPlus size={15} />
               <span>New Project</span>
             </button>
           )}
@@ -56,34 +67,37 @@ const navInnerStyle: React.CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "18px 0",
+  padding: "16px 0",
   borderBottom: "1px solid var(--border-subtle)",
-  maxWidth: 1200,
+  maxWidth: 1440,
   margin: "0 auto",
   width: "100%",
 };
 
+const brandIconWrapperStyle: React.CSSProperties = {
+  width: 32,
+  height: 32,
+  borderRadius: "var(--radius-sm)",
+  backgroundColor: "var(--accent-primary)",
+  color: "#FFFFFF",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  flexShrink: 0,
+};
+
 const brandTitleStyle: React.CSSProperties = {
-  fontSize: "1.2rem",
+  fontSize: "1.15rem",
   fontWeight: 700,
   letterSpacing: "-0.03em",
   color: "var(--text-primary)",
+  display: "block",
+  lineHeight: 1.2,
 };
 
 const brandSubtitleStyle: React.CSSProperties = {
   fontSize: "0.72rem",
-  color: "var(--text-muted)",
-  letterSpacing: "0.01em",
-};
-
-const newProjectButtonStyle: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: "var(--space-2)",
-  backgroundColor: "var(--accent-primary)",
-  color: "#FFFFFF",
-  padding: "8px 14px",
-  borderRadius: 6,
-  fontSize: "0.85rem",
-  fontWeight: 600,
+  color: "var(--text-secondary)",
+  letterSpacing: "-0.01em",
+  display: "block",
 };
