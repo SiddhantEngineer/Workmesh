@@ -24,17 +24,56 @@ export const createProjectSchema = z.object({
 
   description: z.string().trim().max(2000).optional(),
 
-  // Theme ID assigned to this project
+  // Theme ID assigned to this project (defaults to theme 1: Flora Blue)
   themeId: z
-    .number({
-      required_error: "Please select a theme for this project",
-      invalid_type_error: "Theme must be selected",
-    })
+    .number()
     .int()
-    .positive("Please select a valid theme"),
+    .positive("Please select a valid theme")
+    .optional()
+    .default(1),
 });
 
 export type CreateProjectInput = z.infer<typeof createProjectSchema>;
+
+/**
+ * MCP tool input schemas for project management
+ */
+export const createProjectMcpInputSchema = {
+  name: z
+    .string()
+    .trim()
+    .min(1, "Project name is required")
+    .max(255)
+    .describe("Name of the project / workspace (e.g. 'Apex Platform')"),
+  key: z
+    .string()
+    .trim()
+    .min(2, "Project key must be at least 2 characters")
+    .max(10, "Project key cannot exceed 10 characters")
+    .regex(/^[A-Za-z0-9]+$/, "Project key must be alphanumeric")
+    .describe("Short alphanumeric prefix key for ticket numbering (e.g. 'APEX')"),
+  description: z
+    .string()
+    .trim()
+    .max(2000)
+    .optional()
+    .describe("High-level overview and technical scope of the project"),
+  themeId: z
+    .number()
+    .int()
+    .positive()
+    .optional()
+    .default(1)
+    .describe("Theme ID for project design tokens (defaults to 1: Flora Blue)"),
+};
+
+export const deleteProjectMcpInputSchema = {
+  projectKey: z
+    .string()
+    .trim()
+    .min(1)
+    .describe("The uppercase key prefix of the project to delete (e.g. 'APEX')"),
+};
 
 export interface Project {
   id: number;

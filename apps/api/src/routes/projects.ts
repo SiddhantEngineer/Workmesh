@@ -4,9 +4,15 @@ import {
   listProjects,
   getProjectByKey,
   createProject,
+  deleteProjectByKey,
   DuplicateProjectKeyError,
+  listActionableTasks,
+  ProjectNotFoundError,
 } from "@workmesh/db";
-import { createProjectSchema } from "@workmesh/shared";
+import {
+  createProjectSchema,
+  listActionableTasksQuerySchema,
+} from "@workmesh/shared";
 
 export const projectsRouter = new Hono()
   /**
@@ -32,6 +38,55 @@ export const projectsRouter = new Hono()
     }
 
     return c.json({ data: project });
+  })
+
+  /**
+   * GET /api/projects/:key/actionable-tasks
+   * Returns prioritized actionable tasks (approved features and open bugs)
+   * ready for autonomous agent execution or human backlog inspection.
+   */
+  .get(
+    "/:key/actionable-tasks",
+    zValidator("query", listActionableTasksQuerySchema),
+    async (c) => {
+      const rawKey = c.req.param("key");
+      const query = c.req.valid("query");
+
+      try {
+        const tasks = await listActionableTasks(rawKey, query);
+        return c.json({ data: tasks });
+      } catch (error) {
+        if (error instanceof ProjectNotFoundError) {
+          return c.json({ error: error.message }, 404);
+        }
+        throw error;
+      }
+    }
+  )
+
+  /**
+   * DELETE /api/projects/:key
+   * Deletes a project by prefix key, cascading through its epics, features, and logs.
+   */
+  .delete("/:key", async (c) => {
+    const rawKey = c.req.param("key");
+    if (!rawKey) {
+      return c.json({ error: "Project key is required" }, 400);
+    }
+
+    try {
+      const deleted = await deleteProjectByKey(rawKey);
+      return c.json({
+        success: true,
+        message: `Project '${deleted.key}' (${deleted.name}) deleted successfully`,
+        data: deleted,
+      });
+    } catch (error) {
+      if (error instanceof ProjectNotFoundError) {
+        return c.json({ error: error.message }, 404);
+      }
+      throw error;
+    }
   })
 
   /**

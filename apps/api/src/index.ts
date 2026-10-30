@@ -11,6 +11,7 @@ import {
   featuresRouter,
 } from "./routes/features";
 import { themesRouter } from "./routes/themes";
+import { tasksRouter } from "./routes/tasks";
 
 // Load environment variables from repository root
 dotenv.config({ path: "../../.env" });
@@ -40,6 +41,7 @@ app.route("/api/projects/:key/features", projectFeaturesRouter);
 app.route("/api/epics/:epicId/features", epicFeaturesRouter);
 app.route("/api/features", featuresRouter);
 app.route("/api/themes", themesRouter);
+app.route("/api/tasks", tasksRouter);
 
 // Centralized 404 handler
 app.notFound((c) => {

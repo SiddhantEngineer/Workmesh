@@ -4,4 +4,5 @@ export * from "./themes";
 export * from "./epics";
 export * from "./features";
 export * from "./projects";
+export * from "./tasks";
 

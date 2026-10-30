@@ -4,6 +4,7 @@ import { projects } from "../schema/projects";
 import { epics } from "../schema/epics";
 import { features } from "../schema/features";
 import { bugs } from "../schema/bugs";
+import { activityLogs } from "../schema/activity_logs";
 import { recordActivity } from "./activity_logs";
 import {
   ACTIVE_EPIC_STATUSES,
@@ -86,6 +87,35 @@ export async function createProject(
     }
     throw error;
   }
+}
+
+/**
+ * Deletes a specific project by uppercase key and cascades through its child entities.
+ */
+export async function deleteProjectByKey(key: string): Promise<Project> {
+  const upperKey = key.trim().toUpperCase();
+
+  const project = await db.query.projects.findFirst({
+    where: (p, { and, eq, isNull }) =>
+      and(eq(p.key, upperKey), isNull(p.deletedAt)),
+  });
+
+  if (!project) {
+    throw new ProjectNotFoundError(`Project '${upperKey}' was not found.`);
+  }
+
+  return await db.transaction(async (tx) => {
+    await tx.delete(activityLogs).where(eq(activityLogs.projectId, project.id));
+    await tx.delete(bugs).where(eq(bugs.projectId, project.id));
+    await tx.delete(features).where(eq(features.projectId, project.id));
+    await tx.delete(epics).where(eq(epics.projectId, project.id));
+    const [deleted] = await tx
+      .delete(projects)
+      .where(eq(projects.id, project.id))
+      .returning();
+
+    return deleted as Project;
+  });
 }
 
 /**

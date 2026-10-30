@@ -1,4 +1,4 @@
-import { eq, and, isNull, sql, asc } from "drizzle-orm";
+import { eq, and, isNull, sql, asc, desc } from "drizzle-orm";
 import { db } from "../client";
 import { projects } from "../schema/projects";
 import { epics } from "../schema/epics";
@@ -10,6 +10,9 @@ import type {
   Feature,
   FeatureStatus,
   AcceptanceCriterion,
+  FeatureDetail,
+  Priority,
+  UpdateFeatureCriteriaBodyInput,
 } from "@workmesh/shared";
 import type { ActivityActor } from "../schema/activity_logs";
 
@@ -365,4 +368,212 @@ export async function rejectFeature(
     };
   });
 }
+
+/**
+ * Retrieves a full FeatureDetail by project prefix key and ticket number or formatted key (e.g. 'WM-4' or 4).
+ * Hydrates parent project, parent epic, linked bugs, and chronological audit activity logs.
+ */
+export async function getFeatureByKey(
+  projectKey: string,
+  ticketNumberOrKey: string | number
+): Promise<FeatureDetail | null> {
+  const upperKey = projectKey.trim().toUpperCase();
+
+  let ticketNumber: number;
+  if (typeof ticketNumberOrKey === "number") {
+    ticketNumber = ticketNumberOrKey;
+  } else {
+    const trimmed = ticketNumberOrKey.trim();
+    if (trimmed.includes("-")) {
+      const parts = trimmed.split("-");
+      ticketNumber = parseInt(parts[parts.length - 1], 10);
+    } else {
+      ticketNumber = parseInt(trimmed, 10);
+    }
+  }
+
+  if (isNaN(ticketNumber) || ticketNumber <= 0) {
+    return null;
+  }
+
+  const project = await db.query.projects.findFirst({
+    where: (p, { and, eq, isNull }) =>
+      and(eq(p.key, upperKey), isNull(p.deletedAt)),
+  });
+
+  if (!project) {
+    return null;
+  }
+
+  const feature = await db.query.features.findFirst({
+    where: (f, { and, eq, isNull }) =>
+      and(
+        eq(f.projectId, project.id),
+        eq(f.ticketNumber, ticketNumber),
+        isNull(f.deletedAt)
+      ),
+    with: {
+      epic: {
+        columns: {
+          id: true,
+          ticketNumber: true,
+          title: true,
+          status: true,
+        },
+      },
+      bugs: {
+        where: (b, { isNull }) => isNull(b.deletedAt),
+        orderBy: (b, { asc }) => [asc(b.ticketNumber)],
+        columns: {
+          id: true,
+          ticketNumber: true,
+          title: true,
+          priority: true,
+          status: true,
+        },
+      },
+    },
+  });
+
+  if (!feature) {
+    return null;
+  }
+
+  // Fetch chronological audit activity logs for this feature
+  const logs = await db.query.activityLogs.findMany({
+    where: (a, { and, eq }) =>
+      and(eq(a.entityType, "FEATURE"), eq(a.entityId, feature.id)),
+    orderBy: (a, { desc }) => [desc(a.createdAt)],
+    columns: {
+      id: true,
+      action: true,
+      details: true,
+      createdAt: true,
+    },
+  });
+
+  const formattedTicketKey = `${project.key}-${feature.ticketNumber}`;
+
+  return {
+    id: feature.id,
+    projectId: feature.projectId,
+    projectKey: project.key,
+    projectName: project.name,
+    epicId: feature.epicId,
+    ticketNumber: feature.ticketNumber,
+    key: formattedTicketKey,
+    title: feature.title,
+    description: feature.description,
+    priority: feature.priority,
+    status: feature.status,
+    acceptanceCriteria:
+      (feature.acceptanceCriteria as AcceptanceCriterion[]) ?? [],
+    epic: feature.epic
+      ? {
+          id: feature.epic.id,
+          key: `${project.key}-${feature.epic.ticketNumber}`,
+          title: feature.epic.title,
+          status: feature.epic.status,
+        }
+      : null,
+    linkedBugs: (feature.bugs || []).map((b) => ({
+      id: b.id,
+      key: `${project.key}-${b.ticketNumber}`,
+      ticketNumber: b.ticketNumber,
+      title: b.title,
+      priority: b.priority as Priority,
+      status: b.status,
+    })),
+    activityLogs: logs.map((l) => ({
+      id: l.id,
+      action: l.action,
+      details: l.details as Record<string, unknown> | null,
+      createdAt: l.createdAt,
+    })),
+    createdAt: feature.createdAt,
+    updatedAt: feature.updatedAt,
+  };
+}
+
+/**
+ * Updates or toggles acceptance criteria on a feature.
+ * Supports toggling a single item by index or replacing the entire checklist.
+ * Records an activity audit log entry on mutation.
+ */
+export async function updateFeatureCriteria(
+  featureId: number,
+  input: UpdateFeatureCriteriaBodyInput,
+  actor: ActivityActor = { type: "HUMAN" }
+): Promise<Feature> {
+  const existing = await db.query.features.findFirst({
+    where: (f, { and, eq, isNull }) =>
+      and(eq(f.id, featureId), isNull(f.deletedAt)),
+    with: {
+      project: true,
+    },
+  });
+
+  if (!existing) {
+    throw new FeatureNotFoundError(featureId);
+  }
+
+  let nextCriteria: AcceptanceCriterion[];
+
+  if (input.criteria !== undefined) {
+    nextCriteria = input.criteria;
+  } else if (
+    input.criteriaIndex !== undefined &&
+    input.completed !== undefined
+  ) {
+    const current =
+      (existing.acceptanceCriteria as AcceptanceCriterion[]) ?? [];
+    if (input.criteriaIndex < 0 || input.criteriaIndex >= current.length) {
+      throw new Error(
+        `Criteria index ${input.criteriaIndex} out of bounds (feature has ${current.length} criteria).`
+      );
+    }
+    nextCriteria = current.map((item, idx) =>
+      idx === input.criteriaIndex
+        ? { ...item, completed: input.completed! }
+        : item
+    );
+  } else {
+    throw new Error("Invalid criteria update payload.");
+  }
+
+  const completedCount = nextCriteria.filter((c) => c.completed).length;
+  const totalCount = nextCriteria.length;
+  const ticketKey = `${existing.project.key}-${existing.ticketNumber}`;
+
+  return await db.transaction(async (tx) => {
+    const [updated] = await tx
+      .update(features)
+      .set({
+        acceptanceCriteria: nextCriteria,
+        updatedAt: new Date(),
+      })
+      .where(and(eq(features.id, featureId), isNull(features.deletedAt)))
+      .returning();
+
+    await recordActivity(tx, {
+      projectId: existing.projectId,
+      entityType: "FEATURE",
+      entityId: existing.id,
+      action: "UPDATED",
+      details: {
+        actor,
+        notes: `Acceptance criteria updated (${completedCount}/${totalCount} completed)`,
+        metadata: {
+          criteriaStats: { completed: completedCount, total: totalCount },
+        },
+      },
+    });
+
+    return {
+      ...(updated as unknown as Feature),
+      key: ticketKey,
+    };
+  });
+}
+
 

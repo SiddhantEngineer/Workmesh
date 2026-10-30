@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { CheckSquare, Check, X } from "lucide-react";
+import { CheckSquare, Check, X, Play } from "lucide-react";
 import type { FeatureSummary, Priority } from "@workmesh/shared";
 import { PRIORITY_LABELS } from "@workmesh/shared";
 import { Spinner } from "../../../components/ui/Spinner";
 import { useApproveFeatureMutation } from "../../features/queries";
+import { useClaimTaskMutation } from "../../tasks/queries";
 import { RejectFeatureModal } from "../../features/components/RejectFeatureModal";
 
 interface FeatureCardProps {
@@ -25,6 +26,7 @@ const PRIORITY_COLORS: Record<Priority, string> = {
 export function FeatureCard({ feature, projectKey, index = 0 }: FeatureCardProps) {
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const approveMutation = useApproveFeatureMutation(projectKey);
+  const claimMutation = useClaimTaskMutation(projectKey);
 
   const ticketKey = feature.key || `${projectKey}-${feature.ticketNumber}`;
   const totalCriteria = feature.acceptanceCriteria?.length || 0;
@@ -42,6 +44,15 @@ export function FeatureCard({ feature, projectKey, index = 0 }: FeatureCardProps
     e.preventDefault();
     e.stopPropagation();
     setIsRejectModalOpen(true);
+  };
+
+  const handleClaim = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    claimMutation.mutate({
+      taskId: feature.id,
+      input: { ticketType: "FEATURE", agentId: "human-operator" },
+    });
   };
 
   return (
@@ -65,6 +76,11 @@ export function FeatureCard({ feature, projectKey, index = 0 }: FeatureCardProps
             />
             <span style={keyBadgeStyle}>{ticketKey}</span>
           </div>
+          {feature.status === "APPROVED" && (
+            <span style={readyBadgeStyle} title="Approved for autonomous agent development">
+              Ready to Claim
+            </span>
+          )}
         </div>
 
         <h4 style={titleStyle}>{feature.title}</h4>
@@ -127,6 +143,32 @@ export function FeatureCard({ feature, projectKey, index = 0 }: FeatureCardProps
             </button>
           </div>
         )}
+
+        {feature.status === "APPROVED" && (
+          <div
+            style={cardActionsRowStyle}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
+            <button
+              type="button"
+              onClick={handleClaim}
+              disabled={claimMutation.isPending}
+              className="feature-action-btn-approve"
+              title="Claim this task for active development"
+              style={claimButtonStyle}
+            >
+              {claimMutation.isPending ? (
+                <Spinner size="xs" color="#2563EB" />
+              ) : (
+                <Play size={11} fill="currentColor" />
+              )}
+              <span>Claim Task</span>
+            </button>
+          </div>
+        )}
       </Link>
 
       {isRejectModalOpen && (
@@ -161,6 +203,19 @@ const keyBadgeStyle: React.CSSProperties = {
   fontWeight: 600,
   color: "var(--text-secondary)",
   letterSpacing: "-0.01em",
+};
+
+const readyBadgeStyle: React.CSSProperties = {
+  fontFamily: "var(--font-primary)",
+  fontSize: "0.68rem",
+  fontWeight: 600,
+  color: "#2563EB",
+  backgroundColor: "rgba(37, 99, 235, 0.08)",
+  border: "1px solid rgba(37, 99, 235, 0.22)",
+  borderRadius: 4,
+  padding: "1px 6px",
+  letterSpacing: "0.01em",
+  lineHeight: "1.4",
 };
 
 const titleStyle: React.CSSProperties = {
@@ -199,4 +254,21 @@ const cardActionsRowStyle: React.CSSProperties = {
   paddingTop: 8,
   borderTop: "1px dashed var(--border-subtle)",
   marginTop: 2,
+};
+
+const claimButtonStyle: React.CSSProperties = {
+  width: "100%",
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: 6,
+  padding: "5px 12px",
+  fontSize: "0.75rem",
+  fontWeight: 600,
+  borderRadius: 4,
+  border: "1px solid rgba(37, 99, 235, 0.35)",
+  backgroundColor: "rgba(37, 99, 235, 0.08)",
+  color: "#2563EB",
+  cursor: "pointer",
+  transition: "all 0.15s ease",
 };

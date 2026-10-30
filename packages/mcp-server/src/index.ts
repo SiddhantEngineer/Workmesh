@@ -1,9 +1,25 @@
 #!/usr/bin/env node
 
 import * as dotenv from "dotenv";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
+import fs from "node:fs";
 
-// 1. Load environment variables (matching @workmesh/db and @workmesh/api convention)
-dotenv.config({ path: "../../.env" });
+// 1. Load environment variables reliably regardless of process.cwd()
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+const possibleEnvPaths = [
+  path.resolve(currentDir, "../../../.env"),
+  path.resolve(currentDir, "../../.env"),
+  path.resolve(process.cwd(), ".env"),
+  path.resolve(process.cwd(), "../../.env"),
+];
+
+for (const envPath of possibleEnvPaths) {
+  if (fs.existsSync(envPath)) {
+    dotenv.config({ path: envPath });
+    break;
+  }
+}
 dotenv.config();
 
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";

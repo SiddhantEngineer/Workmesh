@@ -1,6 +1,6 @@
 # Epic 03: Task Discovery & Agent Claiming
 
-**Status:** TODO  
+**Status:** DONE  
 **Type:** Vertical Slice  
 **Architecture:** Shared Schemas $\rightarrow$ DB Domain Services $\rightarrow$ [Hono API & MCP Server] $\rightarrow$ Next.js Web UI  
 
@@ -16,7 +16,7 @@ This epic enables the autonomous hand-off from human approval to agent execution
 ### FEAT-03-01: Actionable Task Discovery Flow
 - **ID:** `FEAT-03-01`
 - **Priority:** `CRITICAL`
-- **Status:** `TODO`
+- **Status:** `DONE`
 - **User Story:**  
   *As an AI coding agent, I want to query all actionable tasks ready for execution, so that I can automatically select the highest-priority approved feature or open bug to work on.*
 - **Scope & Description:**
@@ -25,10 +25,10 @@ This epic enables the autonomous hand-off from human approval to agent execution
   - Format output clearly with ticket keys, priorities, criteria summaries, and descriptions.
   - Web UI: **Approved** column populated with ready-to-claim cards.
 - **Acceptance Criteria Checklist:**
-  - [ ] API endpoint returns list sorted by priority (`CRITICAL` $\rightarrow$ `HIGH` $\rightarrow$ `MEDIUM` $\rightarrow$ `LOW`).
-  - [ ] Only `APPROVED` features and `OPEN` bugs are returned by default.
-  - [ ] MCP tool `list_actionable_tasks` formats output for LLM readability.
-  - [ ] Web UI displays accurate card count in the **Approved** column header.
+  - [x] API endpoint returns list sorted by priority (`CRITICAL` $\rightarrow$ `HIGH` $\rightarrow$ `MEDIUM` $\rightarrow$ `LOW`).
+  - [x] Only `APPROVED` features and `OPEN` bugs are returned by default.
+  - [x] MCP tool `list_actionable_tasks` formats output for LLM readability.
+  - [x] Web UI displays accurate card count in the **Approved** column header.
 - **Manual Verification via UI (UAT):**
   1. Open Web UI at `http://localhost:3000`.
   2. Ensure at least one feature is in the **Approved** column.
@@ -40,7 +40,7 @@ This epic enables the autonomous hand-off from human approval to agent execution
 ### FEAT-03-02: Task Claiming Flow
 - **ID:** `FEAT-03-02`
 - **Priority:** `CRITICAL`
-- **Status:** `TODO`
+- **Status:** `DONE`
 - **User Story:**  
   *As an AI coding agent, I want to call `claim_task` on an approved ticket, so that the team knows I am actively developing it and no other agent duplicates the work.*
 - **Scope & Description:**
@@ -50,10 +50,10 @@ This epic enables the autonomous hand-off from human approval to agent execution
   - MCP Tool: `claim_task` executing this transition.
   - Web UI: Moves card from **Approved** column into **In Progress** column.
 - **Acceptance Criteria Checklist:**
-  - [ ] Prevents claiming tasks that are not in `APPROVED` status.
-  - [ ] Updates status to `IN_PROGRESS` atomically in DB.
-  - [ ] Appends `CLAIMED` record to `activity_logs`.
-  - [ ] Web UI reflects card in **In Progress** column with amber priority pip and active styling.
+  - [x] Prevents claiming tasks that are not in `APPROVED` status.
+  - [x] Updates status to `IN_PROGRESS` atomically in DB.
+  - [x] Appends `CLAIMED` record to `activity_logs`.
+  - [x] Web UI reflects card in **In Progress** column with amber priority pip and active styling.
 - **Manual Verification via UI (UAT):**
   1. View a card `WM-1` in the **Approved** column of the Kanban board.
   2. Invoke `claim_task` via MCP with ticket ID and type.
@@ -65,7 +65,7 @@ This epic enables the autonomous hand-off from human approval to agent execution
 ### FEAT-03-03: Dedicated Feature Detail Page & Criteria Management
 - **ID:** `FEAT-03-03`
 - **Priority:** `HIGH`
-- **Status:** `TODO`
+- **Status:** `DONE`
 - **User Story:**  
   *As a human user or reviewer, I want to click any Kanban card or feature link to navigate to `/projects/[key]/features/[featureKey]`, so that I have a dedicated, bookmarkable workspace to inspect details, toggle acceptance criteria, view linked bugs, and track progress.*
 - **Scope & Description:**
@@ -76,11 +76,11 @@ This epic enables the autonomous hand-off from human approval to agent execution
     - **Right Action Rail**: Context-aware transition buttons ([Approve]/[Claim]/[Submit]/[Verify & Close]), assignee info, and activity audit timeline.
   - API endpoint: `PATCH /api/features/:id/criteria` to persist criteria toggle state.
 - **Acceptance Criteria Checklist:**
-  - [ ] Clicking any card on the Kanban board navigates to `/projects/[key]/features/[featureKey]`.
-  - [ ] Page renders full feature details, description, and status cleanly with responsive breadcrumbs.
-  - [ ] Acceptance criteria items render with interactive checkboxes.
-  - [ ] Checking/unchecking an item persists immediately and updates criteria count.
-  - [ ] Direct URL navigation to `/projects/[key]/features/[featureKey]` loads correctly without requiring prior board visit.
+  - [x] Clicking any card on the Kanban board navigates to `/projects/[key]/features/[featureKey]`.
+  - [x] Page renders full feature details, description, and status cleanly with responsive breadcrumbs.
+  - [x] Acceptance criteria items render with interactive checkboxes.
+  - [x] Checking/unchecking an item persists immediately and updates criteria count.
+  - [x] Direct URL navigation to `/projects/[key]/features/[featureKey]` loads correctly without requiring prior board visit.
 - **Manual Verification via UI (UAT):**
   1. From the Project Kanban board (`/projects/WM`), click any card in the **In Progress** column.
   2. Verify browser navigates to `/projects/WM/features/WM-1`.

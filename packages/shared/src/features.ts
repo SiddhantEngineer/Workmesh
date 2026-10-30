@@ -64,6 +64,37 @@ export const rejectFeatureBodySchema = z.object({
 export type RejectFeatureBodyInput = z.infer<typeof rejectFeatureBodySchema>;
 
 /**
+ * Zod validation schema for updating or toggling acceptance criteria on a feature.
+ * Supports toggling a single criterion by index or replacing the entire checklist.
+ */
+export const updateFeatureCriteriaBodySchema = z
+  .object({
+    criteriaIndex: z.number().int().min(0).optional(),
+    completed: z.boolean().optional(),
+    criteria: z
+      .array(
+        z.object({
+          text: z.string().trim().min(1, "Criterion text is required"),
+          completed: z.boolean(),
+        })
+      )
+      .optional(),
+  })
+  .refine(
+    (data) =>
+      (data.criteriaIndex !== undefined && data.completed !== undefined) ||
+      data.criteria !== undefined,
+    {
+      message:
+        "Provide either { criteriaIndex, completed } to toggle an item, or { criteria } for full list update.",
+    }
+  );
+
+export type UpdateFeatureCriteriaBodyInput = z.infer<
+  typeof updateFeatureCriteriaBodySchema
+>;
+
+/**
  * Raw shape schema for MCP tools or direct service invocations.
  */
 export const createFeatureInputSchema = {
@@ -144,3 +175,37 @@ export interface Feature {
   updatedAt?: string | Date;
   deletedAt?: string | Date | null;
 }
+
+export interface FeatureDetailLinkedBug {
+  id: number;
+  key: string;
+  ticketNumber: number;
+  title: string;
+  priority: Priority;
+  status: string;
+}
+
+export interface FeatureDetailActivityLog {
+  id: number;
+  action: string;
+  details: Record<string, unknown> | null;
+  createdAt: string | Date;
+}
+
+/**
+ * Rich Feature Detail model for the dedicated /projects/[key]/features/[featureKey] view.
+ * Hydrates parent project, parent epic, linked bugs, and chronological audit logs.
+ */
+export interface FeatureDetail extends Feature {
+  projectKey: string;
+  projectName: string;
+  epic?: {
+    id: number;
+    key: string;
+    title: string;
+    status: string;
+  } | null;
+  linkedBugs: FeatureDetailLinkedBug[];
+  activityLogs: FeatureDetailActivityLog[];
+}
+

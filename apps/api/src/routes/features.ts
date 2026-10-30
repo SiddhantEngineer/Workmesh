@@ -5,6 +5,8 @@ import {
   listFeatures,
   approveFeature,
   rejectFeature,
+  getFeatureByKey,
+  updateFeatureCriteria,
   EpicNotFoundError,
   EpicProjectMismatchError,
   ProjectNotFoundError,
@@ -16,6 +18,7 @@ import {
   createFeatureBodySchema,
   approveFeatureBodySchema,
   rejectFeatureBodySchema,
+  updateFeatureCriteriaBodySchema,
   type FeatureStatus,
 } from "@workmesh/shared";
 
@@ -83,6 +86,30 @@ export const projectFeaturesRouter = new Hono()
       }
       throw error;
     }
+  })
+
+  /**
+   * GET /api/projects/:key/features/:featureKey
+   * Returns a complete FeatureDetail entity (hydrated with epic, linked bugs, and activity timeline).
+   */
+  .get("/:featureKey", async (c) => {
+    const rawKey = c.req.param("key");
+    const rawFeatureKey = c.req.param("featureKey");
+    if (!rawKey || !rawFeatureKey) {
+      return c.json({ error: "Project key and feature key are required" }, 400);
+    }
+
+    const feature = await getFeatureByKey(rawKey, rawFeatureKey);
+    if (!feature) {
+      return c.json(
+        {
+          error: `Feature '${rawFeatureKey}' not found in project '${rawKey.toUpperCase()}'.`,
+        },
+        404
+      );
+    }
+
+    return c.json({ data: feature });
   });
 
 /**
@@ -134,14 +161,27 @@ export const epicFeaturesRouter = new Hono()
  * Dedicated endpoints for individual feature state transitions.
  */
 export const featuresRouter = new Hono()
-  // Global guard: Enforce Human-Only rule for all feature transition endpoints
-  .use("/*", async (c, next) => {
+  // Guard: Enforce Human-Only rule specifically for approval and rejection transitions
+  .use("/:id/approve", async (c, next) => {
     const actorHeader = c.req.header("x-actor-type");
     if (actorHeader && actorHeader.toUpperCase() === "AGENT") {
       return c.json(
         {
           error:
-            "Forbidden: Autonomous agents cannot approve or reject proposed features. Human authorization required.",
+            "Forbidden: Autonomous agents cannot approve proposed features. Human authorization required.",
+        },
+        403
+      );
+    }
+    await next();
+  })
+  .use("/:id/reject", async (c, next) => {
+    const actorHeader = c.req.header("x-actor-type");
+    if (actorHeader && actorHeader.toUpperCase() === "AGENT") {
+      return c.json(
+        {
+          error:
+            "Forbidden: Autonomous agents cannot reject proposed features. Human authorization required.",
         },
         403
       );
@@ -227,6 +267,49 @@ export const featuresRouter = new Hono()
         }
         if (error instanceof HumanActorRequiredError) {
           return c.json({ error: error.message }, 403);
+        }
+        throw error;
+      }
+    }
+  )
+
+  /**
+   * PATCH /api/features/:id/criteria
+   * Updates or toggles acceptance criteria for a feature.
+   * Supports toggling a single criterion or replacing the full list.
+   * Open to both Human and Agent actors.
+   */
+  .patch(
+    "/:id/criteria",
+    zValidator("json", updateFeatureCriteriaBodySchema),
+    async (c) => {
+      const rawId = c.req.param("id");
+      const featureId = parseInt(rawId, 10);
+      if (isNaN(featureId) || featureId <= 0) {
+        return c.json(
+          { error: "Invalid feature ID: must be a positive integer" },
+          400
+        );
+      }
+
+      const body = c.req.valid("json");
+
+      // Extract actor details from headers
+      const actorHeader = c.req.header("x-actor-type");
+      const isAgent = actorHeader?.toUpperCase() === "AGENT";
+      const actor = isAgent
+        ? { type: "AGENT" as const, name: "autonomous-agent" }
+        : { type: "HUMAN" as const };
+
+      try {
+        const updated = await updateFeatureCriteria(featureId, body, actor);
+        return c.json({ data: updated });
+      } catch (error) {
+        if (error instanceof FeatureNotFoundError) {
+          return c.json({ error: error.message }, 404);
+        }
+        if (error instanceof Error) {
+          return c.json({ error: error.message }, 400);
         }
         throw error;
       }

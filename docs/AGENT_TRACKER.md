@@ -15,12 +15,12 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Current Task ID** | `FEAT-03-01` |
-| **Feature Title** | Actionable Task Discovery Flow |
-| **Epic** | [Epic 03: Task Discovery & Agent Claiming](file:///d:/Projects/Workmesh/docs/epics/epic-03-task-discovery-and-agent-claiming.md) |
-| **Status** | `TODO` |
+| **Current Task ID** | `NONE` |
+| **Feature Title** | None |
+| **Epic** | None |
+| **Status** | `DONE` |
 | **Active Session / Agent ID** | `NONE` |
-| **Started At** | `—` |
+| **Started At** | - |
 
 ---
 
@@ -54,9 +54,9 @@
 
 | Feature ID | Feature Name | Priority | Status | Verified Via |
 | :--- | :--- | :--- | :--- | :--- |
-| `FEAT-03-01` | Actionable Task Discovery Flow | `CRITICAL` | `TODO` | MCP `list_actionable_tasks` matching Approved column |
-| `FEAT-03-02` | Task Claiming Flow | `CRITICAL` | `TODO` | MCP `claim_task` shifting card to In Progress column |
-| `FEAT-03-03` | Dedicated Feature Detail Page (`/projects/[key]/features/[featureKey]`) | `HIGH` | `TODO` | UI UAT (Dedicated 2-column view, criteria checklist toggles) |
+| `FEAT-03-01` | Actionable Task Discovery Flow | `CRITICAL` | `DONE` | Live MCP `list_actionable_tasks` stdio call + REST API + Web UI Ready to Claim badge |
+| `FEAT-03-02` | Task Claiming Flow | `CRITICAL` | `DONE` | Live MCP `claim_task` stdio call + atomic status shift to IN_PROGRESS + DB audit log verified |
+| `FEAT-03-03` | Dedicated Feature Detail Page (`/projects/[key]/features/[featureKey]`) | `HIGH` | `DONE` | UI UAT (Dedicated 2-column view, criteria checklist toggles verified via API & UI) |
 
 ---
 
@@ -385,6 +385,122 @@ Whenever a new chat session starts or an autonomous agent takes over:
 - **Handoff for Next Agent:**
   - **Epic 02 is now 100% complete!**
   - Next task is `FEAT-03-01` in [Epic 03: Task Discovery & Agent Claiming](file:///d:/Projects/Workmesh/docs/epics/epic-03-task-discovery-and-agent-claiming.md): Actionable Task Discovery Flow (`list_actionable_tasks` MCP tool matching Approved column).
+
+---
+
+### Session 09: Actionable Task Discovery Flow (`FEAT-03-01`)
+- **Date / Timestamp:** 2026-10-22
+- **Completed:** `FEAT-03-01` (Actionable Task Discovery Flow)
+- **What Was Implemented:**
+  - **Shared Schemas (`@workmesh/shared`):**
+    - Created `packages/shared/src/tasks.ts` defining `TASK_TYPES` (`"FEATURE" | "BUG"`), `PRIORITY_WEIGHTS` (numeric map `CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3`), and the unified `ActionableTask` domain model.
+    - Defined `listActionableTasksQuerySchema` (with `z.coerce.number()`) for HTTP GET endpoints and `listActionableTasksInputSchema` with parameter descriptions for the MCP tool.
+    - Exported from `@workmesh/shared` barrel.
+  - **Database Domain Service (`@workmesh/db`):**
+    - Created `packages/db/src/services/tasks.ts` implementing `listActionableTasks(projectKeyOrId, options)`.
+    - Concurrently queries `features` (status `APPROVED` by default) and `bugs` (status `OPEN` by default) via `Promise.all` with selective short-circuiting when filtering by `ticketType`.
+    - Projects parent epic title (`with: { epic: { columns: { id: true, title: true } } }`) without pulling heavy descriptions.
+    - Deterministic composite sorting: primary sort by `PRIORITY_WEIGHTS` urgency and secondary FIFO tie-break by `ticketNumber ASC`.
+    - Resilient project resolution supporting uppercase keys (`"WM"`), numeric string IDs (`"1"`), or automatic fallback to `WORKMESH_PROJECT_KEY` / single active project in DB.
+    - Updated `packages/db/src/client.ts` to reliably locate `.env` via `import.meta.url` regardless of process `cwd`.
+  - **Hono REST API (`apps/api`):**
+    - Added `GET /api/projects/:key/actionable-tasks` in `apps/api/src/routes/projects.ts` with `zValidator("query", listActionableTasksQuerySchema)`.
+  - **Web Client & Styling (`apps/web`):**
+    - Added `projectsApi.listActionableTasks` in `apps/web/src/features/projects/api.ts`.
+    - Added `projectKeys.actionableTasks` and `useActionableTasksQuery` in `apps/web/src/features/projects/queries.ts`.
+    - Updated `FeatureCard.tsx` to render a subtle, high-contrast `Ready to Claim` badge in the header when a feature is in `APPROVED` status.
+  - **MCP Server (`packages/mcp-server`):**
+    - Created `packages/mcp-server/src/tools/tasks.ts` implementing `list_actionable_tasks`.
+    - Formats output into clean, token-efficient Markdown for LLM consumption, displaying ticket keys, parent epic, acceptance criteria checklists, and `claim_task` instructions.
+    - Mounted in `packages/mcp-server/src/tools/index.ts`.
+    - Updated `packages/mcp-server/src/index.ts` to reliably locate `.env` via `import.meta.url`.
+    - Configured MCP server in `~/.gemini/config/mcp_config.json` running via `cmd.exe /c npx tsx`.
+- **Verification & UAT:**
+  - Full monorepo TypeScript typecheck (`npx tsc --noEmit`) verified with 0 errors across all packages.
+  - REST API endpoint verified live via curl: `GET http://localhost:3001/api/projects/WM/actionable-tasks` returning all 4 approved features with criteria checklists.
+  - MCP tool live execution verified via `call_mcp_tool`:
+    - `list_actionable_tasks({ projectKey: "WM" })` returned formatted Markdown with all 4 tickets.
+    - `list_actionable_tasks({})` verified automatic default project detection.
+    - `list_actionable_tasks({ projectKey: "WM", epicId: 1 })` verified epic-filtered discovery.
+- **Handoff for Next Agent:**
+  - Next task is `FEAT-03-02` in [Epic 03: Task Discovery & Agent Claiming](file:///d:/Projects/Workmesh/docs/epics/epic-03-task-discovery-and-agent-claiming.md): Task Claiming Flow (`claim_task` MCP tool + `PATCH /api/tasks/:id/claim`, transitioning tickets from `APPROVED` to `IN_PROGRESS`, logging `CLAIMED` in audit logs, and moving cards to the In Progress Kanban column).
+
+---
+
+### Session 10: Task Claiming Flow (`FEAT-03-02`)
+- **Date / Timestamp:** 2026-10-22
+- **Completed:** `FEAT-03-02` (Task Claiming Flow)
+- **What Was Implemented:**
+  - **Shared Schemas (`@workmesh/shared`):**
+    - Created `claimTaskBodySchema` for `PATCH /api/tasks/:id/claim` validating `{ ticketType: "FEATURE" | "BUG", agentId?: string, notes?: string }`.
+    - Created `claimTaskInputSchema` for MCP tool `claim_task` requiring `ticketId` and `ticketType`.
+  - **Database Domain Service (`@workmesh/db`):**
+    - Added `TaskNotFoundError` and `InvalidTaskStatusTransitionError` domain error classes in `packages/db/src/services/tasks.ts`.
+    - Implemented `claimTask(taskId, options, actor)`:
+      - Validates initial status invariant: features must be `APPROVED`; bugs must be `OPEN`. Rejects double-claims or unapproved tickets.
+      - Atomically updates status to `IN_PROGRESS` inside a `db.transaction(...)`.
+      - Inserts immutable `activity_logs` audit record with `action: "CLAIMED"`, assigned agent name, and previous/next status.
+      - Hydrates parent epic title and returns updated `ActionableTask`.
+  - **Hono REST API (`apps/api`):**
+    - Created `apps/api/src/routes/tasks.ts` with `PATCH /api/tasks/:id/claim`.
+    - Mounted at `/api/tasks` in `apps/api/src/index.ts`.
+    - Maps domain errors to HTTP 404 (not found) and HTTP 409 (conflict/invalid transition).
+  - **Web Client & State (`apps/web`):**
+    - Created `apps/web/src/features/tasks/api.ts` with `tasksApi.claim(taskId, input)`.
+    - Created `apps/web/src/features/tasks/queries.ts` with `useClaimTaskMutation(projectKey)` coordinating multi-key cache invalidation across board, discovery, and list views.
+    - Updated `FeatureCard.tsx` to render an interactive `[Claim Task]` action button on `APPROVED` cards with 0ms tactile feedback and loading spinner.
+  - **MCP Server (`packages/mcp-server`):**
+    - Implemented and registered `claim_task` tool in `packages/mcp-server/src/tools/tasks.ts`.
+    - Formats output into clean, structured Markdown for agent confirmation.
+- **Verification & UAT:**
+  - Workspace typecheck (`npx tsc --noEmit`) verified with 0 errors across all packages.
+  - Verified REST API endpoint with invalid task ID (returned 404 error).
+  - Verified live MCP `claim_task` execution via `call_mcp_tool`:
+    - Successfully claimed `WM-8` (Ticket ID: 5), shifting status to `IN_PROGRESS` with assigned agent `gemini-autonomous-agent`.
+    - Attempted double-claim on `WM-8` via MCP and confirmed negative guard properly rejected with: `Cannot claim FEATURE 5: current status is 'IN_PROGRESS', but status 'APPROVED' is required.`
+    - Verified `list_actionable_tasks` discovery pool automatically omitted `WM-8`.
+    - Verified PostgreSQL `activity_logs` table recorded entry id 28 with `action: "CLAIMED"`, actor `gemini-autonomous-agent`, and timestamp.
+- **Handoff for Next Agent:**
+  - Next task is `FEAT-03-03` in [Epic 03: Task Discovery & Agent Claiming](file:///d:/Projects/Workmesh/docs/epics/epic-03-task-discovery-and-agent-claiming.md): Dedicated Feature Detail Page (`/projects/[key]/features/[featureKey]`) with two-column layout, criteria checklist toggles (`PATCH /api/features/:id/criteria`), and responsive breadcrumb navigation.
+
+---
+
+### Session 11: Dedicated Feature Detail Page & Criteria Management (`FEAT-03-03`)
+- **Date / Timestamp:** 2026-10-30
+- **Completed:** `FEAT-03-03` (Dedicated Feature Detail Page & Criteria Management)
+- **What Was Implemented:**
+  - **Shared Schemas (`@workmesh/shared`):**
+    - Created `updateFeatureCriteriaBodySchema` and `UpdateFeatureCriteriaBodyInput` in `packages/shared/src/features.ts`, supporting index-based toggling (`{ criteriaIndex, completed }`) or bulk replacement (`{ criteria }`).
+    - Created `FeatureDetailLinkedBug`, `FeatureDetailActivityLog`, and rich `FeatureDetail` models for the dedicated feature detail workspace.
+  - **Database Domain Service (`@workmesh/db`):**
+    - Implemented `getFeatureByKey(projectKey, ticketNumberOrKey)` in `packages/db/src/services/features.ts`, resolving feature by project prefix key and ticket number, hydrating parent project, parent epic, non-deleted linked bugs, and chronological audit activity logs.
+    - Implemented `updateFeatureCriteria(featureId, input, actor)` in `packages/db/src/services/features.ts`, updating acceptance criteria JSON in a transaction and recording an `UPDATED` audit record in `activity_logs`.
+  - **Hono REST API (`apps/api`):**
+    - Added `GET /api/projects/:key/features/:featureKey` to `projectFeaturesRouter` in `apps/api/src/routes/features.ts`.
+    - Added `PATCH /api/features/:id/criteria` with Zod validation to `featuresRouter` in `apps/api/src/routes/features.ts`, open to both human and agent actors.
+    - Scoped human-only middleware strictly to `/:id/approve` and `/:id/reject`.
+  - **Web Client & Page (`apps/web`):**
+    - Added `featuresApi.getByKey` and `featuresApi.updateCriteria` in `apps/web/src/features/features/api.ts`.
+    - Added `useFeatureDetailQuery` and `useUpdateFeatureCriteriaMutation` in `apps/web/src/features/features/queries.ts` with cross-cache invalidation (`featureKeys.detail`, `projectKeys.byKey`, and `featureKeys.byProject`).
+    - Implemented dedicated route at `apps/web/src/app/projects/[key]/features/[featureKey]/page.tsx` adhering to the Minimal Design System:
+      - Responsive breadcrumbs (`Projects / [Project Name] / Features / [Feature Key]`) and back navigation.
+      - Main column: ticket key in monospace, priority badge with colored pip, status badge, epic reference, description, interactive acceptance criteria checklist with progress bar and counters, and linked bugs summary.
+      - Right action rail: contextual state actions ([Approve], [Reject], [Claim Task]), properties card (parent epic, dates), and chronological activity audit timeline.
+    - Updated `FeatureCard.tsx` on the project board to navigate to `/projects/${projectKey}/features/${ticketKey}` upon clicking.
+- **Verification & UAT:**
+  - TypeScript typecheck (`cmd /c npx tsc --noEmit`) verified with 0 errors across all monorepo packages.
+  - Live REST API verification:
+    - `GET /api/projects/WM/features/WM-4` returned 200 with full feature details, parent epic, linked bugs, and activity logs.
+    - `PATCH /api/features/1/criteria` with `{ criteriaIndex: 0, completed: true }` persisted successfully and recorded an `UPDATED` entry in `activity_logs`.
+    - Re-toggling `{ criteriaIndex: 0, completed: false }` verified immediate toggle persistence and audit logging.
+  - Web UI verification:
+    - Direct navigation `GET http://localhost:3000/projects/WM/features/WM-4` returned HTTP 200.
+    - Project Kanban board `GET http://localhost:3000/projects/WM` returned HTTP 200.
+    - Verified card click navigation, responsive breadcrumbs, and criteria counter tracking.
+- **Handoff for Next Agent:**
+  - **Epic 03 is now 100% complete!**
+  - Next task is `FEAT-04-01` in [Epic 04: Deliverable Review & Human Sign-Off](file:///d:/Projects/Workmesh/docs/epics/epic-04-deliverable-review-and-human-signoff.md): Agent Submission & Ready for Test Flow (`submit_for_review` MCP tool + `PATCH /api/tasks/:id/submit-for-review`, shifting card to Ready for Test column and logging `SUBMITTED` in audit logs).
+
 
 
 

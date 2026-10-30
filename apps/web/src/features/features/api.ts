@@ -1,5 +1,11 @@
 import { apiClient } from "../../lib/api-client";
-import type { Feature, CreateFeatureBodyInput, FeatureStatus } from "@workmesh/shared";
+import type {
+  Feature,
+  FeatureDetail,
+  CreateFeatureBodyInput,
+  UpdateFeatureCriteriaBodyInput,
+  FeatureStatus,
+} from "@workmesh/shared";
 
 export interface ListFeaturesQueryOptions {
   epicId?: number;
@@ -20,10 +26,29 @@ export const featuresApi = {
   },
 
   /**
+   * Fetch detailed feature information by project key and ticket key or number
+   */
+  getByKey: (projectKey: string, featureKey: string): Promise<FeatureDetail> => {
+    return apiClient.get<FeatureDetail>(
+      `/api/projects/${encodeURIComponent(projectKey)}/features/${encodeURIComponent(featureKey)}`
+    );
+  },
+
+  /**
    * Create a feature under a project and parent epic
    */
   create: (projectKey: string, input: CreateFeatureBodyInput): Promise<Feature> => {
     return apiClient.post<Feature>(`/api/projects/${encodeURIComponent(projectKey)}/features`, input);
+  },
+
+  /**
+   * Update or toggle acceptance criteria on a feature
+   */
+  updateCriteria: (
+    featureId: number,
+    input: UpdateFeatureCriteriaBodyInput
+  ): Promise<Feature> => {
+    return apiClient.patch<Feature>(`/api/features/${featureId}/criteria`, input);
   },
 
   /**
@@ -40,3 +65,4 @@ export const featuresApi = {
     return apiClient.patch<Feature>(`/api/features/${featureId}/reject`, { reason });
   },
 };
+
