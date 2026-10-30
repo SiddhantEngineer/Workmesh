@@ -65,7 +65,7 @@
 
 | Feature ID | Feature Name | Priority | Status | Verified Via |
 | :--- | :--- | :--- | :--- | :--- |
-| `FEAT-04-01` | Agent Submission & Ready for Test Flow | `CRITICAL` | `TODO` | MCP `submit_for_review` shifting card to Ready for Test |
+| `FEAT-04-01` | Agent Submission & Ready for Test Flow | `CRITICAL` | `DONE` | Live MCP `submit_for_review` call + negative state guard + DB audit log + UI Ready for Test badge |
 | `FEAT-04-02` | Human QA Verification & Closure Flow | `CRITICAL` | `TODO` | UI Action Rail [Verify & Close] button shifting card to Closed |
 | `FEAT-04-03` | Rejection & Rework Loop | `HIGH` | `TODO` | UI Action Rail [Request Changes] returning card to In Progress |
 
@@ -500,6 +500,42 @@ Whenever a new chat session starts or an autonomous agent takes over:
 - **Handoff for Next Agent:**
   - **Epic 03 is now 100% complete!**
   - Next task is `FEAT-04-01` in [Epic 04: Deliverable Review & Human Sign-Off](file:///d:/Projects/Workmesh/docs/epics/epic-04-deliverable-review-and-human-signoff.md): Agent Submission & Ready for Test Flow (`submit_for_review` MCP tool + `PATCH /api/tasks/:id/submit-for-review`, shifting card to Ready for Test column and logging `SUBMITTED` in audit logs).
+
+---
+
+### Session 12: Agent Submission & Ready for Test Flow (`FEAT-04-01`)
+- **Date / Timestamp:** 2026-10-31
+- **Completed:** `FEAT-04-01` (Agent Submission & Ready for Test Flow)
+- **What Was Implemented:**
+  - **Shared Schemas (`@workmesh/shared`):**
+    - Created `submitFeatureForReviewBodySchema` and `SubmitFeatureForReviewBodyInput` in `packages/shared/src/features.ts`, supporting index lists (`number[]`), boolean arrays (`boolean[]`), and optional reviewer notes (up to 5,000 characters).
+    - Created `submitForReviewInputSchema` and `SubmitForReviewInput` for MCP tool argument parsing.
+  - **Database Domain Service (`@workmesh/db`):**
+    - Updated `InvalidFeatureStatusTransitionError` to support dynamic expected status preconditions.
+    - Implemented `submitFeatureForReview(featureIdOrKey, input, actor)` in `packages/db/src/services/features.ts`:
+      - Resolves features by numeric ID or string ticket key (e.g. `WM-4`).
+      - Strictly guards state machine: requires current status to be `IN_PROGRESS`.
+      - Updates acceptance criteria completion state (marks specific criteria or auto-completes all if omitted).
+      - Atomically sets status to `READY_FOR_TEST` and writes a `SUBMITTED_FOR_REVIEW` audit record in `activity_logs` inside a single database transaction.
+  - **Hono REST API (`apps/api`):**
+    - Added `POST /api/features/:id/submit` in `apps/api/src/routes/features.ts`.
+    - Integrated schema validation via `@hono/zod-validator`, actor detection from request headers (`x-actor-type`, `x-agent-id`), and proper HTTP status mappings (`404` Not Found, `409` Conflict for state violations).
+  - **MCP Server (`packages/mcp-server`):**
+    - Implemented and registered `submit_for_review` tool in `packages/mcp-server/src/tools/features.ts`.
+    - Formats output into clean, structured Markdown for agent confirmation with verified criteria checklist and review instructions.
+  - **Web UI (`apps/web`):**
+    - Updated `FeatureCard.tsx` to render a high-contrast `Ready for Review` badge (`#9333EA`) and an `Awaiting Human Sign-Off` callout when in `READY_FOR_TEST`.
+    - Updated `FeatureDetailPage` (`/projects/[key]/features/[featureKey]`) to render a contextual `Ready for Verification` action rail banner.
+- **Verification & UAT:**
+  - Workspace typecheck (`cmd /c npx tsc --noEmit`) verified with 0 errors across all monorepo packages.
+  - Verified live MCP `submit_for_review` execution via `call_mcp_tool`:
+    - Successfully submitted `WM-4` (`HttpOnly Session Cookie Authentication & CSRF Protection`), transitioning status to `READY_FOR_TEST` and marking 3/3 acceptance criteria verified.
+  - Verified negative guard via live MCP `call_mcp_tool`:
+    - Duplicate call properly rejected with: `Cannot submit_for_review Feature 9: current status is 'READY_FOR_TEST', but status 'IN_PROGRESS' is required.`
+  - Verified live project metrics via MCP `get_project_context`:
+    - `inProgressFeatures` transitioned to `0`, `readyForTestFeatures` transitioned to `1`.
+- **Handoff for Next Agent:**
+  - Next task is `FEAT-04-02` in [Epic 04: Deliverable Review & Human Sign-Off](file:///d:/Projects/Workmesh/docs/epics/epic-04-deliverable-review-and-human-signoff.md): Human QA Verification & Closure Flow (`PATCH /api/features/:id/close` with Human-only authorization guard, shifting ticket to `CLOSED`, and UI Action Rail [Verify & Close] button).
 
 
 

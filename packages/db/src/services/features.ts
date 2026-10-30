@@ -13,6 +13,7 @@ import type {
   FeatureDetail,
   Priority,
   UpdateFeatureCriteriaBodyInput,
+  SubmitFeatureForReviewBodyInput,
 } from "@workmesh/shared";
 import type { ActivityActor } from "../schema/activity_logs";
 
@@ -47,10 +48,11 @@ export class InvalidFeatureStatusTransitionError extends Error {
   constructor(
     public readonly featureId: number,
     public readonly currentStatus: string,
-    public readonly attemptedAction: "APPROVE" | "REJECT"
+    public readonly attemptedAction: string,
+    public readonly expectedStatus: string = "PROPOSED"
   ) {
     super(
-      `Cannot ${attemptedAction.toLowerCase()} Feature ${featureId}: only features with status 'PROPOSED' can be transitioned (current status: '${currentStatus}').`
+      `Cannot ${attemptedAction.toLowerCase()} Feature ${featureId}: current status is '${currentStatus}', but status '${expectedStatus}' is required.`
     );
     this.name = "InvalidFeatureStatusTransitionError";
   }
@@ -563,6 +565,145 @@ export async function updateFeatureCriteria(
       details: {
         actor,
         notes: `Acceptance criteria updated (${completedCount}/${totalCount} completed)`,
+        metadata: {
+          criteriaStats: { completed: completedCount, total: totalCount },
+        },
+      },
+    });
+
+    return {
+      ...(updated as unknown as Feature),
+      key: ticketKey,
+    };
+  });
+}
+
+/**
+ * Transitions a feature from IN_PROGRESS to READY_FOR_TEST upon agent completion.
+ * Marks specified criteria (or all criteria if omitted) as completed,
+ * updates feature status, and records an activity audit log with agent notes.
+ *
+ * Supports passing either an internal feature ID (number) or a formatted ticket key (e.g. "WM-4").
+ */
+export async function submitFeatureForReview(
+  featureIdOrKey: number | string,
+  input: SubmitFeatureForReviewBodyInput = {},
+  actor: ActivityActor = { type: "AGENT" }
+): Promise<Feature> {
+  let existing:
+    | (typeof features.$inferSelect & { project: typeof projects.$inferSelect })
+    | undefined
+    | null = null;
+
+  if (typeof featureIdOrKey === "number") {
+    existing = await db.query.features.findFirst({
+      where: (f, { and, eq, isNull }) =>
+        and(eq(f.id, featureIdOrKey), isNull(f.deletedAt)),
+      with: { project: true },
+    });
+  } else {
+    const raw = featureIdOrKey.trim();
+    if (/^\d+$/.test(raw)) {
+      const numId = parseInt(raw, 10);
+      existing = await db.query.features.findFirst({
+        where: (f, { and, eq, isNull }) =>
+          and(eq(f.id, numId), isNull(f.deletedAt)),
+        with: { project: true },
+      });
+    } else {
+      const parts = raw.split("-");
+      if (parts.length >= 2) {
+        const projectKey = parts[0].toUpperCase();
+        const ticketNumber = parseInt(parts.slice(1).join("-"), 10);
+        const proj = await db.query.projects.findFirst({
+          where: (p, { and, eq, isNull }) =>
+            and(eq(p.key, projectKey), isNull(p.deletedAt)),
+        });
+        if (proj && !isNaN(ticketNumber)) {
+          existing = await db.query.features.findFirst({
+            where: (f, { and, eq, isNull }) =>
+              and(
+                eq(f.projectId, proj.id),
+                eq(f.ticketNumber, ticketNumber),
+                isNull(f.deletedAt)
+              ),
+            with: { project: true },
+          });
+        }
+      }
+    }
+  }
+
+  if (!existing) {
+    const numericId = typeof featureIdOrKey === "number" ? featureIdOrKey : 0;
+    throw new FeatureNotFoundError(numericId);
+  }
+
+  if (existing.status !== "IN_PROGRESS") {
+    throw new InvalidFeatureStatusTransitionError(
+      existing.id,
+      existing.status,
+      "SUBMIT_FOR_REVIEW",
+      "IN_PROGRESS"
+    );
+  }
+
+  const currentCriteria =
+    (existing.acceptanceCriteria as AcceptanceCriterion[]) ?? [];
+
+  let nextCriteria: AcceptanceCriterion[];
+
+  if (input.completedCriteria && input.completedCriteria.length > 0) {
+    if (typeof input.completedCriteria[0] === "boolean") {
+      const boolList = input.completedCriteria as boolean[];
+      nextCriteria = currentCriteria.map((item, idx) => ({
+        ...item,
+        completed: Boolean(boolList[idx]),
+      }));
+    } else {
+      const indexList = input.completedCriteria as number[];
+      const indexSet = new Set(indexList);
+      nextCriteria = currentCriteria.map((item, idx) => ({
+        ...item,
+        completed: indexSet.has(idx),
+      }));
+    }
+  } else {
+    // If not explicitly provided, mark all criteria as completed
+    nextCriteria = currentCriteria.map((item) => ({
+      ...item,
+      completed: true,
+    }));
+  }
+
+  const completedCount = nextCriteria.filter((c) => c.completed).length;
+  const totalCount = nextCriteria.length;
+  const ticketKey = `${existing.project.key}-${existing.ticketNumber}`;
+  const notes =
+    input.notes?.trim() ||
+    `Feature '${existing.title}' (${ticketKey}) submitted for review. All criteria verified.`;
+
+  return await db.transaction(async (tx) => {
+    const [updated] = await tx
+      .update(features)
+      .set({
+        status: "READY_FOR_TEST",
+        acceptanceCriteria: nextCriteria,
+        updatedAt: new Date(),
+      })
+      .where(and(eq(features.id, existing.id), isNull(features.deletedAt)))
+      .returning();
+
+    await recordActivity(tx, {
+      projectId: existing.projectId,
+      entityType: "FEATURE",
+      entityId: existing.id,
+      action: "SUBMITTED_FOR_REVIEW",
+      details: {
+        actor,
+        previousStatus: "IN_PROGRESS",
+        nextStatus: "READY_FOR_TEST",
+        notes,
         metadata: {
           criteriaStats: { completed: completedCount, total: totalCount },
         },

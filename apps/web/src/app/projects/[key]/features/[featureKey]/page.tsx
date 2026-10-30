@@ -508,6 +508,34 @@ export default function FeatureDetailPage() {
               </div>
             )}
 
+            {feature.status === "READY_FOR_TEST" && (
+              <div style={readyForTestBannerStyle}>
+                <Clock size={16} color="#9333EA" />
+                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <span style={{ fontWeight: 600, color: "#9333EA", fontSize: "0.85rem" }}>
+                    Ready for Verification
+                  </span>
+                  <span style={{ fontSize: "0.76rem", color: "var(--text-secondary)" }}>
+                    Agent submitted deliverable. Awaiting human verification and closure.
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {feature.status === "CLOSED" && (
+              <div style={closedBannerStyle}>
+                <Check size={16} color="#16A34A" />
+                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <span style={{ fontWeight: 600, color: "#16A34A", fontSize: "0.85rem" }}>
+                    Verified & Closed
+                  </span>
+                  <span style={{ fontSize: "0.76rem", color: "var(--text-secondary)" }}>
+                    All acceptance criteria verified and signed off.
+                  </span>
+                </div>
+              </div>
+            )}
+
             {feature.status === "REJECTED" && (
               <div style={rejectedBannerStyle}>
                 <X size={15} color="#DC2626" />
@@ -897,6 +925,26 @@ const rejectedBannerStyle: React.CSSProperties = {
   gap: 8,
   backgroundColor: "rgba(220, 38, 38, 0.08)",
   border: "1px solid rgba(220, 38, 38, 0.2)",
+  borderRadius: 6,
+  padding: "10px 12px",
+};
+
+const readyForTestBannerStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: 10,
+  backgroundColor: "rgba(147, 51, 234, 0.08)",
+  border: "1px solid rgba(147, 51, 234, 0.25)",
+  borderRadius: 6,
+  padding: "10px 12px",
+};
+
+const closedBannerStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: 10,
+  backgroundColor: "rgba(22, 163, 74, 0.08)",
+  border: "1px solid rgba(22, 163, 74, 0.25)",
   borderRadius: 6,
   padding: "10px 12px",
 };

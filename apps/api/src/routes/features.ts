@@ -7,6 +7,7 @@ import {
   rejectFeature,
   getFeatureByKey,
   updateFeatureCriteria,
+  submitFeatureForReview,
   EpicNotFoundError,
   EpicProjectMismatchError,
   ProjectNotFoundError,
@@ -19,6 +20,7 @@ import {
   approveFeatureBodySchema,
   rejectFeatureBodySchema,
   updateFeatureCriteriaBodySchema,
+  submitFeatureForReviewBodySchema,
   type FeatureStatus,
 } from "@workmesh/shared";
 
@@ -307,6 +309,53 @@ export const featuresRouter = new Hono()
       } catch (error) {
         if (error instanceof FeatureNotFoundError) {
           return c.json({ error: error.message }, 404);
+        }
+        if (error instanceof Error) {
+          return c.json({ error: error.message }, 400);
+        }
+        throw error;
+      }
+    }
+  )
+
+  /**
+   * POST /api/features/:id/submit
+   * Transitions a feature from IN_PROGRESS to READY_FOR_TEST upon agent completion.
+   * Open to Agent and Human actors.
+   */
+  .post(
+    "/:id/submit",
+    zValidator("json", submitFeatureForReviewBodySchema),
+    async (c) => {
+      const rawId = c.req.param("id");
+      const featureIdOrKey = /^\d+$/.test(rawId) ? parseInt(rawId, 10) : rawId;
+
+      const body = c.req.valid("json");
+
+      // Extract actor details from headers or default to AGENT
+      const actorHeader = c.req.header("x-actor-type");
+      const agentIdHeader = c.req.header("x-agent-id");
+      const isHuman = actorHeader?.toUpperCase() === "HUMAN";
+      const actor = isHuman
+        ? { type: "HUMAN" as const }
+        : {
+            type: "AGENT" as const,
+            name: agentIdHeader?.trim() || "autonomous-agent",
+          };
+
+      try {
+        const submitted = await submitFeatureForReview(
+          featureIdOrKey,
+          body,
+          actor
+        );
+        return c.json({ data: submitted });
+      } catch (error) {
+        if (error instanceof FeatureNotFoundError) {
+          return c.json({ error: error.message }, 404);
+        }
+        if (error instanceof InvalidFeatureStatusTransitionError) {
+          return c.json({ error: error.message }, 409);
         }
         if (error instanceof Error) {
           return c.json({ error: error.message }, 400);

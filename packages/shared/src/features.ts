@@ -95,6 +95,65 @@ export type UpdateFeatureCriteriaBodyInput = z.infer<
 >;
 
 /**
+ * Zod validation schema for submitting a feature for review.
+ * Allows specifying which criteria indices are completed (or boolean flags),
+ * along with optional agent notes or implementation summaries.
+ */
+export const submitFeatureForReviewBodySchema = z.object({
+  completedCriteria: z
+    .union([
+      z.array(z.number().int().min(0)), // Indices of completed criteria: e.g. [0, 1, 2]
+      z.array(z.boolean()),             // Boolean map: e.g. [true, true, true]
+    ])
+    .optional(),
+  notes: z
+    .string()
+    .trim()
+    .max(5000, "Notes must be 5000 characters or fewer")
+    .optional(),
+});
+
+export type SubmitFeatureForReviewBodyInput = z.infer<
+  typeof submitFeatureForReviewBodySchema
+>;
+
+/**
+ * Raw input shape for MCP submit_for_review tool.
+ */
+export const submitForReviewInputSchema = {
+  featureId: z
+    .union([z.number().int().positive(), z.string().trim().min(1)])
+    .describe(
+      "Internal numeric ID of the Feature (e.g. 4) or formatted ticket key (e.g. 'WM-4')"
+    ),
+  completedCriteria: z
+    .union([
+      z.array(z.number().int().min(0)),
+      z.array(z.boolean()),
+    ])
+    .optional()
+    .describe(
+      "Optional list of 0-based indices (e.g. [0, 1]) or booleans indicating completed criteria. If omitted, all criteria are marked complete."
+    ),
+  notes: z
+    .string()
+    .trim()
+    .max(5000)
+    .optional()
+    .describe(
+      "Detailed implementation notes, test results, and deliverable summary for the human reviewer"
+    ),
+  agentId: z
+    .string()
+    .trim()
+    .optional()
+    .describe("Identifier of the autonomous agent submitting the feature"),
+};
+
+export const submitForReviewSchema = z.object(submitForReviewInputSchema);
+export type SubmitForReviewInput = z.infer<typeof submitForReviewSchema>;
+
+/**
  * Raw shape schema for MCP tools or direct service invocations.
  */
 export const createFeatureInputSchema = {

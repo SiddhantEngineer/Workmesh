@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { CheckSquare, Check, X, Play } from "lucide-react";
+import { CheckSquare, Check, X, Play, Clock } from "lucide-react";
 import type { FeatureSummary, Priority } from "@workmesh/shared";
 import { PRIORITY_LABELS } from "@workmesh/shared";
 import { Spinner } from "../../../components/ui/Spinner";
@@ -81,6 +81,11 @@ export function FeatureCard({ feature, projectKey, index = 0 }: FeatureCardProps
               Ready to Claim
             </span>
           )}
+          {feature.status === "READY_FOR_TEST" && (
+            <span style={readyForTestBadgeStyle} title="Implementation complete. Awaiting human QA verification.">
+              Ready for Review
+            </span>
+          )}
         </div>
 
         <h4 style={titleStyle}>{feature.title}</h4>
@@ -106,6 +111,13 @@ export function FeatureCard({ feature, projectKey, index = 0 }: FeatureCardProps
             )}
           </div>
         </div>
+
+        {feature.status === "READY_FOR_TEST" && (
+          <div style={reviewCalloutStyle}>
+            <Clock size={11} style={{ flexShrink: 0 }} />
+            <span>Awaiting Human Sign-Off</span>
+          </div>
+        )}
 
         {feature.status === "PROPOSED" && (
           <div
@@ -216,6 +228,34 @@ const readyBadgeStyle: React.CSSProperties = {
   padding: "1px 6px",
   letterSpacing: "0.01em",
   lineHeight: "1.4",
+};
+
+const readyForTestBadgeStyle: React.CSSProperties = {
+  fontFamily: "var(--font-primary)",
+  fontSize: "0.68rem",
+  fontWeight: 600,
+  color: "#9333EA",
+  backgroundColor: "rgba(147, 51, 234, 0.08)",
+  border: "1px solid rgba(147, 51, 234, 0.22)",
+  borderRadius: 4,
+  padding: "1px 6px",
+  letterSpacing: "0.01em",
+  lineHeight: "1.4",
+};
+
+const reviewCalloutStyle: React.CSSProperties = {
+  marginTop: 10,
+  padding: "4px 8px",
+  borderRadius: 4,
+  backgroundColor: "rgba(147, 51, 234, 0.06)",
+  border: "1px solid rgba(147, 51, 234, 0.18)",
+  color: "#9333EA",
+  fontSize: "0.6875rem",
+  fontWeight: 500,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: 5,
 };
 
 const titleStyle: React.CSSProperties = {
