@@ -74,12 +74,14 @@ app.onError((err, c) => {
 
 
 const port = Number(process.env.PORT) || 3001;
+const hostname = process.env.HOST || "0.0.0.0";
 
-console.log(`Workmesh API server running on port ${port}`);
+console.log(`Workmesh API server running on ${hostname}:${port}`);
 
 serve({
   fetch: app.fetch,
   port,
+  hostname,
 });
 
 export default app;
