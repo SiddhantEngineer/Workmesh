@@ -12,6 +12,7 @@ import {
 } from "./routes/features";
 import { themesRouter } from "./routes/themes";
 import { tasksRouter } from "./routes/tasks";
+import { mcpRouter } from "./routes/mcp";
 
 // Load environment variables from repository root
 dotenv.config({ path: "../../.env" });
@@ -42,6 +43,8 @@ app.route("/api/epics/:epicId/features", epicFeaturesRouter);
 app.route("/api/features", featuresRouter);
 app.route("/api/themes", themesRouter);
 app.route("/api/tasks", tasksRouter);
+app.route("/api/mcp", mcpRouter);
+app.route("/mcp", mcpRouter);
 
 // Centralized 404 handler
 app.notFound((c) => {
